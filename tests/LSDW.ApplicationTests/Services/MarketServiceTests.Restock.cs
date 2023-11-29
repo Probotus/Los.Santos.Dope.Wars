@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace LSDW.ApplicationTests.Services;
+﻿namespace LSDW.ApplicationTests.Services;
 
 public sealed partial class MarketServiceTests
 {

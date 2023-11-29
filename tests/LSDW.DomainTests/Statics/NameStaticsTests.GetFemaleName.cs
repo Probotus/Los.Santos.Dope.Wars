@@ -1,7 +1,5 @@
 ﻿using LSDW.Domain.Statics;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Statics;
 
 public sealed partial class NameStaticsTests

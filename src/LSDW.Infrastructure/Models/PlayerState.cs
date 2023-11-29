@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Constants;
 using LSDW.Infrastructure.Factories;
 
 namespace LSDW.Infrastructure.Models;
@@ -8,7 +9,7 @@ namespace LSDW.Infrastructure.Models;
 /// <summary>
 /// The player state class.
 /// </summary>
-[XmlRoot("Player")]
+[XmlRoot(XmlConstants.PlayerElementName)]
 public sealed class PlayerState
 {
 	/// <summary>
@@ -17,8 +18,8 @@ public sealed class PlayerState
 	public PlayerState()
 	{
 		Exp = default;
-		Drugs = Array.Empty<DrugState>();
-		Transactions = Array.Empty<TransactionState>();
+		Drugs = [];
+		Transactions = [];
 	}
 
 	/// <summary>
@@ -41,14 +42,14 @@ public sealed class PlayerState
 	/// <summary>
 	/// The player drugs.
 	/// </summary>
-	[XmlArray("Drugs")]
-	[XmlArrayItem("Drug")]
+	[XmlArray(XmlConstants.DrugArrayName)]
+	[XmlArrayItem(XmlConstants.DrugElementName)]
 	public DrugState[] Drugs { get; set; }
 
 	/// <summary>
 	/// The player transactions.
 	/// </summary>
-	[XmlArray("Transactions")]
-	[XmlArrayItem("Transaction")]
+	[XmlArray(XmlConstants.TransactionArrayName)]
+	[XmlArrayItem(XmlConstants.TransactionElementName)]
 	public TransactionState[] Transactions { get; set; }
 }

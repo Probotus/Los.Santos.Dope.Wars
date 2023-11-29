@@ -1,8 +1,6 @@
 ﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Interfaces.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.InfrastructureTests.Services;
 
 [TestClass]

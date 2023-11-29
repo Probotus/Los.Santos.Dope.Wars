@@ -6,8 +6,6 @@ using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Infrastructure.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.InfrastructureTests.Factories;
 
 [TestClass]
@@ -49,7 +47,7 @@ public partial class InfrastructureFactoryTests
 		IDrug drug = DomainFactory.CreateDrug(
 			type: DrugType.HASH,
 			quantity: 25,
-			value:35
+			value: 35
 			);
 
 		return drug;

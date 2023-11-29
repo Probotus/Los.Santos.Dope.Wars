@@ -1,7 +1,5 @@
 ﻿using LSDW.Domain.Attributes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Attributes;
 
 [TestClass]

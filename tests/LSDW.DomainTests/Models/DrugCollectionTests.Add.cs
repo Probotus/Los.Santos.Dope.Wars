@@ -2,8 +2,6 @@
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Models;
 
 public sealed partial class DrugCollectionTests
@@ -11,7 +9,7 @@ public sealed partial class DrugCollectionTests
 	[TestMethod]
 	public void Add()
 	{
-		IDrugCollection drugs = new DrugCollection();
+		IDrugCollection drugs = GetService<IDrugCollection>();
 		IDrug drug = new Drug(DrugType.COKE, 13, 87);
 
 		drugs.Add(drug.Type, drug.Quantity, drug.Value);

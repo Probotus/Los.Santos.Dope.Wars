@@ -1,7 +1,5 @@
 ﻿using LSDW.Domain.Interfaces.Manager;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Managers;
 
 [TestClass]

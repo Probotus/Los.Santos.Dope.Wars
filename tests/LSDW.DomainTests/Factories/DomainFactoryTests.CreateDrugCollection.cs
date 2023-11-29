@@ -1,8 +1,6 @@
 ﻿using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Factories;
 
 public partial class DomainFactoryTests

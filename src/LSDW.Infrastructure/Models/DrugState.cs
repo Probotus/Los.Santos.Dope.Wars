@@ -1,13 +1,14 @@
 ﻿using System.Xml.Serialization;
 
 using LSDW.Domain.Enumerators;
+using LSDW.Infrastructure.Constants;
 
 namespace LSDW.Infrastructure.Models;
 
 /// <summary>
 /// The drug state class.
 /// </summary>
-[XmlRoot("Drug")]
+[XmlRoot(XmlConstants.DrugElementName)]
 public sealed class DrugState
 {
 	/// <summary>

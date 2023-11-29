@@ -3,8 +3,6 @@
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Models;
 
 [TestClass]

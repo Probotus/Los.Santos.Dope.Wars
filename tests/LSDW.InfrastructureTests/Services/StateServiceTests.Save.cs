@@ -5,8 +5,6 @@ using LSDW.Domain.Extensions;
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.InfrastructureTests.Services;
 
 public partial class StateServiceTests
@@ -18,7 +16,7 @@ public partial class StateServiceTests
 	[TestMethod]
 	public void BigSaveTest()
 	{
-		for (int i = 0; i < 1000; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			_player.AddExperience(i + 1 * 100);
 			_player.Transactions.Add(

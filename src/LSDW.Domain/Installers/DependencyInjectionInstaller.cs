@@ -22,8 +22,9 @@ public static class DependencyInjectionInstaller
 	{
 		services.TryAddSingleton<IPlayer, Player>();
 		services.TryAddSingleton<IDealerCollection, DealerCollection>();
-		services.TryAddSingleton<IDomainManager, DomainManager>();
+		services.TryAddSingleton<IDomainManager, DomainManager>();		
 		services.TryAddSingleton<ITransactionCollection, TransactionCollection>();
+		services.TryAddTransient<IDrugCollection, DrugCollection>();
 
 		return services;
 	}

@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Constants;
 using LSDW.Infrastructure.Factories;
 
 namespace LSDW.Infrastructure.Models;
@@ -8,7 +9,7 @@ namespace LSDW.Infrastructure.Models;
 /// <summary>
 /// The game state class.
 /// </summary>
-[XmlRoot(nameof(LSDW))]
+[XmlRoot(nameof(LSDW), Namespace = XmlConstants.NameSpace)]
 public sealed class GameState
 {
 	/// <summary>
@@ -34,13 +35,13 @@ public sealed class GameState
 	/// <summary>
 	/// The state of the player.
 	/// </summary>	
-	[XmlElement("Player")]
+	[XmlElement(XmlConstants.PlayerElementName)]
 	public PlayerState Player { get; set; }
 
 	/// <summary>
 	/// The state of the dealer collection.
 	/// </summary>
-	[XmlArray("Dealers")]
-	[XmlArrayItem("Dealer")]
+	[XmlArray(XmlConstants.DrugArrayName)]
+	[XmlArrayItem(XmlConstants.DrugElementName)]
 	public DealerState[] Dealers { get; set; }
 }

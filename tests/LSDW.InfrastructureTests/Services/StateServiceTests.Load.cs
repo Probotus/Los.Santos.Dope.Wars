@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace LSDW.InfrastructureTests.Services;
+﻿namespace LSDW.InfrastructureTests.Services;
 public partial class StateServiceTests
 {
 	[TestMethod]

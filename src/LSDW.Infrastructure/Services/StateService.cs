@@ -2,6 +2,7 @@
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Extensions.Serialization;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Constants;
 using LSDW.Infrastructure.Factories;
 using LSDW.Infrastructure.Models;
 
@@ -56,7 +57,7 @@ internal sealed class StateService(ILoggerService loggerService, IDealerCollecti
 		try
 		{
 			byte[] content = new GameState(player, dealers)
-				.ToXml()
+				.ToXml(XmlConstants.SerializerNamespaces)
 				.GetBytes()
 				.Compress();
 

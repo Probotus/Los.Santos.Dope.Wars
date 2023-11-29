@@ -2,8 +2,6 @@
 using LSDW.Infrastructure.Factories;
 using LSDW.Infrastructure.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.InfrastructureTests.Factories;
 
 public partial class InfrastructureFactoryTests

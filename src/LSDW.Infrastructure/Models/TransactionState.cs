@@ -1,13 +1,14 @@
 ﻿using System.Xml.Serialization;
 
 using LSDW.Domain.Enumerators;
+using LSDW.Infrastructure.Constants;
 
 namespace LSDW.Infrastructure.Models;
 
 /// <summary>
 /// The transaction state class.
 /// </summary>
-[XmlRoot("Transaction")]
+[XmlRoot(XmlConstants.TransactionElementName)]
 public sealed class TransactionState
 {
 	/// <summary>

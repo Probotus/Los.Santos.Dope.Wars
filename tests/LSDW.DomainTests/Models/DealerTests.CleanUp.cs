@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace LSDW.DomainTests.Models;
+﻿namespace LSDW.DomainTests.Models;
 
 public partial class DealerTests
 {

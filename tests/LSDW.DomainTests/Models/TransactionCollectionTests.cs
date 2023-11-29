@@ -2,8 +2,6 @@
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Models;
 
 [TestClass]

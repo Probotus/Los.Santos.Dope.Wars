@@ -1,8 +1,6 @@
 ﻿using LSDW.Domain.Enumerators;
 using LSDW.Domain.Interfaces.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Models;
 
 public sealed partial class TransactionCollectionTests

@@ -2,9 +2,6 @@
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
-using LSDW.Domain.Models;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LSDW.DomainTests.Models;
 
@@ -15,7 +12,7 @@ public sealed partial class DrugCollectionTests
 	{
 		IEnumerable<IDrug> existingDrugs = DomainFactory.GetAllDrugs();
 		existingDrugs.ForEach(drug => drug.Add(10, 10));
-		IDrugCollection drugs = new DrugCollection();
+		IDrugCollection drugs = GetService<IDrugCollection>();
 		drugs.Load(existingDrugs);
 
 		drugs.Remove(DrugType.COKE, 10);

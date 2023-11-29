@@ -2,7 +2,6 @@
 using LSDW.Infrastructure.Installers;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LSDW.InfrastructureTests;
 

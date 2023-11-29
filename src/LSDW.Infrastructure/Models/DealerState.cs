@@ -4,6 +4,7 @@ using GTA;
 using GTA.Math;
 
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Constants;
 using LSDW.Infrastructure.Factories;
 
 namespace LSDW.Infrastructure.Models;
@@ -11,7 +12,7 @@ namespace LSDW.Infrastructure.Models;
 /// <summary>
 /// The dealer state class.
 /// </summary>
-[XmlRoot("Dealer")]
+[XmlRoot(XmlConstants.DealerElementName)]
 public sealed class DealerState
 {
 	/// <summary>

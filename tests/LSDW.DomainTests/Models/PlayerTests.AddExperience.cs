@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace LSDW.DomainTests.Models;
+﻿namespace LSDW.DomainTests.Models;
 
 public sealed partial class PlayerTests
 {

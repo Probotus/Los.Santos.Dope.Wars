@@ -3,8 +3,6 @@ using LSDW.Domain.Extensions;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.DomainTests.Models;
 
 public sealed partial class TransactionTests

@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Collections;
+﻿using System.Collections;
+using System.ComponentModel;
 
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Models.Base;

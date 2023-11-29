@@ -3,8 +3,6 @@ using LSDW.Application.Missions;
 using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LSDW.ApplicationTests.Missions;
 
 [TestClass]

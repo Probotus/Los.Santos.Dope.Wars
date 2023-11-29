@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-using LSDW.Domain.Attributes;
+﻿using LSDW.Domain.Attributes;
 
 namespace LSDW.Domain.Enumerators;
 
