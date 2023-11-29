@@ -1,103 +1,72 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Abstractions.Infrastructure.Services;
+﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Extensions;
-using LSDW.Domain.Factories;
-using LSDW.Infrastructure.Constants;
+using LSDW.Domain.Extensions.Serialization;
+using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Factories;
 using LSDW.Infrastructure.Models;
-using LSDW.Infrastructure.Properties;
-using System.Xml.Serialization;
-using static LSDW.Infrastructure.Factories.InfrastructureFactory;
 
 namespace LSDW.Infrastructure.Services;
 
 /// <summary>
 /// The state service class.
 /// </summary>
-internal sealed class StateService : IStateService
+/// <remarks>
+/// Initializes a new instance of the state service class.
+/// </remarks>
+/// <param name="loggerService">The logger service instance to use.</param>
+/// <param name="dealers">The dealer collection instance to use.</param>
+/// <param name="player">The player instance to use.</param>
+internal sealed class StateService(ILoggerService loggerService, IDealerCollection dealers, IPlayer player) : IStateService
 {
-	private readonly static Lazy<StateService> _service = new(() => new());
-	private readonly ILoggerService _loggerService;
-	private readonly XmlSerializerNamespaces _namespaces;
-	private readonly string _baseDirectory;
-	private readonly string _saveFileName;
+	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.sav");
 
-	/// <summary>
-	/// Initializes a instance of the state service class.
-	/// </summary>
-	private StateService()
+	public void Load()
 	{
-		_loggerService = LoggerService.Instance;
-		_namespaces = XmlConstants.SerializerNamespaces;
-		_baseDirectory = AppContext.BaseDirectory;
-		_saveFileName = DomainFactory.GetSettings().SaveFileName;
-
-		Dealers = DomainFactory.CreateDealers();
-		Player = DomainFactory.CreatePlayer();
-	}
-
-	/// <summary>
-	/// The singleton instance of the state service.
-	/// </summary>
-	internal static StateService Instance
-		=> _service.Value;
-
-	public ICollection<IDealer> Dealers { get; private set; }
-	public IPlayer Player { get; private set; }
-
-	public bool Load(bool decompress = true)
-	{
-		string filePath = Path.Combine(_baseDirectory, _saveFileName);
-
 		try
 		{
-			if (!File.Exists(filePath))
+			if (!File.Exists(_filePath))
 			{
-				_loggerService.Warning(Resources.StateService_Load_NotFound.FormatInvariant(filePath));
-				return Save(decompress);
+				Save();
+				return;
 			}
 
-			string fileContent = File.ReadAllText(filePath);
+			GameState state = File.ReadAllBytes(_filePath)
+				.Decompress()
+				.GetString()
+				.FromXml<GameState>();
 
-			if (decompress)
-				fileContent = fileContent.Decompress();
+			player.Load(
+				state.Player.Exp,
+				InfrastructureFactory.CreateDrugs(state.Player),
+				InfrastructureFactory.CreateTransactions(state.Player)
+				);
 
-			State state = new State().FromXmlString(fileContent);
+			dealers.Load(InfrastructureFactory.CreateDealers(state.Dealers));
 
-			Dealers = CreateDealers(state);
-			Player = CreatePlayer(state);
-
-			_loggerService.Information(Resources.StateService_Load_Loaded.FormatInvariant(filePath));
-			return true;
+			loggerService.Information($"{nameof(LSDW)} loaded.");
 		}
 		catch (Exception ex)
 		{
-			_loggerService.Critical(Resources.StateService_Load_Critical, ex);
-			return false;
+			loggerService.Critical("Something went wrong!", ex);
 		}
 	}
 
-	public bool Save(bool compress = true)
+	public void Save()
 	{
-		string filePath = Path.Combine(_baseDirectory, _saveFileName);
-
 		try
 		{
-			State state = CreateGameState(Dealers, Player);
+			byte[] content = new GameState(player, dealers)
+				.ToXml()
+				.GetBytes()
+				.Compress();
 
-			string fileContent = state.ToXmlString(_namespaces);
+			File.WriteAllBytes(_filePath, content);
 
-			if (compress)
-				fileContent = fileContent.Compress();
-
-			File.WriteAllText(filePath, fileContent);
-
-			_loggerService.Information(Resources.StateService_Save_Saved.FormatInvariant(filePath));
-			return true;
+			loggerService.Information($"{nameof(LSDW)} saved.");
 		}
 		catch (Exception ex)
 		{
-			_loggerService.Critical(Resources.StateService_Save_Critical, ex);
-			return false;
+			loggerService.Critical("Something went wrong!", ex);
 		}
 	}
 }

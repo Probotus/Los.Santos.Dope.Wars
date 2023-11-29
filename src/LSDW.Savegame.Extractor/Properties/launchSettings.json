@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LSDW.Savegame.Extractor": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Games\\steamapps\\common\\Grand Theft Auto V\\scripts\\LSDW.sav\""
+    }
+  }
+}

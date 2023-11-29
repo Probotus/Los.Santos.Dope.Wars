@@ -4,5 +4,4 @@
 /// The domain factory class.
 /// </summary>
 public static partial class DomainFactory
-{
-}
+{ }

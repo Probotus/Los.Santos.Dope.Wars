@@ -1,6 +1,4 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Domain.Constants;
-using LSDW.Domain.Extensions;
+﻿using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Models.Base;
 
 namespace LSDW.Domain.Models;
@@ -8,83 +6,91 @@ namespace LSDW.Domain.Models;
 /// <summary>
 /// The player class.
 /// </summary>
-internal sealed class Player : NotificationBase, IPlayer
+internal sealed class Player : NotifyPropertyBase, IPlayer
 {
-	private readonly ICollection<ITransaction> _transactions;
-	private int experience = -1;
-	private int level;
-	private int experienceNextLevel;
-	private int maximumInventoryQuantity;
+	private const int LevelFactor = 3;
+	private const int LevelMultiplicator = 1000;
+	private const int MaximumLevel = 100;
+	private int _bagSize;
+	private int _exp;
+	private int _expForNextLevel;
+	private int _level;
 
 	/// <summary>
-	/// Initializes a instance of the player character class.
+	/// Initializes a new instance of the player class.
 	/// </summary>
-	/// <param name="inventory">The player inventory.</param>
-	/// <param name="experience">The player experience points.</param>
-	/// <param name="transactions">The transactions for the player.</param>
-	internal Player(IInventory inventory, int experience, ICollection<ITransaction> transactions)
+	public Player()
 	{
-		PropertyChanged += (sender, args) => OnPropertyChanged(args);
+		PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 
-		Inventory = inventory;
-		Experience = experience;
-		_transactions = transactions;
+		Exp = 1000;
+		Drugs = new DrugCollection();
+		Transactions = new TransactionCollection();
 	}
 
-	public IInventory Inventory { get; }
+	public int BagSize { get => _bagSize; private set => SetProperty(ref _bagSize, value); }
+	public int Exp { get => _exp; private set => SetProperty(ref _exp, value); }
+	public int ExpForNextLevel { get => _expForNextLevel; private set => SetProperty(ref _expForNextLevel, value); }
+	public int Level { get => _level; private set => SetProperty(ref _level, value); }
+	public IDrugCollection Drugs { get; }
+	public ITransactionCollection Transactions { get; }
 
-	public int Level
+	public void AddExperience(int points)
 	{
-		get => level;
-		private set => SetProperty(ref level, value);
+		if (Level == MaximumLevel)
+			return;
+
+		if (points < 1)
+			throw new ArgumentOutOfRangeException(nameof(points), "Must be greater zero.");
+
+		if (Exp + points > 1000000000)
+			points = 1000000000 - Exp;
+
+		Exp += points;
 	}
 
-	public int Experience
+	public void Load(int experience, IEnumerable<IDrug> drugs, IEnumerable<ITransaction> transactions)
 	{
-		get => experience;
-		private set
+		Exp = experience;
+		Drugs.Load(drugs);
+		Transactions.Load(transactions);
+	}
+
+	private void OnPropertyChanged(string propertyName)
+	{
+		if (propertyName == nameof(Exp))
 		{
-			if (value < 0)
-				return;
+			Level = CalculateLevel(Exp);
+		}
 
-			SetProperty(ref experience, value);
+		if (propertyName == nameof(Level))
+		{
+			BagSize = GetBagSize(Level);
+			ExpForNextLevel = GetExperienceForNextLevel(Level);
 		}
 	}
 
-	public int ExperienceNextLevel
-	{
-		get => experienceNextLevel;
-		private set => SetProperty(ref experienceNextLevel, value);
-	}
+	/// <summary>
+	/// Returns the current bag size based on the player level.
+	/// </summary>
+	/// <param name="level">The player level.</param>
+	/// <returns>The resulting bag size.</returns>
+	private static int GetBagSize(int level)
+		=> level * 50;
 
-	public int MaximumInventoryQuantity
-	{
-		get => maximumInventoryQuantity;
-		private set => SetProperty(ref maximumInventoryQuantity, value);
-	}
+	/// <summary>
+	/// Returns the experience points needed for the next level.
+	/// </summary>
+	/// <param name="level">The player level.</param>
+	/// <returns>The resulting experience points.</returns>
+	private static int GetExperienceForNextLevel(int level)
+		=> (int)(Math.Pow(level + 1, LevelFactor) * LevelMultiplicator);
 
-	public int TransactionCount
-		=> _transactions.Count;
-
-	public void AddExperience(int points)
-		=> Experience += (int)(points * Settings.Instance.Player.ExperienceMultiplier.Value);
-
-	public void AddTransaction(ITransaction transaction)
-	{
-		AddExperience(transaction.GetValue());
-		_transactions.Add(transaction);
-	}
-
-	public ICollection<ITransaction> GetTransactions()
-		=> _transactions;
-
-	private void OnPropertyChanged(PropertyChangedEventArgs args)
-	{
-		if (!args.PropertyName.Equals(nameof(Experience), StringComparison.Ordinal))
-			return;
-
-		Level = PlayerConstants.CalculateCurrentLevel(Experience);
-		ExperienceNextLevel = PlayerConstants.CalculateExperienceNextLevel(Level);
-		MaximumInventoryQuantity = Settings.Instance.Player.StartingInventory.Value + (Level * Settings.Instance.Player.InventoryExpansionPerLevel.Value);
-	}
+	/// <summary>
+	/// Returns the current player level based on the experience points.
+	/// </summary>
+	/// <param name="experience">The current experience points.</param>
+	/// <returns>The current player level.</returns>
+	private static int CalculateLevel(int experience)
+		=> (int)Math.Round(Math.Pow((double)experience / LevelMultiplicator, 1.0d / LevelFactor));
 }

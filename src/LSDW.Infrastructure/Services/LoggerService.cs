@@ -1,33 +1,22 @@
-﻿using LSDW.Abstractions.Infrastructure.Services;
-using LSDW.Domain.Factories;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace LSDW.Infrastructure.Services;
+using LSDW.Application.Interfaces.Infrastructure.Services;
 
+namespace LSDW.Infrastructure.Services;
 /// <summary>
 /// The logger service class.
 /// </summary>
-internal class LoggerService : ILoggerService
+[ExcludeFromCodeCoverage]
+internal sealed class LoggerService : ILoggerService
 {
-	private static readonly Lazy<LoggerService> _service = new(() => new());
-	private readonly string _baseDirectory;
-	private readonly string _logFileName;
+	private readonly string _logFilePath;
 
 	/// <summary>
 	/// Initializes a instance of the logger service class.
 	/// </summary>
-	internal LoggerService()
-	{
-		_baseDirectory = AppContext.BaseDirectory;
-		_logFileName = DomainFactory.GetSettings().LogFileName;
-	}
-
-	/// <summary>
-	/// The singleton instance of the logger service.
-	/// </summary>
-	internal static LoggerService Instance
-		=> _service.Value;
+	public LoggerService()
+		=> _logFilePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.log");
 
 	public void Critical(string message, [CallerMemberName] string callerName = "")
 		=> LogToFile("FTL", callerName, message);
@@ -52,8 +41,7 @@ internal class LoggerService : ILoggerService
 	/// <param name="message">The logger message itself.</param>
 	private void LogToFile(string type, string caller, string message)
 	{
-		string path = Path.Combine(_baseDirectory, _logFileName);
 		string content = $"{DateTime.Now:yyyy-MM-ddTHH:mm:ss.fff}\t[{type}]\t<{caller}> - {message}{Environment.NewLine}";
-		File.AppendAllText(path, content, Encoding.UTF8);
+		File.AppendAllText(_logFilePath, content, Encoding.UTF8);
 	}
 }

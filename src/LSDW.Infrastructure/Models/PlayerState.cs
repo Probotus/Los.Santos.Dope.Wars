@@ -1,15 +1,14 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Infrastructure.Constants;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using static LSDW.Infrastructure.Factories.InfrastructureFactory;
+﻿using System.Xml.Serialization;
+
+using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Factories;
 
 namespace LSDW.Infrastructure.Models;
 
 /// <summary>
 /// The player state class.
 /// </summary>
-[XmlRoot(XmlConstants.PlayerStateRootName, Namespace = XmlConstants.NameSpace)]
+[XmlRoot("Player")]
 public sealed class PlayerState
 {
 	/// <summary>
@@ -17,48 +16,39 @@ public sealed class PlayerState
 	/// </summary>
 	public PlayerState()
 	{
-		Inventory = new();
-		Transactions = new();
+		Exp = default;
+		Drugs = Array.Empty<DrugState>();
+		Transactions = Array.Empty<TransactionState>();
 	}
 
 	/// <summary>
 	/// Initializes a instance of the player state class.
 	/// </summary>
-	/// <param name="player">The player to use.</param>
-	internal PlayerState(IPlayer player)
+	/// <param name="player">The player instance to use.</param>
+	public PlayerState(IPlayer player)
 	{
-		Inventory = CreateInventoryState(player.Inventory);
-		Experience = player.Experience;
-		Transactions = CreateTransactionStates(player.GetTransactions());
+		Exp = player.Exp;
+		Drugs = InfrastructureFactory.CreateDrugStates(player.Drugs);
+		Transactions = InfrastructureFactory.CreateTransactionStates(player.Transactions);
 	}
 
 	/// <summary>
-	/// The inventory property of the player state.
+	/// The player experience points.
 	/// </summary>
-	[XmlElement(nameof(Inventory), Form = XmlSchemaForm.Qualified)]
-	public InventoryState Inventory { get; set; }
+	[XmlAttribute("Experience")]
+	public int Exp { get; set; }
 
 	/// <summary>
-	/// The experience property of the player state.
+	/// The player drugs.
 	/// </summary>
-	[XmlAttribute(nameof(Experience), Form = XmlSchemaForm.Qualified)]
-	public int Experience { get; set; }
+	[XmlArray("Drugs")]
+	[XmlArrayItem("Drug")]
+	public DrugState[] Drugs { get; set; }
 
 	/// <summary>
-	/// The transactions property of the player state.
+	/// The player transactions.
 	/// </summary>
-	[XmlArray(nameof(Transactions), Form = XmlSchemaForm.Qualified)]
-	[XmlArrayItem(XmlConstants.TransactionStateRootName, Form = XmlSchemaForm.Qualified)]
-	public List<TransactionState> Transactions { get; set; }
-
-	/// <summary>
-	/// Should the experience property be serialized?
-	/// </summary>
-	/// <returns></returns>
-	public bool ShouldSerializeExperience() => Experience != default;
-
-	/// <summary>
-	/// Should the transactions property be serialized?
-	/// </summary>
-	public bool ShouldSerializeTransactions() => Transactions.Count != default;
+	[XmlArray("Transactions")]
+	[XmlArrayItem("Transaction")]
+	public TransactionState[] Transactions { get; set; }
 }

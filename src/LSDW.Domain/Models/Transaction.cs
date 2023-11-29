@@ -1,5 +1,5 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Abstractions.Enumerators;
+﻿using LSDW.Domain.Enumerators;
+using LSDW.Domain.Interfaces.Models;
 
 namespace LSDW.Domain.Models;
 
@@ -11,23 +11,28 @@ internal sealed class Transaction : ITransaction
 	/// <summary>
 	/// Initializes a instance of the transaction class.
 	/// </summary>
-	/// <param name="dateTime">The point in time of the transaction.</param>
-	/// <param name="transactionType">The type of the transaction.</param>
+	/// <param name="type">The type of the transaction.</param>
 	/// <param name="drugType">The drug type of the transaction.</param>
 	/// <param name="quantity">The quantity of the transaction.</param>
-	/// <param name="price">The unit price of the transaction.</param>
-	internal Transaction(DateTime dateTime, TransactionType transactionType, DrugType drugType, int quantity, int price)
+	/// <param name="value">The value of the transaction.</param>
+	internal Transaction(TransactionType type, DrugType drugType, int quantity, int value)
 	{
-		DateTime = dateTime;
-		Type = transactionType;
+		if (quantity < 1)
+			throw new ArgumentOutOfRangeException(nameof(quantity));
+
+		if (value < 1)
+			throw new ArgumentOutOfRangeException(nameof(quantity));
+
+		Type = type;
 		DrugType = drugType;
 		Quantity = quantity;
-		Price = price;
+		Value = value;
+		TotalValue = Quantity * Value;
 	}
 
-	public DateTime DateTime { get; }
 	public TransactionType Type { get; }
 	public DrugType DrugType { get; }
 	public int Quantity { get; }
-	public int Price { get; }
+	public int Value { get; }
+	public int TotalValue { get; }
 }

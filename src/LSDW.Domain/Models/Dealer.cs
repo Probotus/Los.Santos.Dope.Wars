@@ -1,102 +1,100 @@
 ﻿using GTA;
 using GTA.Math;
-using LSDW.Abstractions.Domain.Models;
-using LSDW.Abstractions.Domain.Providers;
-using LSDW.Domain.Factories;
+
+using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Interfaces.Services;
 using LSDW.Domain.Models.Base;
+using LSDW.Domain.Statics;
 
 namespace LSDW.Domain.Models;
 
 /// <summary>
-/// The dealer actor class.
+/// The dealer class.
 /// </summary>
-/// <remarks>
-/// Inherits from the <see cref="PedestrianBase"/> class and
-/// implements the members of the <see cref="IDealer"/> interface.
-/// </remarks>
 internal sealed class Dealer : PedestrianBase, IDealer
 {
-	private Blip? blip;
+	private const int Accuracy = 5;
+	private const int Armor = 125;
+	private const int MaxHealth = 150;
+	private const float BlipScale = 0.75f;
+
+	private bool _discovered;
+	private int _money;
 
 	/// <summary>
 	/// Initializes a instance of the dealer class.
 	/// </summary>
 	/// <param name="position">The position of the dealer.</param>
-	/// <param name="pedHash">The ped hash of the dealer.</param>
-	internal Dealer(Vector3 position, PedHash pedHash) : base(position, pedHash)
+	/// <param name="zone">The zone of the dealer.</param>
+	internal Dealer(Vector3 position, string zone) : base(GangStatics.GetPedHash(), string.Empty, position)
 	{
-		Discovered = false;
-		Inventory = DomainFactory.CreateInventory();
+		Zone = zone;
+		Drugs = new DrugCollection();
 
-		Inventory.PropertyChanged += (sender, args) => OnPropertyChanged(args);
+		PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 	}
 
 	/// <summary>
 	/// Initializes a instance of the dealer class.
 	/// </summary>
-	/// <param name="position">The position of the dealer.</param>
-	/// <param name="pedHash">The ped hash of the dealer.</param>
+	/// <param name="discovered">Has the dealer been discovered?</param>
+	/// <param name="hash">The ped hash of the dealer.</param>
 	/// <param name="name">The name of the dealer.</param>
-	/// <param name="closedUntil">The dealer is gone until this date time.</param>
-	/// <param name="discovered">Has the dealer already been discovered?</param>
-	/// <param name="inventory">The dealer inventory.</param>
-	/// <param name="lastRefresh">When was the inventory prices the last time refreshed?</param>
-	/// <param name="lastRestock">When was the inventory the last time restocked?</param>
-	internal Dealer(Vector3 position, PedHash pedHash, string name, DateTime? closedUntil, bool discovered, IInventory inventory, DateTime lastRefresh, DateTime lastRestock) : base(position, pedHash, name)
+	/// <param name="money">The money of the dealer.</param>
+	/// <param name="position">The position of the dealer.</param>
+	/// <param name="zone">The zone of the dealer.</param>
+	/// <param name="drugs">The dealer drug collection.</param>
+	internal Dealer(bool discovered, PedHash hash, string name, int money, Vector3 position, string zone, IEnumerable<IDrug> drugs) : base(hash, name, position)
 	{
-		ClosedUntil = closedUntil;
 		Discovered = discovered;
-		Inventory = inventory;
-		NextPriceChange = lastRefresh;
-		NextInventoryChange = lastRestock;
-		SetMoney(inventory.Money);
+		Money = money;
+		Zone = zone;
+		Drugs = new DrugCollection();
+		Load(drugs);
 
-		Inventory.PropertyChanged += (sender, args) => OnPropertyChanged(args);
+		PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 	}
 
-	public DateTime? ClosedUntil { get; set; }
-	public bool Closed => ClosedUntil.HasValue;
-	public bool Discovered { get; set; }
-	public bool BlipCreated => blip is not null;
-	public IInventory Inventory { get; }
-	public DateTime NextPriceChange { get; set; }
-	public DateTime NextInventoryChange { get; set; }
+	public bool Discovered { get => _discovered; private set => SetProperty(ref _discovered, value); }
+	public string Zone { get; }
+	public IDrugCollection Drugs { get; }
+	public int Money { get => _money; set => SetProperty(ref _money, value); }
 
-	public override void Attack(Ped ped)
+	public override void Create(IWorldService worldProvider)
 	{
-		DeleteBlip();
-		base.Attack(ped);
-	}
+		base.Create(worldProvider);
 
-	public override void Create(IWorldProvider worldProvider, int health = 100)
-	{
-		base.Create(worldProvider, health);
-
-		if (Settings.Instance.Dealer.HasWeapons.Value)
-			GiveWeapon(WeaponHash.Pistol, 100);
-
-		if (Settings.Instance.Dealer.HasArmor.Value)
-			GiveArmor(100);
-	}
-
-	public void CreateBlip(IWorldProvider worldProvider, BlipSprite sprite = BlipSprite.Drugs, BlipColor color = BlipColor.White)
-	{
-		if (BlipCreated || Closed)
+		if (Ped is null)
 			return;
 
-		blip = worldProvider.CreateBlip(SpawnPosition);
-		blip.Sprite = sprite;
-		blip.Scale = 0.75f;
-		blip.Color = color;
-		blip.IsShortRange = true;
+		Ped.Accuracy = Accuracy;
+		Ped.Armor = Armor;
+		Ped.MaxHealth = MaxHealth;
+		Ped.Money = Money;
+		Ped.Weapons.Give(GangStatics.GetWeaponHash(), 1000, true, true);
 	}
 
-	public void DeleteBlip()
-		=> blip?.Delete();
-
-	private void OnPropertyChanged(PropertyChangedEventArgs args)
+	public void Discover(IWorldService worldProvider)
 	{
-		if (args.PropertyName.Equals(nameof(Inventory.Money), StringComparison.Ordinal))
-			SetMoney(Inventory.Money);
+		CreateBlip(worldProvider, BlipSprite.Drugs, BlipColor.White);
+
+		if (Blip is null)
+			return;
+
+		Blip.Scale = BlipScale;
+		Blip.IsShortRange = true;
+		Discovered = true;
+	}
+
+	public void Load(IEnumerable<IDrug> values)
+		=> Drugs.Load(values);
+
+	private void OnPropertyChanged(string propertyName)
+	{
+		if (propertyName == nameof(Money))
+		{
+			if (Ped is not null)
+				Ped.Money = Money;
+		}
 	}
 }

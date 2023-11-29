@@ -15,17 +15,20 @@
 		<AnalysisMode>recommended</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+		<DebugType>full</DebugType>
 		<Deterministic>true</Deterministic>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratedAssemblyInfoFile>Properties\AssemblyInfo.cs</GeneratedAssemblyInfoFile>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Nullable>enable</Nullable>
-		<Platforms>x64</Platforms>
 		<PlatformTarget>x64</PlatformTarget>
+		<Platforms>x64</Platforms>
 		<TargetFramework>net48</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -33,24 +36,12 @@
 		<GenerateDocumentationFile>false</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-		<DebugType>full</DebugType>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))" Label="Metadata">
+	<PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
 		<Authors>BoBoBaSs84</Authors>
 		<Company>https://github.com/BoBoBaSs84</Company>
 		<Copyright>Copyright © $(VersionMajor) BoBoBaSs84</Copyright>
-		<Description>The modification is an attempt to bring the "trade" game mechanics from Chinatown Wars to the fictional state of San Andreas.</Description>
-		<Product>Los.Santos.Dope.Wars</Product>
-		<RepositoryUrl>https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageReadmeFile>..\..\README.md</PackageReadmeFile>
-		<PackageTags>gtav;gtav-mod;gta5-mode;scripthoohvdotnet;dopewars;lemonui</PackageTags>
-		<PackageProjectUrl>https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars</PackageProjectUrl>
-		<PackageLicenseFile>..\..\LICENSE</PackageLicenseFile>
-		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<Product>LSDW</Product>
+		<Title>$(AssemblyName)</Title>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(MSBuildProjectName.EndsWith('Tests'))">
@@ -59,29 +50,21 @@
 		<GenerateDocumentationFile>false</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
-		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
-		<None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
-		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
-		<Using Include="System.ComponentModel"/>
-		<Using Include="System.Drawing"/>
-		<Using Include="System.Reflection"/>
-	</ItemGroup>
-
 	<ItemGroup Condition="$(MSBuildProjectName.EndsWith('Tests'))">
-		<PackageReference Include="FluentAssertions" />
-		<PackageReference Include="MSTest.TestAdapter" />
-		<PackageReference Include="MSTest.TestFramework" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="Moq" />
-		<PackageReference Include="coverlet.collector" />
-		<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
-		<Using Include="System.Diagnostics" />
-		<Using Include="System.Diagnostics.CodeAnalysis" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk"/>
+		<PackageReference Include="MSTest.TestAdapter"/>
+		<PackageReference Include="MSTest.TestFramework"/>
+		<PackageReference Include="coverlet.collector">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="ScriptHookVDotNet3"/>
+		<PackageReference Include="Moq"/>
 	</ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="System.Net.Http" />
+	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
+		<InternalsVisibleTo Include="$(AssemblyName)Tests" />
+		<Using Include="System.Diagnostics.CodeAnalysis"/>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\LSDW.Domain\LSDW.Domain.csproj" />
-		<ProjectReference Include="..\LSDW.Base.Tests\LSDW.Base.Tests.csproj" />
-	</ItemGroup>
-
-</Project>

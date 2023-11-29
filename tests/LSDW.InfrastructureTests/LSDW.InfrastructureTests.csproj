@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LSDW.Infrastructure\LSDW.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,22 +1,18 @@
 ﻿using LemonUI;
 using LemonUI.Menus;
-using LSDW.Abstractions.Presentation.Menus.Base;
+
 using GTAFont = GTA.UI.Font;
 
 namespace LSDW.Presentation.Menus.Base;
-
 /// <summary>
-/// The menu base class.
+/// The manu base class.
 /// </summary>
-internal abstract class MenuBase : NativeMenu, IMenuBase
+public abstract class MenuBase : NativeMenu
 {
 	/// <summary>
 	/// The pool of menus.
 	/// </summary>
-	internal static readonly ObjectPool Processables = new();
-
-	public event EventHandler? VisibilityChanging;	
-	public event EventHandler? VisibilityChanged;
+	public static readonly ObjectPool Processables = [];
 
 	/// <summary>
 	///	Creates a new menu.
@@ -75,7 +71,7 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	/// <param name="defaultValue">The default value of the checkbox Checked state.</param>
 	/// <param name="changed">The action to perform when the checkbox Checked state changes.</param>
 	/// <returns>The checkbox item.</returns>
-	protected NativeCheckboxItem AddCheckbox(string title, string description = "", bool defaultValue = false, Action<bool>? changed = null)
+	protected NativeCheckboxItem AddCheckbox(string title, string description, bool defaultValue = false, Action<bool>? changed = null)
 	{
 		NativeCheckboxItem item = new(title, description, defaultValue);
 		item.CheckboxChanged += (sender, args) => changed?.Invoke(item.Checked);
@@ -89,13 +85,13 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	/// <typeparam name="T">The object type of the values.</typeparam>
 	/// <param name="title">The title of the item.</param>
 	/// <param name="description">The description when the item is selected.</param>
-	/// <param name="action">The action to perform when the selected item of the list changes.</param>
+	/// <param name="changed">The action to perform when the selected item of the list changes.</param>
 	/// <param name="items">The items array.</param>
 	/// <returns>The list item.</returns>
-	protected NativeListItem<T> AddListItem<T>(string title, string description = "", Action<T, int>? action = null, params T[] items)
+	protected NativeListItem<T> AddListItem<T>(string title, string description, Action<T, int>? changed = null, params T[] items)
 	{
 		NativeListItem<T> item = new(title, description, items);
-		item.ItemChanged += (sender, args) => action?.Invoke(item.SelectedItem, item.SelectedIndex);
+		item.ItemChanged += (sender, args) => changed?.Invoke(item.SelectedItem, item.SelectedIndex);
 		Add(item);
 		return item;
 	}
@@ -110,7 +106,7 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	/// <param name="changed">The action to perform when the selected item of the list changes.</param>
 	/// <param name="items">The items array.</param>
 	/// <returns>The list item.</returns>
-	protected NativeListItem<T> AddListItem<T>(string title, string description = "", Action<NativeListItem<T>, EventArgs>? activated = null, Action<NativeListItem<T>, ItemChangedEventArgs<T>>? changed = null, params T[] items)
+	protected NativeListItem<T> AddListItem<T>(string title, string description, Action<NativeListItem<T>, EventArgs>? activated = null, Action<NativeListItem<T>, ItemChangedEventArgs<T>>? changed = null, params T[] items)
 	{
 		NativeListItem<T> item = new(title, description, items);
 		item.Activated += (sender, args) => activated?.Invoke(item, args);
@@ -126,18 +122,11 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	/// <param name="altTitle">The alternative title of the item shown on the right.</param>
 	/// <param name="altTitleFont">The font of alternative title item shown on the right.</param>
 	/// <returns>The item associated with the sub menu.</returns>
-	protected NativeSubmenuItem AddMenu(MenuBase subMenu, string altTitle = "Menu", GTAFont altTitleFont = GTAFont.ChaletComprimeCologne)
+	protected NativeSubmenuItem AddMenu(MenuBase subMenu, string altTitle, GTAFont altTitleFont = GTAFont.ChaletComprimeCologne)
 	{
 		NativeSubmenuItem subMenuItem = AddSubMenu(subMenu);
 		subMenuItem.AltTitle = altTitle;
 		subMenuItem.AltTitleFont = altTitleFont;
 		return subMenuItem;
-	}
-
-	public void Toggle()
-	{
-		VisibilityChanging?.Invoke(this, EventArgs.Empty);
-		Visible = !Visible;
-		VisibilityChanged?.Invoke(this, EventArgs.Empty);
 	}
 }

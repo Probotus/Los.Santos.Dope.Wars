@@ -3,6 +3,5 @@
 /// <summary>
 /// The infrastructure factory class.
 /// </summary>
-public static partial class InfrastructureFactory
-{
-}
+internal static partial class InfrastructureFactory
+{ }

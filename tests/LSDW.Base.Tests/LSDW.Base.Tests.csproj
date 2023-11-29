@@ -1,7 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\LSDW.Abstractions\LSDW.Abstractions.csproj" />
-	</ItemGroup>
-
-</Project>

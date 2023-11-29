@@ -1,153 +1,72 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Abstractions.Enumerators;
-using LSDW.Abstractions.Extensions;
+﻿using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
-using LSDW.Domain.Helpers;
+using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Models.Base;
-using LSDW.Domain.Properties;
 
 namespace LSDW.Domain.Models;
 
 /// <summary>
 /// The drug class.
 /// </summary>
-/// <remarks>
-/// Inherits from the <see cref="NotificationBase"/> class and
-/// implements the members of the <see cref="IDrug"/> interface.
-/// </remarks>
-internal sealed class Drug : NotificationBase, IDrug
+internal sealed class Drug : NotifyPropertyBase, IDrug
 {
-	private int quantity;
-	private int price;
+	private int _quantity;
+	private int _value;
 
 	/// <summary>
 	/// Initializes a instance of the drug class.
 	/// </summary>
-	/// <param name="drugType">The type of the drug.</param>
+	/// <param name="type">The type of the drug.</param>
 	/// <param name="quantity">The quantity of the drug.</param>
-	/// <param name="currentPrice">The current price of the drug.</param>
-	internal Drug(DrugType drugType, int quantity, int currentPrice)
+	/// <param name="value">The current value of the drug.</param>
+	internal Drug(DrugType type, int? quantity = null, int? value = null)
 	{
-		Price = currentPrice;
-		Type = drugType;
-		Quantity = quantity;
-	}
-
-	public int Price
-	{
-		get => price;
-		private set => SetProperty(ref price, value);
+		Type = type;
+		_quantity = quantity ?? default;
+		_value = value ?? default;
 	}
 
 	public DrugType Type { get; }
+	public string Name => Type.GetName();
+	public string Description => Type.GetDescription();
+	public int Quantity { get => _quantity; private set => SetProperty(ref _quantity, value); }
+	public int Value { get => _value; private set => SetProperty(ref _value, value); }
+	public int AverageValue => Type.GetAverageValue();
+	public int TotalValue => Quantity * Value;
+	public float Probability => Type.GetProbability();
 
-	public int Quantity
-	{
-		get => quantity;
-		private set => SetProperty(ref quantity, value);
-	}
-
-	public void Add(int quantity, int price)
+	public void Add(int quantity, int value)
 	{
 		if (quantity < 1)
-			return;
+			throw new ArgumentOutOfRangeException(nameof(quantity), "Can't be smaller one.");
 
-		if (price < 0)
-		{
-			string message = Resources.Exception_Drug_Add.FormatInvariant(price);
-			throw new ArgumentOutOfRangeException(nameof(price), message);
-		}
+		if (value < 0)
+			throw new ArgumentOutOfRangeException(nameof(value), "Can't be smaller zero.");
 
-		Price = ((Price * Quantity) + (price * quantity)) / (Quantity + quantity);
+		Value = ((Value * Quantity) + (value * quantity)) / (Quantity + quantity);
 		Quantity += quantity;
 	}
 
-	public void RandomizePrice(int playerLevel)
-		=> Price = RandomHelper.GetInt(GetLowestPrice(playerLevel), GetHighestPrice(playerLevel));
-
-	public void RandomizeQuantity(int playerLevel)
+	public void SetValues(int quantity, int value)
 	{
-		float nonZeroChance = Type.GetProbability();
+		if (quantity < 0)
+			throw new ArgumentOutOfRangeException(nameof(quantity), "Can't be smaller than zero.");
 
-		if (RandomHelper.GetDouble() > nonZeroChance)
-		{
-			Quantity = 0;
-			return;
-		}
+		if (value < 0)
+			throw new ArgumentOutOfRangeException(nameof(value), "Can't be smaller than zero.");
 
-		Quantity = RandomHelper.GetInt(GetLowestQuantity(playerLevel), GetHighestQuantity(playerLevel));
+		Quantity = quantity;
+		Value = value;
 	}
 
 	public void Remove(int quantity)
 	{
-		if (quantity < 0)
-			return;
+		if (quantity < 1)
+			throw new ArgumentOutOfRangeException(nameof(quantity), "Can't be smaller than one.");
 
-		int resultingQuantity = Quantity - quantity;
-
-		if (resultingQuantity < 0)
-		{
-			string message = Resources.Exception_Drug_Remove.FormatInvariant(resultingQuantity);
-			throw new ArgumentOutOfRangeException(nameof(quantity), message);
-		}
+		if (Quantity - quantity < 0)
+			throw new ArgumentOutOfRangeException(nameof(quantity), "The resulting quantity can't be lower zero.");
 
 		Quantity -= quantity;
-
-		if (Quantity.Equals(0))
-			Price = Quantity;
 	}
-
-	public void SpecialBuyOffer(int playerLevel)
-	{
-		Quantity = 0;
-		Price = GetHighestPrice(playerLevel);
-	}
-
-	public void SpecialSellOffer(int playerLevel)
-	{
-		Quantity = GetHighestQuantity(playerLevel);
-		Price = GetLowestPrice(playerLevel);
-	}
-
-	/// <summary>
-	/// Returns the current highest possible price, depending on the current player level.
-	/// </summary>
-	/// <param name="playerLevel">The current player level.</param>
-	private int GetHighestPrice(int playerLevel)
-	{
-		float maximumDrugPrice = Settings.Instance.Market.MaximumDrugPrice.Value;
-		float playerfactor = playerLevel / (float)1000;
-		float averagePrice = Type.GetAveragePrice();
-		float highestPrice = (maximumDrugPrice + playerfactor) * averagePrice;
-
-		return (int)highestPrice;
-	}
-
-	/// <summary>
-	/// Returns the current lowest possible price, depending on the current player level.
-	/// </summary>
-	/// <param name="playerLevel">The current player level.</param>
-	private int GetLowestPrice(int playerLevel)
-	{
-		float maximumDrugPrice = Settings.Instance.Market.MaximumDrugPrice.Value;
-		float playerfactor = playerLevel / (float)1000;
-		float averagePrice = Type.GetAveragePrice();
-		float lowestPrice = (maximumDrugPrice - playerfactor) * averagePrice;
-
-		return (int)lowestPrice;
-	}
-
-	/// <summary>
-	/// Returns the current highest possible quantity, depending on the current player level.
-	/// </summary>
-	/// <param name="playerLevel">The current player level.</param>
-	private static int GetHighestQuantity(int playerLevel)
-		=> 5 + (playerLevel * 5);
-
-	/// <summary>
-	/// Returns the current lowest possible quantity, depending on the current player level.
-	/// </summary>
-	/// <param name="playerLevel">The current player level.</param>
-	private static int GetLowestQuantity(int playerLevel)
-		=> 0 + playerLevel;
 }

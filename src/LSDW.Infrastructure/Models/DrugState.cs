@@ -1,50 +1,59 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Abstractions.Enumerators;
-using LSDW.Infrastructure.Constants;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+
+using LSDW.Domain.Enumerators;
 
 namespace LSDW.Infrastructure.Models;
 
 /// <summary>
-/// 
+/// The drug state class.
 /// </summary>
-[XmlRoot(XmlConstants.DrugStateRootName, Namespace = XmlConstants.NameSpace)]
+[XmlRoot("Drug")]
 public sealed class DrugState
 {
 	/// <summary>
 	/// Initializes a instance of the drug state class.
 	/// </summary>
 	public DrugState()
-	{
-	}
+	{ }
 
 	/// <summary>
 	/// Initializes a instance of the drug state class.
 	/// </summary>
-	/// <param name="drug">The drug to use.</param>
-	internal DrugState(IDrug drug)
+	/// <param name="type">The type of the drug.</param>
+	/// <param name="quantity">The quantity of the drug.</param>
+	/// <param name="value">The value of the drug.</param>
+	public DrugState(DrugType type, int quantity, int value)
 	{
-		Type = drug.Type;
-		Quantity = drug.Quantity;
-		CurrentPrice = drug.Price;
+		Type = type;
+		Quantity = quantity;
+		Value = value;
 	}
 
 	/// <summary>
-	/// The type property of the drug state.
+	/// The type of the drug.
 	/// </summary>
-	[XmlAttribute(nameof(Type), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("Type")]
 	public DrugType Type { get; set; }
 
 	/// <summary>
-	/// The quantity property of the drug state.
+	/// The quantity of the drug.
 	/// </summary>
-	[XmlAttribute(nameof(Quantity), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("Quantity")]
 	public int Quantity { get; set; }
 
 	/// <summary>
-	/// The current price property of the drug state.
+	/// The value of the drug.
 	/// </summary>
-	[XmlAttribute(nameof(CurrentPrice), Form = XmlSchemaForm.Qualified)]
-	public int CurrentPrice { get; set; }
+	[XmlAttribute("Value")]
+	public int Value { get; set; }
+
+	/// <summary>
+	/// Should the quantity be serialized?
+	/// </summary>
+	public bool ShouldSerializeQuantity() => Quantity != 0;
+
+	/// <summary>
+	/// Should the value be serialized?
+	/// </summary>
+	public bool ShouldSerializeValue() => Value != 0;
 }

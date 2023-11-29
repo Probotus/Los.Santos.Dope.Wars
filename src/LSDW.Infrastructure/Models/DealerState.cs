@@ -1,17 +1,17 @@
-﻿using GTA;
+﻿using System.Xml.Serialization;
+
+using GTA;
 using GTA.Math;
-using LSDW.Abstractions.Domain.Models;
-using LSDW.Infrastructure.Constants;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using static LSDW.Infrastructure.Factories.InfrastructureFactory;
+
+using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Factories;
 
 namespace LSDW.Infrastructure.Models;
 
 /// <summary>
 /// The dealer state class.
 /// </summary>
-[XmlRoot(XmlConstants.DealerStateRootName, Namespace = XmlConstants.NameSpace)]
+[XmlRoot("Dealer")]
 public sealed class DealerState
 {
 	/// <summary>
@@ -19,96 +19,81 @@ public sealed class DealerState
 	/// </summary>
 	public DealerState()
 	{
-		Inventory = new();
 		Name = string.Empty;
+		Zone = string.Empty;
+		Drugs = [];
 	}
 
 	/// <summary>
 	/// Initializes a instance of the dealer state class.
 	/// </summary>
-	/// <param name="dealer">The dealer to use.</param>
-	internal DealerState(IDealer dealer)
+	/// <param name="dealer">The dealer instance to use.</param>
+	public DealerState(IDealer dealer)
 	{
-		ClosedUntil = dealer.ClosedUntil;
-		NextPriceChange = dealer.NextPriceChange;
-		NextInventoryChange = dealer.NextInventoryChange;
 		Discovered = dealer.Discovered;
-		Inventory = CreateInventoryState(dealer.Inventory);
-		Name = dealer.Name;
-		SpawnPosition = dealer.SpawnPosition;
 		Hash = dealer.Hash;
+		Name = dealer.Name;
+		Money = dealer.Money;
+		Position = dealer.Position;
+		Zone = dealer.Zone;
+		Drugs = InfrastructureFactory.CreateDrugStates(dealer.Drugs);
 	}
 
 	/// <summary>
-	/// The closed until property of the dealer state.
+	/// Has the dealer been discovered?
 	/// </summary>
-	[XmlElement(nameof(ClosedUntil), Form = XmlSchemaForm.Qualified)]
-	public DateTime? ClosedUntil { get; set; }
-
-	/// <summary>
-	/// The next price change property of the dealer state.
-	/// </summary>
-	[XmlElement(nameof(NextPriceChange), Form = XmlSchemaForm.Qualified)]
-	public DateTime NextPriceChange { get; set; }
-
-	/// <summary>
-	/// The next inventory change property of the dealer state.
-	/// </summary>
-	[XmlElement(nameof(NextInventoryChange), Form = XmlSchemaForm.Qualified)]
-	public DateTime NextInventoryChange { get; set; }
-
-	/// <summary>
-	/// The discovered property of the dealer state.
-	/// </summary>
-	[XmlAttribute(nameof(Discovered), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("Discovered")]
 	public bool Discovered { get; set; }
 
 	/// <summary>
-	/// The inventory property of the dealer state.
+	/// Should the discovered property be serialized?
 	/// </summary>
-	[XmlElement(nameof(Inventory), Form = XmlSchemaForm.Qualified)]
-	public InventoryState Inventory { get; set; }
+	public bool ShouldSerializeDiscovered() => Discovered is not false;
 
 	/// <summary>
-	/// The name property of the dealer state.
+	/// The ped hash of the dealer.
 	/// </summary>
-	[XmlAttribute(nameof(Name), Form = XmlSchemaForm.Qualified)]
-	public string Name { get; set; }
-
-	/// <summary>
-	/// The spawn position property of the dealer state.
-	/// </summary>
-	[XmlElement(nameof(SpawnPosition), Form = XmlSchemaForm.Qualified)]
-	public Vector3 SpawnPosition { get; set; }
-
-	/// <summary>
-	/// The hash property of the dealer state.
-	/// </summary>
-	[XmlAttribute(nameof(Hash), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("Hash")]
 	public PedHash Hash { get; set; }
 
 	/// <summary>
-	/// Should the <see cref="ClosedUntil"/> property be serialized?
+	/// The name of the dealer.
 	/// </summary>
-	public bool ShouldSerializeClosedUntil() => ClosedUntil.HasValue;
+	[XmlAttribute("Name")]
+	public string Name { get; set; }
+
 	/// <summary>
-	/// Should the <see cref="NextPriceChange"/> property be serialized?
+	/// Should the name property be serialized?
 	/// </summary>
-	public bool ShouldSerializeNextPriceChange() => Discovered && !ClosedUntil.HasValue;
+	public bool ShouldSerializeName() => Name != string.Empty;
+
 	/// <summary>
-	/// Should the <see cref="NextInventoryChange"/> property be serialized?
+	/// The money the dealer can use for trading.
 	/// </summary>
-	public bool ShouldSerializeNextInventoryChange() => Discovered && !ClosedUntil.HasValue;
+	[XmlAttribute("Money")]
+	public int Money { get; set; }
+
 	/// <summary>
-	/// Should the <see cref="Hash"/> property be serialized?
+	/// Should the money property be serialized?
 	/// </summary>
-	public bool ShouldSerializeHash() => Discovered && !ClosedUntil.HasValue;
+	public bool ShouldSerializeMoney() => Money != default;
+
 	/// <summary>
-	/// Should the <see cref="Name"/> property be serialized?
+	/// The position of the dealer.
 	/// </summary>
-	public bool ShouldSerializeName() => Discovered && !ClosedUntil.HasValue;
+	[XmlElement("Position")]
+	public Vector3 Position { get; set; }
+
 	/// <summary>
-	/// Should the <see cref="Inventory"/> property be serialized?
+	/// The zone of the dealer.
 	/// </summary>
-	public bool ShouldSerializeInventory() => Discovered && !ClosedUntil.HasValue;
+	[XmlAttribute("Zone")]
+	public string Zone { get; set; }
+
+	/// <summary>
+	/// The dealer drugs.
+	/// </summary>
+	[XmlArray("Drugs")]
+	[XmlArrayItem("Drug")]
+	public DrugState[] Drugs { get; set; }
 }

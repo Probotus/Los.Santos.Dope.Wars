@@ -1,69 +1,57 @@
-﻿using LSDW.Abstractions.Domain.Models;
-using LSDW.Abstractions.Enumerators;
-using LSDW.Infrastructure.Constants;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+
+using LSDW.Domain.Enumerators;
 
 namespace LSDW.Infrastructure.Models;
 
 /// <summary>
 /// The transaction state class.
 /// </summary>
-[XmlRoot(XmlConstants.TransactionStateRootName, Namespace = XmlConstants.NameSpace)]
+[XmlRoot("Transaction")]
 public sealed class TransactionState
 {
 	/// <summary>
 	/// Initializes a instance of the transaction state class.
 	/// </summary>
 	public TransactionState()
-	{
-	}
+	{ }
 
 	/// <summary>
 	/// Initializes a instance of the transaction state class.
 	/// </summary>
-	/// <param name="transaction">The transaction to use.</param>
-	internal TransactionState(ITransaction transaction)
+	/// <param name="type">The type of the transaction.</param>
+	/// <param name="drugType">The drug type of the transaction.</param>
+	/// <param name="quantity">The drug quantity of the transaction.</param>
+	/// <param name="value">The drug value of the transaction.</param>
+	public TransactionState(TransactionType type, DrugType drugType, int quantity, int value)
 	{
-		DateTime = transaction.DateTime;
-		Type = transaction.Type;
-		DrugType = transaction.DrugType;
-		Quantity = transaction.Quantity;
-		Price = transaction.Price;
+		Type = type;
+		DrugType = drugType;
+		Quantity = quantity;
+		Value = value;
 	}
 
 	/// <summary>
-	/// The date time property of the transaction state.
+	/// The type of the transaction.
 	/// </summary>
-	[XmlElement(nameof(DateTime), Form = XmlSchemaForm.Qualified)]
-	public DateTime DateTime { get; set; }
-
-	/// <summary>
-	/// The transaction type property of the transaction state.
-	/// </summary>
-	[XmlAttribute(nameof(Type), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("Type")]
 	public TransactionType Type { get; set; }
 
 	/// <summary>
-	/// The drug type property of the transaction state.
+	/// The drug type of the transaction.
 	/// </summary>
-	[XmlElement(nameof(DrugType), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("DrugType")]
 	public DrugType DrugType { get; set; }
 
 	/// <summary>
-	/// The transaction quantity property of the transaction state.
+	/// The drug quantity of the transaction.
 	/// </summary>
-	[XmlElement(nameof(Quantity), Form = XmlSchemaForm.Qualified)]
+	[XmlAttribute("Quantity")]
 	public int Quantity { get; set; }
 
 	/// <summary>
-	/// The transaction price property of the transaction state.
+	/// The drug value of the transaction.
 	/// </summary>
-	[XmlElement(nameof(Price), Form = XmlSchemaForm.Qualified)]
-	public int Price { get; set; }
-
-	/// <summary>
-	/// Should the price property be serialized?
-	/// </summary>
-	public bool ShouldSerializePrice() => Price != default;
+	[XmlAttribute("Value")]
+	public int Value { get; set; }
 }
