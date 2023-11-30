@@ -25,13 +25,13 @@ internal sealed class Settings : ISettings
 		_lazyTraffickingSettings = new(() => new TraffickingSettings());
 	}
 
-	public IDealerSettings DealerSettings
+	public IDealerSettings Dealer
 		=> _lazyDealerSettings.Value;
-	public IMarketSettings MarketSettings
+	public IMarketSettings Market
 		=> _lazyMarketSettings.Value;
-	public IPlayerSettings PlayerSettings
+	public IPlayerSettings Player
 		=> _lazyPlayerSettings.Value;
-	public ITraffickingSettings TraffickingSettings
+	public ITraffickingSettings Trafficking
 		=> _lazyTraffickingSettings.Value;
 }
 

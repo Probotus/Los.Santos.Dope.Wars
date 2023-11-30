@@ -25,6 +25,10 @@ internal sealed class SettingsService : ISettingsService
 		_scriptSettings = ScriptSettings.Load(_filePath);
 		_loggerService = loggerService;
 		_settings = settings;
+
+		_settings.Dealer.DownTimeInHours.Changed += (s, e) => _scriptSettings.SetValue("Dealer", "DownTimeInHours", e.Value);
+		_settings.Dealer.HasArmor.Changed += (s, e) => _scriptSettings.SetValue("Dealer", "HasArmor", e.Value);
+		_settings.Dealer.HasWeapons.Changed += (s, e) => _scriptSettings.SetValue("Dealer", "HasWeapons", e.Value);
 	}
 
 	public void Load()

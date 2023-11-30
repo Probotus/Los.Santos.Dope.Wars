@@ -10,22 +10,22 @@ public interface ISettings
 	/// <summary>
 	/// The dealer settings.
 	/// </summary>
-	public IDealerSettings DealerSettings { get; }
+	public IDealerSettings Dealer { get; }
 
 	/// <summary>
 	/// The market settings.
 	/// </summary>
-	public IMarketSettings MarketSettings { get; }
+	public IMarketSettings Market { get; }
 
 	/// <summary>
 	/// The player settings.
 	/// </summary>
-	public IPlayerSettings PlayerSettings { get; }
+	public IPlayerSettings Player { get; }
 
 	/// <summary>
 	/// The trafficking settings.
 	/// </summary>
-	public ITraffickingSettings TraffickingSettings { get; }
+	public ITraffickingSettings Trafficking { get; }
 }
 
 /// <summary>
