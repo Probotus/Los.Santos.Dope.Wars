@@ -5,8 +5,4 @@
 		<PackageReference Include="ScriptHookVDotNet3" ExcludeAssets="runtime" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Interfaces\Models\States\" />
-	</ItemGroup>
-
 </Project>

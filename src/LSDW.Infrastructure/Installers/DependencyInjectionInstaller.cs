@@ -19,6 +19,7 @@ public static class DependencyInjectionInstaller
 	public static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services)
 	{
 		services.TryAddSingleton<ILoggerService, LoggerService>();
+		services.TryAddSingleton<ISettingsService, SettingsService>();
 		services.TryAddSingleton<IStateService, StateService>();
 
 		return services;

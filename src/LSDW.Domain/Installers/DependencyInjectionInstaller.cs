@@ -20,9 +20,10 @@ public static class DependencyInjectionInstaller
 	/// <returns>The enriched service collection.</returns>
 	public static IServiceCollection RegisterDomainServices(this IServiceCollection services)
 	{
+		services.TryAddSingleton<ISettings, Settings>();
 		services.TryAddSingleton<IPlayer, Player>();
 		services.TryAddSingleton<IDealerCollection, DealerCollection>();
-		services.TryAddSingleton<IDomainManager, DomainManager>();		
+		services.TryAddSingleton<IDomainManager, DomainManager>();
 		services.TryAddSingleton<ITransactionCollection, TransactionCollection>();
 		services.TryAddTransient<IDrugCollection, DrugCollection>();
 

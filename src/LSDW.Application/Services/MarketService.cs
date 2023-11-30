@@ -24,7 +24,6 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 	private readonly IDealerCollection _dealers;
 	private readonly IPlayer _player;
 	private readonly ILoggerService _loggerService;
-	private readonly INotificationService _notificationProvider;
 	private readonly IWorldService _worldProvider;
 	private DateTime _lastRefresh;
 	private DateTime _lastRestock;
@@ -41,7 +40,6 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 		_dealers = dealers;
 		_player = player;
 		_loggerService = loggerService;
-		_notificationProvider = domainManager.NotificationService;
 		_worldProvider = domainManager.WorldService;
 
 		_dealers.CollectionChanged += (s, e) => OnDealerCollectionChanged();
