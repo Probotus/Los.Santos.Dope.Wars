@@ -1,4 +1,4 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Services;
+﻿using LSDW.Application.Interfaces.Infrastructure.Managers;
 using LSDW.Application.Services;
 using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
@@ -10,7 +10,7 @@ public sealed partial class MarketServiceTests : ApplicationTestBase
 {
 	private readonly IDealerCollection _dealers;
 	private readonly IPlayer _player;
-	private readonly ILoggerService _loggerService;
+	private readonly IInfrastructureManager _infrastructureManager;
 	private readonly IDomainManager _domainManager;
 	private readonly MarketService _marketService;
 
@@ -18,8 +18,8 @@ public sealed partial class MarketServiceTests : ApplicationTestBase
 	{
 		_dealers = GetService<IDealerCollection>();
 		_player = GetService<IPlayer>();
-		_loggerService = MockHelper.GetLoggerService();
+		_infrastructureManager = MockHelper.GetInfrastructureManager();
 		_domainManager = MockHelper.GetDomainManager();
-		_marketService = new MarketService(_dealers, _player, _loggerService, _domainManager);
+		_marketService = new MarketService(_dealers, _player, _infrastructureManager, _domainManager);
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using LSDW.Application.Interfaces.Application.Services;
+using LSDW.Application.Interfaces.Infrastructure.Managers;
 using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
@@ -33,13 +34,13 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 	/// </summary>
 	/// <param name="dealers">The dealer collection instance to use.</param>
 	/// <param name="player">The player instance to use.</param>
-	/// <param name="loggerService">The logger service instance to use.</param>
+	/// <param name="infrastructureManager">The infrastructure manager instance to use.</param>
 	/// <param name="domainManager">The domain manager instance to use.</param>
-	public MarketService(IDealerCollection dealers, IPlayer player, ILoggerService loggerService, IDomainManager domainManager)
+	public MarketService(IDealerCollection dealers, IPlayer player, IInfrastructureManager infrastructureManager, IDomainManager domainManager)
 	{
 		_dealers = dealers;
 		_player = player;
-		_loggerService = loggerService;
+		_loggerService = infrastructureManager.LoggerService;
 		_worldProvider = domainManager.WorldService;
 
 		_dealers.CollectionChanged += (s, e) => OnDealerCollectionChanged();

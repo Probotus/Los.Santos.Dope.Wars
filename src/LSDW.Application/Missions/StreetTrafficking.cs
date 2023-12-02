@@ -1,6 +1,7 @@
 ﻿using GTA.Math;
 
 using LSDW.Application.Interfaces.Application.Missions;
+using LSDW.Application.Interfaces.Infrastructure.Managers;
 using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Application.Missions.Base;
 using LSDW.Domain.Enumerators;
@@ -35,13 +36,12 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	/// Initializes a new instance of the street trafficking mission class.
 	/// </summary>
 	/// <param name="dealers">The dealer collection instance to use.</param>
-	/// <param name="loggerService">The logger service instance to use.</param>
-	/// <param name="stateService">The state service instance to use.</param>
+	/// <param name="infrastructureManager">The infrastructure manager instance to use.</param>
 	/// <param name="domainManager">The domain manager instance to use.</param>
-	public StreetTrafficking(IDealerCollection dealers, ILoggerService loggerService, IStateService stateService, IDomainManager domainManager) : base(stateService)
+	public StreetTrafficking(IDealerCollection dealers, IInfrastructureManager infrastructureManager, IDomainManager domainManager) : base(infrastructureManager.StateService)
 	{
 		_dealers = dealers;
-		_loggerService = loggerService;
+		_loggerService = infrastructureManager.LoggerService;
 		_notificationService = domainManager.NotificationService;
 		_playerService = domainManager.PlayerService;
 		_worldService = domainManager.WorldService;

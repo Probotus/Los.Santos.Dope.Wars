@@ -1,9 +1,13 @@
 ﻿using GTA.Math;
 
+using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Services;
+
+using Moq;
 
 namespace LSDW.InfrastructureTests.Services;
 
@@ -12,6 +16,16 @@ public partial class StateServiceTests
 	[TestMethod]
 	public void SaveTest()
 		=> _stateService.Save();
+
+	[TestMethod]
+	public void SaveExceptionTest()
+	{
+		Mock<ILoggerService> mock = new();
+
+		new StateService(mock.Object, null!, null!).Save();
+
+		mock.Verify(v => v.Critical(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<string>()));
+	}
 
 	[TestMethod]
 	public void BigSaveTest()

@@ -1,4 +1,6 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Services;
+﻿using LSDW.Application.Interfaces.Infrastructure.Managers;
+using LSDW.Application.Interfaces.Infrastructure.Services;
+using LSDW.Infrastructure.Managers;
 using LSDW.Infrastructure.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,7 @@ public static class DependencyInjectionInstaller
 		services.TryAddSingleton<ILoggerService, LoggerService>();
 		services.TryAddSingleton<ISettingsService, SettingsService>();
 		services.TryAddSingleton<IStateService, StateService>();
+		services.TryAddSingleton<IInfrastructureManager, InfrastructureManager>();
 
 		return services;
 	}
