@@ -10,31 +10,29 @@ public enum TransactionType
 	/// <summary>
 	/// Indicates a "buy" / "buying" / "bought" transaction.
 	/// </summary>
-	[Transaction("The buy description", "The buy title", "The buy sub title")]
+	[Menu("Wanna buy some drugs?", "Buy")]
 	BUY,
 	/// <summary>
 	/// Indicates a "sell" / "selling" / "sold" transaction.
 	/// </summary>
-	[Transaction("", "", "")]
+	[Menu("Wanna sell some drugs?", "Sell")]
 	SELL,
 	/// <summary>
 	/// Indicates a "take" / "taking" / "taken" transaction.
 	/// </summary>
-	[Transaction("", "", "")]
+	[Menu("Wanna take some drugs?", "Take")]
 	TAKE,
 	/// <summary>
 	/// Indicates a "give" / "giving" / "given" transaction.
 	/// </summary>
-	[Transaction("", "", "")]
+	[Menu("Wanna give some drugs?", "Give")]
 	GIVE,
 	/// <summary>
 	/// Indicates a "find" / "finding" / "found" transaction.
 	/// </summary>
-	[Transaction("", "", "")]
 	FIND,
 	/// <summary>
 	/// Indicates a "lose" / "loosing" / "lost" transaction.
 	/// </summary>
-	[Transaction("", "", "")]
 	LOSE
 }

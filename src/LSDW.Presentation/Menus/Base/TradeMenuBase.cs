@@ -17,7 +17,7 @@ public abstract class TradeMenuBase : MenuBase
 	/// Initializes a new instance of the trade menu class.
 	/// </summary>
 	/// <param name="type">The transaction type to use.</param>
-	protected TradeMenuBase(TransactionType type) : base(type.GetTitle(), type.GetSubTitle(), type.GetDescription())
+	protected TradeMenuBase(TransactionType type) : base(type.GetMenuTitle(), type.GetMenuSubTitle(), type.GetMenuDescription())
 	{
 		BannerText.Font = GTAFont.Pricedown;
 		ItemCount = CountVisibility.Never;
