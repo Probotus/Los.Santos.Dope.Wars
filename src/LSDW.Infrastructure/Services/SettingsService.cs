@@ -8,7 +8,7 @@ namespace LSDW.Infrastructure.Services;
 /// <summary>
 /// The settings service class.
 /// </summary>
-internal sealed class SettingsService : ISettingsService
+internal sealed partial class SettingsService : ISettingsService
 {
 	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.log");
 	private readonly ScriptSettings _scriptSettings;
@@ -26,18 +26,12 @@ internal sealed class SettingsService : ISettingsService
 		_loggerService = loggerService;
 		_settings = settings;
 
-		_settings.Dealer.DownTimeInHours.Changed += (s, e) => _scriptSettings.SetValue("Dealer", "DownTimeInHours", e.Value);
-		_settings.Dealer.HasArmor.Changed += (s, e) => _scriptSettings.SetValue("Dealer", "HasArmor", e.Value);
-		_settings.Dealer.HasWeapons.Changed += (s, e) => _scriptSettings.SetValue("Dealer", "HasWeapons", e.Value);
+		RegisterEvents();
 	}
 
 	public void Load()
-	{
-		throw new NotImplementedException();
-	}
+		=> LoadInternal();
 
 	public void Save()
-	{
-		throw new NotImplementedException();
-	}
+		=> SaveInternal();
 }
