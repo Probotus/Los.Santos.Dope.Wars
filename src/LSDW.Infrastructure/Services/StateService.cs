@@ -44,7 +44,7 @@ internal sealed class StateService(ILoggerService loggerService, IDealerCollecti
 
 			dealers.Load(InfrastructureFactory.CreateDealers(state.Dealers));
 
-			loggerService.Information($"{nameof(LSDW)} loaded.");
+			loggerService.Information($"{nameof(LSDW)} state loaded.");
 		}
 		catch (Exception ex)
 		{
@@ -63,7 +63,7 @@ internal sealed class StateService(ILoggerService loggerService, IDealerCollecti
 
 			File.WriteAllBytes(_filePath, content);
 
-			loggerService.Information($"{nameof(LSDW)} saved.");
+			loggerService.Information($"{nameof(LSDW)} state saved.");
 		}
 		catch (Exception ex)
 		{

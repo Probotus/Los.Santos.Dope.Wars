@@ -10,7 +10,7 @@ namespace LSDW.Infrastructure.Services;
 /// </summary>
 internal sealed partial class SettingsService : ISettingsService
 {
-	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.log");
+	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.ini");
 	private readonly ScriptSettings _scriptSettings;
 	private readonly ILoggerService _loggerService;
 	private readonly ISettings _settings;
@@ -27,11 +27,35 @@ internal sealed partial class SettingsService : ISettingsService
 		_settings = settings;
 
 		RegisterEvents();
+		Load();
+		Save();
 	}
 
 	public void Load()
-		=> LoadInternal();
+	{
+		try
+		{
+			LoadInternal();
+
+			_loggerService.Information($"{nameof(LSDW)} config loaded.");
+		}
+		catch (Exception ex)
+		{
+			_loggerService.Critical("Something went wrong!", ex);
+		}
+	}
 
 	public void Save()
-		=> SaveInternal();
+	{
+		try
+		{
+			SaveInternal();
+
+			_loggerService.Information($"{nameof(LSDW)} config saved.");
+		}
+		catch (Exception ex)
+		{
+			_loggerService.Critical("Something went wrong!", ex);
+		}
+	}
 }
