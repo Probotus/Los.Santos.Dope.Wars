@@ -3,6 +3,7 @@
 using LSDW.Application.Interfaces.Application.Missions;
 using LSDW.Application.Interfaces.Infrastructure.Managers;
 using LSDW.Application.Interfaces.Infrastructure.Services;
+using LSDW.Application.Interfaces.Presentation.Menus;
 using LSDW.Application.Missions.Base;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
@@ -27,6 +28,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	private readonly IDealerCollection _dealers;
 	private readonly ILoggerService _loggerService;
 	private readonly INotificationService _notificationService;
+	private readonly ITraffickingMenu _traffickingMenu;
 	private readonly IPlayerService _playerService;
 	private readonly IWorldService _worldService;
 	private IDealer? _dealer;
@@ -38,23 +40,23 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	/// <param name="dealers">The dealer collection instance to use.</param>
 	/// <param name="infrastructureManager">The infrastructure manager instance to use.</param>
 	/// <param name="domainManager">The domain manager instance to use.</param>
-	public StreetTrafficking(IDealerCollection dealers, IInfrastructureManager infrastructureManager, IDomainManager domainManager) : base(infrastructureManager.StateService)
+	/// <param name="traffickingMenu">The trafficking menu instance to use.</param>
+	public StreetTrafficking(IDealerCollection dealers, IInfrastructureManager infrastructureManager, IDomainManager domainManager, ITraffickingMenu traffickingMenu) : base(infrastructureManager.StateService)
 	{
 		_dealers = dealers;
 		_loggerService = infrastructureManager.LoggerService;
 		_notificationService = domainManager.NotificationService;
+		_traffickingMenu = traffickingMenu;
 		_playerService = domainManager.PlayerService;
 		_worldService = domainManager.WorldService;
-	}
 
-	public IDealer? Dealer { get => _dealer; private set => SetProperty(ref _dealer, value); }
-	public bool ShowMenu { get => _showMenu; private set => SetProperty(ref _showMenu, value); }
+	}
 
 	public void Discover()
 	{
 		try
 		{
-			if (Dealer is not null)
+			if (_dealer is not null)
 				return;
 
 			_dealers.ForEach(dealer => dealer.Discovered && dealer.Blip is null, dealer => dealer.Discover(_worldService));
@@ -68,7 +70,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 					dealer.Discover(_worldService);
 
 					_notificationService.Show(
-						subject: "Dealer found!",
+						subject: "_dealer found!",
 						message: $"You have found the dealer in the area of '{_worldService.GetZoneLocalizedName(dealer.Position)}'."
 						);
 				}
@@ -84,40 +86,45 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	{
 		try
 		{
-			if (Dealer is null)
+			if (_dealer is null)
 			{
 				_dealers.ForEach(dealer =>
 				{
 					if (dealer.Position.DistanceTo(_playerService.Position) <= CreateDistance)
 					{
-						Dealer = dealer;
-						Dealer.Create(_worldService);
+						_dealer = dealer;
+						_dealer.Create(_worldService);
+						_traffickingMenu.Initialize(dealer);
 						return;
 					}
 				});
 			}
 			else
 			{
-				if (Dealer.Position.DistanceTo(_playerService.Position) <= InteractionDistance)
+				if (_dealer.Position.DistanceTo(_playerService.Position) <= InteractionDistance)
 				{
-					if (Dealer.Ped is null)
+					if (_dealer.Ped is null)
 						return;
 
-					Dealer.Ped.Task.LookAt(_playerService.Character);
-					ShowMenu = true;
-				}
-				else if (Dealer.Position.DistanceTo(_playerService.Position) > InteractionDistance)
-				{
-					if (Dealer.Ped is null)
+					if (_showMenu)
 						return;
 
-					Dealer.Ped.Task.ClearLookAt();
-					ShowMenu = false;
+					_dealer.Ped.Task.LookAt(_playerService.Character);
+					_showMenu = true;
 				}
-				else if (Dealer.Position.DistanceTo(_playerService.Position) > CreateDistance)
+				else if (_dealer.Position.DistanceTo(_playerService.Position) > InteractionDistance)
 				{
-					Dealer.Delete();
-					Dealer = null;
+					if (_dealer.Ped is null)
+						return;
+
+					_dealer.Ped.Task.ClearLookAt();
+					_showMenu = false;
+				}
+				else if (_dealer.Position.DistanceTo(_playerService.Position) > CreateDistance)
+				{
+					_traffickingMenu.Clear();
+					_dealer.Delete();
+					_dealer = null;
 					return;
 				}
 			}
@@ -171,7 +178,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	{
 		try
 		{
-			if (Dealer is not null)
+			if (_dealer is not null)
 				return;
 
 			Vector3 randomPosition = _playerService.Position.Around(TrackDistance);
@@ -193,7 +200,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 			_dealers.Add(dealer);
 
 			_notificationService.Show(
-				subject: "Dealer spotted!",
+				subject: "_dealer spotted!",
 				message: $"A dealer was spotted in the area of '{_worldService.GetZoneLocalizedName(dealer.Position)}'."
 				);
 		}

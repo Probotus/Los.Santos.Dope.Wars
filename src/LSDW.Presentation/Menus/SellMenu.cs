@@ -1,5 +1,6 @@
 ﻿using LemonUI.Menus;
 
+using LSDW.Application.Interfaces.Presentation.Menus;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Interfaces.Manager;
@@ -16,15 +17,20 @@ namespace LSDW.Presentation.Menus;
 /// Initializes a new instance of the sell menu class.
 /// </remarks>
 /// <param name="player">The player instance to use.</param>
-/// <param name="dealer">The dealer instance to use.</param>
 /// <param name="domainManager">The domain manager instance to use.</param>
-public sealed class SellMenu(IPlayer player, IDealer dealer, IDomainManager domainManager) : TradeMenuBase(TransactionType.SELL)
+internal sealed class SellMenu(IPlayer player, IDomainManager domainManager) : TradeMenuBase(TransactionType.SELL), ISellMenu
 {
 	private readonly IPlayerService _playerService = domainManager.PlayerService;
+	
+	/// <inheritdoc/>
+	public IDealer? Dealer { get; set; }
 
 	/// <inheritdoc/>
 	public override void Initialize()
 	{
+		if (Dealer is null)
+			return;
+
 		player.Drugs.ForEach(drug => AddDrugListItem(drug));
 		base.Initialize();
 	}

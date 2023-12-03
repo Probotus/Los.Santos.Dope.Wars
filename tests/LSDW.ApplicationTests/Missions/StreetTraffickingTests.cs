@@ -18,6 +18,6 @@ public sealed partial class StreetTraffickingTests : ApplicationTestBase
 		_dealers = GetService<IDealerCollection>();
 		_infrastructureManager = MockHelper.GetInfrastructureManager();
 		_domainManager = MockHelper.GetDomainManager();
-		_streetTrafficking = new StreetTrafficking(_dealers, _infrastructureManager, _domainManager);
+		_streetTrafficking = new StreetTrafficking(_dealers, _infrastructureManager, _domainManager, null);
 	}
 }

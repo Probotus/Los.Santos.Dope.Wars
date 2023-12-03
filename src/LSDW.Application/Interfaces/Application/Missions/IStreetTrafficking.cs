@@ -9,16 +9,6 @@ namespace LSDW.Application.Interfaces.Application.Missions;
 public interface IStreetTrafficking : IMissionBase, IMissionControl
 {
 	/// <summary>
-	/// The current dealer the player is facing.
-	/// </summary>
-	IDealer? Dealer { get; }
-
-	/// <summary>
-	/// Should the menu be shown?
-	/// </summary>
-	bool ShowMenu { get; }
-
-	/// <summary>
 	/// Discovers the drug dealers in the game world for the player.
 	/// </summary>
 	void Discover();

@@ -1,5 +1,6 @@
 ﻿using LemonUI.Menus;
 
+using LSDW.Application.Interfaces.Presentation.Menus.Base;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Interfaces.Models;
@@ -11,7 +12,7 @@ namespace LSDW.Presentation.Menus.Base;
 /// <summary>
 /// The trade menu class.
 /// </summary>
-public abstract class TradeMenuBase : MenuBase
+internal abstract class TradeMenuBase : MenuBase, ITradeMenuBase
 {
 	/// <summary>
 	/// Initializes a new instance of the trade menu class.
@@ -32,7 +33,7 @@ public abstract class TradeMenuBase : MenuBase
 	/// <summary>
 	/// Is the menu completely initialized?
 	/// </summary>
-	public virtual bool Initialized { get; private set; }
+	protected bool Initialized { get; private set; }
 
 	/// <summary>
 	/// Adds a new drug list item to the menu.
@@ -63,4 +64,13 @@ public abstract class TradeMenuBase : MenuBase
 	/// The action to perform when the selected drug item of the list changes.
 	/// </summary>
 	public abstract void OnItemChanged(object sender, ItemChangedEventArgs<int> e);
+
+	/// <inheritdoc/>
+	public override void Toggle()
+	{
+		if (!Initialized)
+			throw new InvalidOperationException($"{nameof(Initialized)} is {Initialized}");
+
+		base.Toggle();
+	}
 }

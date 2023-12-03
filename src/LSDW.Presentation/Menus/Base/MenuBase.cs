@@ -1,18 +1,21 @@
 ﻿using LemonUI;
 using LemonUI.Menus;
 
+using LSDW.Application.Interfaces.Presentation.Menus.Base;
+
 using GTAFont = GTA.UI.Font;
 
 namespace LSDW.Presentation.Menus.Base;
+
 /// <summary>
 /// The manu base class.
 /// </summary>
-public abstract class MenuBase : NativeMenu
+internal abstract class MenuBase : NativeMenu, IMenuBase
 {
 	/// <summary>
 	/// The pool of menus.
 	/// </summary>
-	public static readonly ObjectPool Processables = [];
+	internal static readonly ObjectPool Processables = [];
 
 	/// <summary>
 	///	Creates a new menu.
@@ -129,4 +132,8 @@ public abstract class MenuBase : NativeMenu
 		subMenuItem.AltTitleFont = altTitleFont;
 		return subMenuItem;
 	}
+
+	/// <inheritdoc/>
+	public virtual void Toggle()
+		=> Visible = !Visible;
 }
