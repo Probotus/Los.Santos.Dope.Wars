@@ -73,4 +73,13 @@ internal abstract class TradeMenuBase : MenuBase, ITradeMenuBase
 
 		base.Toggle();
 	}
+
+	/// <inheritdoc/>
+	public override void Switch(bool value)
+	{
+		if (!Initialized)
+			throw new InvalidOperationException($"{nameof(Initialized)} is {Initialized}");
+
+		base.Switch(value);
+	}
 }

@@ -3,6 +3,7 @@
 using LSDW.Application.Installers;
 using LSDW.Application.Interfaces.Application.Missions;
 using LSDW.Application.Interfaces.Application.Services;
+using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Installers;
 using LSDW.Infrastructure.Installers;
 using LSDW.Presentation.Installers;
@@ -18,6 +19,7 @@ namespace LSDW;
 public sealed class StartUp : Script
 {
 	private readonly IServiceProvider _serviceProvider;
+	private readonly ISettingsService _settingsService;
 	private readonly IMarketService _marketService;
 	private readonly IStreetTrafficking _streetTrafficking;
 
@@ -27,6 +29,11 @@ public sealed class StartUp : Script
 	public StartUp()
 	{
 		_serviceProvider = CreateServiceProvider();
+		_settingsService = GetService<ISettingsService>();
+		
+		_settingsService.Load();
+		_settingsService.Save();
+		
 		_marketService = GetService<IMarketService>();
 		_streetTrafficking = GetService<IStreetTrafficking>();
 

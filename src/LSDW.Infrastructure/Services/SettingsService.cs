@@ -27,8 +27,6 @@ internal sealed partial class SettingsService : ISettingsService
 		_settings = settings;
 
 		RegisterEvents();
-		Load();
-		Save();
 	}
 
 	public void Load()

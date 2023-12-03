@@ -13,6 +13,11 @@ public interface ITraffickingMenu
 	void Clear();
 
 	/// <summary>
+	/// Closes the trafficking menu.
+	/// </summary>
+	void Close();
+
+	/// <summary>
 	/// Initializes the trafficking menu completely.
 	/// </summary>
 	/// <param name="dealer">The dealer instance to use.</param>

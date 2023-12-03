@@ -19,4 +19,12 @@ public interface IMenuBase
 	/// Toggles the visibility of the menu on or off.
 	/// </summary>
 	void Toggle();
+
+	/// <summary>
+	/// Switches the visibility of the menu on or off.
+	/// </summary>
+	/// <param name="value">
+	/// If <see langword="true"/>, the visibility is switched on, otherwise off.
+	/// </param>
+	void Switch(bool value);
 }

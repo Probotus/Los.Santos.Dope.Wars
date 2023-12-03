@@ -140,7 +140,7 @@ internal sealed class TraffickingSettings : ITraffickingSettings
 	public TraffickingSettings()
 	{
 		BustChance = new BindableProperty<float>(0.1f);
-		DiscoverDealer = new BindableProperty<bool>(false);
+		DiscoverDealer = new BindableProperty<bool>(true);
 		WantedLevel = new BindableProperty<int>(2);
 	}
 

@@ -133,7 +133,9 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 		return subMenuItem;
 	}
 
-	/// <inheritdoc/>
 	public virtual void Toggle()
 		=> Visible = !Visible;
+
+	public virtual void Switch(bool value)
+	 => Visible = value;
 }

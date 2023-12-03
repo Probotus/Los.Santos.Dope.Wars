@@ -30,9 +30,11 @@ public enum TransactionType
 	/// <summary>
 	/// Indicates a "find" / "finding" / "found" transaction.
 	/// </summary>
+	[Menu("You have found some drugs!", "Found")]
 	FIND,
 	/// <summary>
 	/// Indicates a "lose" / "loosing" / "lost" transaction.
 	/// </summary>
+	[Menu("You have lost some drugs!", "Lost")]
 	LOSE
 }

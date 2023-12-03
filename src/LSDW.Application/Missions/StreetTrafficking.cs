@@ -69,10 +69,14 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 				{
 					dealer.Discover(_worldService);
 
+					string zoneFullName = _worldService.GetZoneLocalizedName(dealer.Position);
+
 					_notificationService.Show(
-						subject: "_dealer found!",
-						message: $"You have found the dealer in the area of '{_worldService.GetZoneLocalizedName(dealer.Position)}'."
+						subject: "Dealer found!",
+						message: $"You have found a dealer in the area of {zoneFullName}."
 						);
+
+					_loggerService.Information($"Dealer found in {zoneFullName}.");
 				}
 			});
 		}
@@ -109,7 +113,8 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 					if (_showMenu)
 						return;
 
-					_dealer.Ped.Task.LookAt(_playerService.Character);
+					_dealer.Ped.Task.LookAt(_playerService.Character);					
+					_traffickingMenu.Show();
 					_showMenu = true;
 				}
 				else if (_dealer.Position.DistanceTo(_playerService.Position) > InteractionDistance)
@@ -118,6 +123,11 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 						return;
 
 					_dealer.Ped.Task.ClearLookAt();
+
+					if (!_showMenu)
+						return;
+
+					_traffickingMenu.Close();
 					_showMenu = false;
 				}
 				else if (_dealer.Position.DistanceTo(_playerService.Position) > CreateDistance)
@@ -144,12 +154,14 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 			if (Status == MissionStatus.STOPPED)
 			{
 				Start();
+				_loggerService.Information($"{nameof(StreetTrafficking)} started.");
 				return;
 			}
 
 			if (Status == MissionStatus.RUNNING)
 			{
 				Stop();
+				_loggerService.Information($"{nameof(StreetTrafficking)} stoped.");
 				return;
 			}
 		}
@@ -199,10 +211,14 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 
 			_dealers.Add(dealer);
 
+			string zoneFullName = _worldService.GetZoneLocalizedName(dealer.Position);
+
 			_notificationService.Show(
-				subject: "_dealer spotted!",
-				message: $"A dealer was spotted in the area of '{_worldService.GetZoneLocalizedName(dealer.Position)}'."
+				subject: "Dealer spotted!",
+				message: $"A dealer was spotted in the area of {zoneFullName}."
 				);
+
+			_loggerService.Information($"Dealer spotted in {zoneFullName}.");
 		}
 		catch (Exception ex)
 		{

@@ -55,10 +55,22 @@ internal sealed class TraffickingMenu : ITraffickingMenu
 		_buyMenu.Clear();
 		_buyMenu.Dealer = null;
 
-		_sellMenu.Closed -= (s, e) => OnSellMenuClosed();		
+		_sellMenu.Closed -= (s, e) => OnSellMenuClosed();
 		_sellMenu.Clear();
 		_sellMenu.Dealer = null;
 
 		_initialized = false;
+	}
+
+	public void Close()
+	{
+		_buyMenu.Closed -= (s, e) => OnBuyMenuClosed();
+		_sellMenu.Closed -= (s, e) => OnSellMenuClosed();
+
+		_buyMenu.Switch(false);
+		_sellMenu.Switch(false);
+
+		_buyMenu.Closed += (s, e) => OnBuyMenuClosed();
+		_sellMenu.Closed += (s, e) => OnSellMenuClosed();
 	}
 }
