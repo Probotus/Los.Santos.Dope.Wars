@@ -207,6 +207,12 @@
   <data name="SettingsMenu.Player.SubTitle" xml:space="preserve">
     <value>Player settings</value>
   </data>
+  <data name="SettingsMenu.Save.Description" xml:space="preserve">
+    <value>Saves the selected settings.</value>
+  </data>
+  <data name="SettingsMenu.Save.Title" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="SettingsMenu.SubTitle" xml:space="preserve">
     <value>LSDW settings can be made here.</value>
   </data>

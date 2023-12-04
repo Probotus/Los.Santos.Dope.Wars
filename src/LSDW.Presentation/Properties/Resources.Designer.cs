@@ -331,6 +331,24 @@ namespace LSDW.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saves the selected settings..
+        /// </summary>
+        internal static string SettingsMenu_Save_Description {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Save.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string SettingsMenu_Save_Title {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Save.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LSDW settings can be made here..
         /// </summary>
         internal static string SettingsMenu_SubTitle {

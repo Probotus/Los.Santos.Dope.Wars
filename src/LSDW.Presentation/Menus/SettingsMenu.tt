@@ -31,7 +31,13 @@ foreach (PropertyInfo subMenu in subMenus) {
 #>
 		<#= subMenu.Name #>SubMenu <#= subMenu.Name.ToLower() #>SubMenu = new(_settings);
 		var <#= subMenu.Name.ToLower() #>SubMenuItem = AddMenu(<#= subMenu.Name.ToLower() #>SubMenu);
+
 <# } #>
+		var saveItem = AddItem(
+			title: RESX.SettingsMenu_Save_Title,
+			description: RESX.SettingsMenu_Save_Description,
+			activated: _settingsService.Save
+			);
 	}
 
 <#
@@ -56,23 +62,28 @@ foreach (PropertyInfo menu in menus) {
 #>
 <# if (dataType == "bool") { #>
 
-			var checkBox<#= item.Name #> = AddCheckbox(
-				<#= title #>,
-				<#= description #>,
-				_settings.<#= menu.Name #>.<#= item.Name #>.Value,
-				changed => _settings.<#= menu.Name #>.<#= item.Name #>.Value = changed
+			var checkBoxItem<#= item.Name #> = AddCheckbox(
+				title: <#= title #>,
+				description: <#= description #>,
+				changed: changed => _settings.<#= menu.Name #>.<#= item.Name #>.Value = changed
 				);
 
+			checkBoxItem<#= item.Name #>.Checked =
+				_settings.<#= menu.Name #>.<#= item.Name #>.Value;
+			
 			_settings.<#= menu.Name #>.<#= item.Name #>.Changed += (s, e)
-				=> checkBox<#= item.Name #>.Checked = e.Value;
+				=> checkBoxItem<#= item.Name #>.Checked = e.Value;
 <# } else { #>
 
 			var listItem<#= item.Name #> = AddListItem(
-				<#= title #>,
-				<#= description #>,
-				(item, index) => _settings.<#= menu.Name #>.<#= item.Name #>.Value = item,
-				_settings.<#= menu.Name #>.Get<#= item.Name #>Values()
+				title: <#= title #>,
+				description: <#= description #>,
+				changed: (item, index) => _settings.<#= menu.Name #>.<#= item.Name #>.Value = item,
+				items: _settings.<#= menu.Name #>.Get<#= item.Name #>Values()
 				);
+
+			listItem<#= item.Name #>.SelectedItem =
+				_settings.<#= menu.Name #>.<#= item.Name #>.Value;
 
 			_settings.<#= menu.Name #>.<#= item.Name #>.Changed += (s, e)
 				=> listItem<#= item.Name #>.SelectedItem = e.Value;

@@ -18,12 +18,21 @@ internal sealed partial class SettingsMenu : MenuBase
 	{
 		DealerSubMenu dealerSubMenu = new(_settings);
 		var dealerSubMenuItem = AddMenu(dealerSubMenu);
+
 		MarketSubMenu marketSubMenu = new(_settings);
 		var marketSubMenuItem = AddMenu(marketSubMenu);
+
 		PlayerSubMenu playerSubMenu = new(_settings);
 		var playerSubMenuItem = AddMenu(playerSubMenu);
+
 		TraffickingSubMenu traffickingSubMenu = new(_settings);
 		var traffickingSubMenuItem = AddMenu(traffickingSubMenu);
+
+		var saveItem = AddItem(
+			title: RESX.SettingsMenu_Save_Title,
+			description: RESX.SettingsMenu_Save_Description,
+			activated: _settingsService.Save
+			);
 	}
 
 	private class DealerSubMenu : MenuBase
@@ -36,34 +45,41 @@ internal sealed partial class SettingsMenu : MenuBase
 			_settings = settings;
 
 			var listItemDownTimeInHours = AddListItem(
-				RESX.SettingsMenu_Dealer_DownTimeInHours_Title,
-				RESX.SettingsMenu_Dealer_DownTimeInHours_Description,
-				(item, index) => _settings.Dealer.DownTimeInHours.Value = item,
-				_settings.Dealer.GetDownTimeInHoursValues()
+				title: RESX.SettingsMenu_Dealer_DownTimeInHours_Title,
+				description: RESX.SettingsMenu_Dealer_DownTimeInHours_Description,
+				changed: (item, index) => _settings.Dealer.DownTimeInHours.Value = item,
+				items: _settings.Dealer.GetDownTimeInHoursValues()
 				);
+
+			listItemDownTimeInHours.SelectedItem =
+				_settings.Dealer.DownTimeInHours.Value;
 
 			_settings.Dealer.DownTimeInHours.Changed += (s, e)
 				=> listItemDownTimeInHours.SelectedItem = e.Value;
 
-			var checkBoxHasArmor = AddCheckbox(
-				RESX.SettingsMenu_Dealer_HasArmor_Title,
-				RESX.SettingsMenu_Dealer_HasArmor_Description,
-				_settings.Dealer.HasArmor.Value,
-				changed => _settings.Dealer.HasArmor.Value = changed
+			var checkBoxItemHasArmor = AddCheckbox(
+				title: RESX.SettingsMenu_Dealer_HasArmor_Title,
+				description: RESX.SettingsMenu_Dealer_HasArmor_Description,
+				changed: changed => _settings.Dealer.HasArmor.Value = changed
 				);
 
+			checkBoxItemHasArmor.Checked =
+				_settings.Dealer.HasArmor.Value;
+			
 			_settings.Dealer.HasArmor.Changed += (s, e)
-				=> checkBoxHasArmor.Checked = e.Value;
+				=> checkBoxItemHasArmor.Checked = e.Value;
 
-			var checkBoxHasWeapons = AddCheckbox(
-				RESX.SettingsMenu_Dealer_HasWeapons_Title,
-				RESX.SettingsMenu_Dealer_HasWeapons_Description,
-				_settings.Dealer.HasWeapons.Value,
-				changed => _settings.Dealer.HasWeapons.Value = changed
+			var checkBoxItemHasWeapons = AddCheckbox(
+				title: RESX.SettingsMenu_Dealer_HasWeapons_Title,
+				description: RESX.SettingsMenu_Dealer_HasWeapons_Description,
+				changed: changed => _settings.Dealer.HasWeapons.Value = changed
 				);
 
+			checkBoxItemHasWeapons.Checked =
+				_settings.Dealer.HasWeapons.Value;
+			
 			_settings.Dealer.HasWeapons.Changed += (s, e)
-				=> checkBoxHasWeapons.Checked = e.Value;
+				=> checkBoxItemHasWeapons.Checked = e.Value;
 		}
 	}
 	private class MarketSubMenu : MenuBase
@@ -76,51 +92,66 @@ internal sealed partial class SettingsMenu : MenuBase
 			_settings = settings;
 
 			var listItemMaximumDrugPrice = AddListItem(
-				RESX.SettingsMenu_Market_MaximumDrugPrice_Title,
-				RESX.SettingsMenu_Market_MaximumDrugPrice_Description,
-				(item, index) => _settings.Market.MaximumDrugPrice.Value = item,
-				_settings.Market.GetMaximumDrugPriceValues()
+				title: RESX.SettingsMenu_Market_MaximumDrugPrice_Title,
+				description: RESX.SettingsMenu_Market_MaximumDrugPrice_Description,
+				changed: (item, index) => _settings.Market.MaximumDrugPrice.Value = item,
+				items: _settings.Market.GetMaximumDrugPriceValues()
 				);
+
+			listItemMaximumDrugPrice.SelectedItem =
+				_settings.Market.MaximumDrugPrice.Value;
 
 			_settings.Market.MaximumDrugPrice.Changed += (s, e)
 				=> listItemMaximumDrugPrice.SelectedItem = e.Value;
 
 			var listItemMinimumDrugPrice = AddListItem(
-				RESX.SettingsMenu_Market_MinimumDrugPrice_Title,
-				RESX.SettingsMenu_Market_MinimumDrugPrice_Description,
-				(item, index) => _settings.Market.MinimumDrugPrice.Value = item,
-				_settings.Market.GetMinimumDrugPriceValues()
+				title: RESX.SettingsMenu_Market_MinimumDrugPrice_Title,
+				description: RESX.SettingsMenu_Market_MinimumDrugPrice_Description,
+				changed: (item, index) => _settings.Market.MinimumDrugPrice.Value = item,
+				items: _settings.Market.GetMinimumDrugPriceValues()
 				);
+
+			listItemMinimumDrugPrice.SelectedItem =
+				_settings.Market.MinimumDrugPrice.Value;
 
 			_settings.Market.MinimumDrugPrice.Changed += (s, e)
 				=> listItemMinimumDrugPrice.SelectedItem = e.Value;
 
 			var listItemRefreshInterval = AddListItem(
-				RESX.SettingsMenu_Market_RefreshInterval_Title,
-				RESX.SettingsMenu_Market_RefreshInterval_Description,
-				(item, index) => _settings.Market.RefreshInterval.Value = item,
-				_settings.Market.GetRefreshIntervalValues()
+				title: RESX.SettingsMenu_Market_RefreshInterval_Title,
+				description: RESX.SettingsMenu_Market_RefreshInterval_Description,
+				changed: (item, index) => _settings.Market.RefreshInterval.Value = item,
+				items: _settings.Market.GetRefreshIntervalValues()
 				);
+
+			listItemRefreshInterval.SelectedItem =
+				_settings.Market.RefreshInterval.Value;
 
 			_settings.Market.RefreshInterval.Changed += (s, e)
 				=> listItemRefreshInterval.SelectedItem = e.Value;
 
 			var listItemRestockInterval = AddListItem(
-				RESX.SettingsMenu_Market_RestockInterval_Title,
-				RESX.SettingsMenu_Market_RestockInterval_Description,
-				(item, index) => _settings.Market.RestockInterval.Value = item,
-				_settings.Market.GetRestockIntervalValues()
+				title: RESX.SettingsMenu_Market_RestockInterval_Title,
+				description: RESX.SettingsMenu_Market_RestockInterval_Description,
+				changed: (item, index) => _settings.Market.RestockInterval.Value = item,
+				items: _settings.Market.GetRestockIntervalValues()
 				);
+
+			listItemRestockInterval.SelectedItem =
+				_settings.Market.RestockInterval.Value;
 
 			_settings.Market.RestockInterval.Changed += (s, e)
 				=> listItemRestockInterval.SelectedItem = e.Value;
 
 			var listItemSpecialOfferChance = AddListItem(
-				RESX.SettingsMenu_Market_SpecialOfferChance_Title,
-				RESX.SettingsMenu_Market_SpecialOfferChance_Description,
-				(item, index) => _settings.Market.SpecialOfferChance.Value = item,
-				_settings.Market.GetSpecialOfferChanceValues()
+				title: RESX.SettingsMenu_Market_SpecialOfferChance_Title,
+				description: RESX.SettingsMenu_Market_SpecialOfferChance_Description,
+				changed: (item, index) => _settings.Market.SpecialOfferChance.Value = item,
+				items: _settings.Market.GetSpecialOfferChanceValues()
 				);
+
+			listItemSpecialOfferChance.SelectedItem =
+				_settings.Market.SpecialOfferChance.Value;
 
 			_settings.Market.SpecialOfferChance.Changed += (s, e)
 				=> listItemSpecialOfferChance.SelectedItem = e.Value;
@@ -136,44 +167,54 @@ internal sealed partial class SettingsMenu : MenuBase
 			_settings = settings;
 
 			var listItemBagSizePerLevel = AddListItem(
-				RESX.SettingsMenu_Player_BagSizePerLevel_Title,
-				RESX.SettingsMenu_Player_BagSizePerLevel_Description,
-				(item, index) => _settings.Player.BagSizePerLevel.Value = item,
-				_settings.Player.GetBagSizePerLevelValues()
+				title: RESX.SettingsMenu_Player_BagSizePerLevel_Title,
+				description: RESX.SettingsMenu_Player_BagSizePerLevel_Description,
+				changed: (item, index) => _settings.Player.BagSizePerLevel.Value = item,
+				items: _settings.Player.GetBagSizePerLevelValues()
 				);
+
+			listItemBagSizePerLevel.SelectedItem =
+				_settings.Player.BagSizePerLevel.Value;
 
 			_settings.Player.BagSizePerLevel.Changed += (s, e)
 				=> listItemBagSizePerLevel.SelectedItem = e.Value;
 
 			var listItemExperienceMultiplier = AddListItem(
-				RESX.SettingsMenu_Player_ExperienceMultiplier_Title,
-				RESX.SettingsMenu_Player_ExperienceMultiplier_Description,
-				(item, index) => _settings.Player.ExperienceMultiplier.Value = item,
-				_settings.Player.GetExperienceMultiplierValues()
+				title: RESX.SettingsMenu_Player_ExperienceMultiplier_Title,
+				description: RESX.SettingsMenu_Player_ExperienceMultiplier_Description,
+				changed: (item, index) => _settings.Player.ExperienceMultiplier.Value = item,
+				items: _settings.Player.GetExperienceMultiplierValues()
 				);
+
+			listItemExperienceMultiplier.SelectedItem =
+				_settings.Player.ExperienceMultiplier.Value;
 
 			_settings.Player.ExperienceMultiplier.Changed += (s, e)
 				=> listItemExperienceMultiplier.SelectedItem = e.Value;
 
-			var checkBoxLooseDrugsOnDeath = AddCheckbox(
-				RESX.SettingsMenu_Player_LooseDrugsOnDeath_Title,
-				RESX.SettingsMenu_Player_LooseDrugsOnDeath_Description,
-				_settings.Player.LooseDrugsOnDeath.Value,
-				changed => _settings.Player.LooseDrugsOnDeath.Value = changed
+			var checkBoxItemLooseDrugsOnDeath = AddCheckbox(
+				title: RESX.SettingsMenu_Player_LooseDrugsOnDeath_Title,
+				description: RESX.SettingsMenu_Player_LooseDrugsOnDeath_Description,
+				changed: changed => _settings.Player.LooseDrugsOnDeath.Value = changed
 				);
 
+			checkBoxItemLooseDrugsOnDeath.Checked =
+				_settings.Player.LooseDrugsOnDeath.Value;
+			
 			_settings.Player.LooseDrugsOnDeath.Changed += (s, e)
-				=> checkBoxLooseDrugsOnDeath.Checked = e.Value;
+				=> checkBoxItemLooseDrugsOnDeath.Checked = e.Value;
 
-			var checkBoxLooseDrugsWhenBusted = AddCheckbox(
-				RESX.SettingsMenu_Player_LooseDrugsWhenBusted_Title,
-				RESX.SettingsMenu_Player_LooseDrugsWhenBusted_Description,
-				_settings.Player.LooseDrugsWhenBusted.Value,
-				changed => _settings.Player.LooseDrugsWhenBusted.Value = changed
+			var checkBoxItemLooseDrugsWhenBusted = AddCheckbox(
+				title: RESX.SettingsMenu_Player_LooseDrugsWhenBusted_Title,
+				description: RESX.SettingsMenu_Player_LooseDrugsWhenBusted_Description,
+				changed: changed => _settings.Player.LooseDrugsWhenBusted.Value = changed
 				);
 
+			checkBoxItemLooseDrugsWhenBusted.Checked =
+				_settings.Player.LooseDrugsWhenBusted.Value;
+			
 			_settings.Player.LooseDrugsWhenBusted.Changed += (s, e)
-				=> checkBoxLooseDrugsWhenBusted.Checked = e.Value;
+				=> checkBoxItemLooseDrugsWhenBusted.Checked = e.Value;
 		}
 	}
 	private class TraffickingSubMenu : MenuBase
@@ -186,31 +227,39 @@ internal sealed partial class SettingsMenu : MenuBase
 			_settings = settings;
 
 			var listItemBustChance = AddListItem(
-				RESX.SettingsMenu_Trafficking_BustChance_Title,
-				RESX.SettingsMenu_Trafficking_BustChance_Description,
-				(item, index) => _settings.Trafficking.BustChance.Value = item,
-				_settings.Trafficking.GetBustChanceValues()
+				title: RESX.SettingsMenu_Trafficking_BustChance_Title,
+				description: RESX.SettingsMenu_Trafficking_BustChance_Description,
+				changed: (item, index) => _settings.Trafficking.BustChance.Value = item,
+				items: _settings.Trafficking.GetBustChanceValues()
 				);
+
+			listItemBustChance.SelectedItem =
+				_settings.Trafficking.BustChance.Value;
 
 			_settings.Trafficking.BustChance.Changed += (s, e)
 				=> listItemBustChance.SelectedItem = e.Value;
 
-			var checkBoxDiscoverDealer = AddCheckbox(
-				RESX.SettingsMenu_Trafficking_DiscoverDealer_Title,
-				RESX.SettingsMenu_Trafficking_DiscoverDealer_Description,
-				_settings.Trafficking.DiscoverDealer.Value,
-				changed => _settings.Trafficking.DiscoverDealer.Value = changed
+			var checkBoxItemDiscoverDealer = AddCheckbox(
+				title: RESX.SettingsMenu_Trafficking_DiscoverDealer_Title,
+				description: RESX.SettingsMenu_Trafficking_DiscoverDealer_Description,
+				changed: changed => _settings.Trafficking.DiscoverDealer.Value = changed
 				);
 
+			checkBoxItemDiscoverDealer.Checked =
+				_settings.Trafficking.DiscoverDealer.Value;
+			
 			_settings.Trafficking.DiscoverDealer.Changed += (s, e)
-				=> checkBoxDiscoverDealer.Checked = e.Value;
+				=> checkBoxItemDiscoverDealer.Checked = e.Value;
 
 			var listItemWantedLevel = AddListItem(
-				RESX.SettingsMenu_Trafficking_WantedLevel_Title,
-				RESX.SettingsMenu_Trafficking_WantedLevel_Description,
-				(item, index) => _settings.Trafficking.WantedLevel.Value = item,
-				_settings.Trafficking.GetWantedLevelValues()
+				title: RESX.SettingsMenu_Trafficking_WantedLevel_Title,
+				description: RESX.SettingsMenu_Trafficking_WantedLevel_Description,
+				changed: (item, index) => _settings.Trafficking.WantedLevel.Value = item,
+				items: _settings.Trafficking.GetWantedLevelValues()
 				);
+
+			listItemWantedLevel.SelectedItem =
+				_settings.Trafficking.WantedLevel.Value;
 
 			_settings.Trafficking.WantedLevel.Changed += (s, e)
 				=> listItemWantedLevel.SelectedItem = e.Value;

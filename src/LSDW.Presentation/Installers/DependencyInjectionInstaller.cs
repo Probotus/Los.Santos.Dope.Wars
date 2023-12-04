@@ -18,10 +18,9 @@ public static class DependencyInjectionInstaller
 	/// <returns>The enriched service collection.</returns>
 	public static IServiceCollection RegisterPresentationServices(this IServiceCollection services)
 	{
-		services.TryAddSingleton<ISettingsMenu, SettingsMenu>();
-
 		services.TryAddTransient<IBuyMenu, BuyMenu>();
 		services.TryAddTransient<ISellMenu, SellMenu>();
+		services.TryAddTransient<ISettingsMenu, SettingsMenu>();
 		services.TryAddTransient<ITraffickingMenu, TraffickingMenu>();
 
 		return services;

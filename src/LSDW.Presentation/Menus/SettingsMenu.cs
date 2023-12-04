@@ -28,13 +28,5 @@ internal sealed partial class SettingsMenu : MenuBase, ISettingsMenu
 		ItemCount = CountVisibility.Never;
 
 		AddMenuItems();
-
-		Closing += (s, e) => OnClosing(s);
-	}
-
-	private void OnClosing(object sender)
-	{
-		if (sender is SettingsMenu)
-			_settingsService.Save();
 	}
 }
