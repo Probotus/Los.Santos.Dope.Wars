@@ -4,6 +4,7 @@ using LSDW.Application.Installers;
 using LSDW.Application.Interfaces.Application.Missions;
 using LSDW.Application.Interfaces.Application.Services;
 using LSDW.Application.Interfaces.Infrastructure.Services;
+using LSDW.Application.Interfaces.Presentation.Menus;
 using LSDW.Domain.Installers;
 using LSDW.Infrastructure.Installers;
 using LSDW.Presentation.Installers;
@@ -22,6 +23,7 @@ public sealed class StartUp : Script
 	private readonly ISettingsService _settingsService;
 	private readonly IMarketService _marketService;
 	private readonly IStreetTrafficking _streetTrafficking;
+	private readonly ISettingsMenu _settingsMenu;
 
 	/// <summary>
 	/// Initializes a instance of the start up class.
@@ -30,10 +32,11 @@ public sealed class StartUp : Script
 	{
 		_serviceProvider = CreateServiceProvider();
 		_settingsService = GetService<ISettingsService>();
-		
+		_settingsMenu = GetService<ISettingsMenu>();
+
 		_settingsService.Load();
 		_settingsService.Save();
-		
+
 		_marketService = GetService<IMarketService>();
 		_streetTrafficking = GetService<IStreetTrafficking>();
 
@@ -42,6 +45,14 @@ public sealed class StartUp : Script
 		KeyUp += _streetTrafficking.OnKeyUp;
 
 		Tick += _marketService.OnTick;
+
+		KeyUp += OnKeyUp;
+	}
+
+	private void OnKeyUp(object sender, KeyEventArgs e)
+	{
+		if (e.KeyCode == Keys.F9)
+			_settingsMenu.Toggle();
 	}
 
 	/// <summary>

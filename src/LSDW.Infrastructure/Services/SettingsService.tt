@@ -51,10 +51,13 @@ foreach (PropertyInfo @interface in interfaces.Where(x => x.PropertyType.IsInter
 		var dataType = TypeNameOrAlias(property.PropertyType.GetProperties().First().PropertyType);
 #>
 		<#= dataType #> value<#= propertyName #> = _scriptSettings.GetValue("<#= sectionName.ToUpper() #>", "<#= propertyName.ToUpper() #>", _settings.<#= sectionName #>.<#= propertyName #>.Value);
-		_scriptSettings.SetValue("<#= sectionName.ToUpper() #>", "<#= propertyName.ToUpper() #>", value<#= propertyName #>);
-<#
-}}
-#>
+		if (value<#= propertyName #> != _settings.<#= sectionName #>.<#= propertyName #>.Value)
+		{
+			_loggerService.Information($"<#= propertyName #>: {_settings.<#= sectionName #>.<#= propertyName #>.Value} -> {value<#= propertyName #>}");
+			_settings.<#= sectionName #>.<#= propertyName #>.Value = value<#= propertyName #>;
+			_scriptSettings.SetValue("<#= sectionName.ToUpper() #>", "<#= propertyName.ToUpper() #>", value<#= propertyName #>);
+		}
+<# }} #>
 	}
 
 	private void SaveInternal()

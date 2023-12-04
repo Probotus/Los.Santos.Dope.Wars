@@ -61,11 +61,6 @@ public interface IDealerSettings
 public interface IMarketSettings
 {
 	/// <summary>
-	/// The restock interval property.
-	/// </summary>
-	IBindableProperty<int> RestockInterval { get; }
-
-	/// <summary>
 	/// The maximum drug price factor.
 	/// </summary>
 	IBindableProperty<float> MaximumDrugPrice { get; }
@@ -81,15 +76,14 @@ public interface IMarketSettings
 	IBindableProperty<int> RefreshInterval { get; }
 
 	/// <summary>
+	/// The restock interval property.
+	/// </summary>
+	IBindableProperty<int> RestockInterval { get; }
+
+	/// <summary>
 	/// The special offer chance property.
 	/// </summary>
 	IBindableProperty<float> SpecialOfferChance { get; }
-
-	/// <summary>
-	/// Returns the possible restock interval values.
-	/// </summary>
-	/// <returns>The list of possible values.</returns>
-	int[] GetRestockIntervalValues();
 
 	/// <summary>
 	/// Returns the possible maximum drug price factor values.
@@ -110,6 +104,12 @@ public interface IMarketSettings
 	int[] GetRefreshIntervalValues();
 
 	/// <summary>
+	/// Returns the possible restock interval values.
+	/// </summary>
+	/// <returns>The list of possible values.</returns>
+	int[] GetRestockIntervalValues();
+
+	/// <summary>
 	/// Returns the possible special offer chance values.
 	/// </summary>
 	/// <returns>The list of possible values.</returns>
@@ -122,14 +122,14 @@ public interface IMarketSettings
 public interface IPlayerSettings
 {
 	/// <summary>
-	/// The experience multiplier property.
-	/// </summary>
-	IBindableProperty<float> ExperienceMultiplier { get; }
-
-	/// <summary>
 	/// The bag size per level property.
 	/// </summary>
 	IBindableProperty<int> BagSizePerLevel { get; }
+
+	/// <summary>
+	/// The experience multiplier property.
+	/// </summary>
+	IBindableProperty<float> ExperienceMultiplier { get; }
 
 	/// <summary>
 	/// The loose drugs on death property.
@@ -142,26 +142,16 @@ public interface IPlayerSettings
 	IBindableProperty<bool> LooseDrugsWhenBusted { get; }
 
 	/// <summary>
-	/// The loose money on death property.
+	/// Returns the possible starting inventory values.
 	/// </summary>
-	IBindableProperty<bool> LooseMoneyOnDeath { get; }
-
-	/// <summary>
-	/// The loose money when busted property.
-	/// </summary>
-	IBindableProperty<bool> LooseMoneyWhenBusted { get; }
+	/// <returns>The list of possible values.</returns>
+	int[] GetBagSizePerLevelValues();
 
 	/// <summary>
 	/// Returns the possible experience multiplier factor values.
 	/// </summary>
 	/// <returns>The list of possible values.</returns>
 	float[] GetExperienceMultiplierValues();
-
-	/// <summary>
-	/// Returns the possible starting inventory values.
-	/// </summary>
-	/// <returns>The list of possible values.</returns>
-	int[] GetBagSizePerLevelValues();
 }
 
 /// <summary>

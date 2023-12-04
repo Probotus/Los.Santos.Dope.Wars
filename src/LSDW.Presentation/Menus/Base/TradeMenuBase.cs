@@ -18,8 +18,9 @@ internal abstract class TradeMenuBase : MenuBase, ITradeMenuBase
 	/// Initializes a new instance of the trade menu class.
 	/// </summary>
 	/// <param name="type">The transaction type to use.</param>
-	protected TradeMenuBase(TransactionType type) : base(type.GetMenuTitle(), type.GetMenuSubTitle())
+	protected TradeMenuBase(TransactionType type) : base(type.GetMenuTitle())
 	{
+		Description = type.GetMenuDescription();
 		BannerText.Font = GTAFont.Pricedown;
 		ItemCount = CountVisibility.Never;
 		MenuType = type;

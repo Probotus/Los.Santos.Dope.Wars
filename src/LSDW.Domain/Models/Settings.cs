@@ -68,17 +68,17 @@ internal sealed class MarketSettings : IMarketSettings
 	/// </summary>
 	public MarketSettings()
 	{
-		RestockInterval = new BindableProperty<int>(24);
 		MaximumDrugPrice = new BindableProperty<float>(1.15f);
 		MinimumDrugPrice = new BindableProperty<float>(0.85f);
-		RefreshInterval = new BindableProperty<int>(6);
+		RefreshInterval = new BindableProperty<int>(4);
+		RestockInterval = new BindableProperty<int>(24);
 		SpecialOfferChance = new BindableProperty<float>(0.15f);
 	}
 
-	public IBindableProperty<int> RestockInterval { get; }
 	public IBindableProperty<float> MaximumDrugPrice { get; }
 	public IBindableProperty<float> MinimumDrugPrice { get; }
 	public IBindableProperty<int> RefreshInterval { get; }
+	public IBindableProperty<int> RestockInterval { get; }
 	public IBindableProperty<float> SpecialOfferChance { get; }
 
 	public float[] GetMaximumDrugPriceValues()
@@ -88,7 +88,7 @@ internal sealed class MarketSettings : IMarketSettings
 		=> new float[] { 0.75f, 0.8f, 0.85f, 0.9f, 0.95f };
 
 	public int[] GetRefreshIntervalValues()
-		=> new int[] { 3, 6, 8, 12, 24 };
+		=> new int[] { 3, 4, 6, 8, 12, 24 };
 
 	public int[] GetRestockIntervalValues()
 		=> new int[] { 24, 48, 72, 96, 120, 144, 168 };
@@ -111,16 +111,12 @@ internal sealed class PlayerSettings : IPlayerSettings
 		BagSizePerLevel = new BindableProperty<int>(50);
 		LooseDrugsOnDeath = new BindableProperty<bool>(true);
 		LooseDrugsWhenBusted = new BindableProperty<bool>(true);
-		LooseMoneyOnDeath = new BindableProperty<bool>(true);
-		LooseMoneyWhenBusted = new BindableProperty<bool>(true);
 	}
 
 	public IBindableProperty<float> ExperienceMultiplier { get; }
 	public IBindableProperty<int> BagSizePerLevel { get; }
 	public IBindableProperty<bool> LooseDrugsOnDeath { get; }
 	public IBindableProperty<bool> LooseDrugsWhenBusted { get; }
-	public IBindableProperty<bool> LooseMoneyOnDeath { get; }
-	public IBindableProperty<bool> LooseMoneyWhenBusted { get; }
 
 	public float[] GetExperienceMultiplierValues()
 		=> new float[] { 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1f, 1.05f, 1.1f, 1.15f, 1.2f, 1.25f };

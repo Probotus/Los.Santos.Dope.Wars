@@ -51,7 +51,7 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	protected NativeItem AddItem(string title, string description = "", Action? activated = null)
 	{
 		NativeItem item = new(title, description);
-		item.Activated += (sender, args) => activated?.Invoke();
+		item.Activated += (s, e) => activated?.Invoke();
 		Add(item);
 		return item;
 	}
@@ -77,7 +77,7 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	protected NativeCheckboxItem AddCheckbox(string title, string description, bool defaultValue = false, Action<bool>? changed = null)
 	{
 		NativeCheckboxItem item = new(title, description, defaultValue);
-		item.CheckboxChanged += (sender, args) => changed?.Invoke(item.Checked);
+		item.CheckboxChanged += (s, e) => changed?.Invoke(item.Checked);
 		Add(item);
 		return item;
 	}
@@ -94,7 +94,7 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	protected NativeListItem<T> AddListItem<T>(string title, string description, Action<T, int>? changed = null, params T[] items)
 	{
 		NativeListItem<T> item = new(title, description, items);
-		item.ItemChanged += (sender, args) => changed?.Invoke(item.SelectedItem, item.SelectedIndex);
+		item.ItemChanged += (s, e) => changed?.Invoke(item.SelectedItem, item.SelectedIndex);
 		Add(item);
 		return item;
 	}
@@ -112,8 +112,8 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	protected NativeListItem<T> AddListItem<T>(string title, string description, Action<NativeListItem<T>, EventArgs>? activated = null, Action<NativeListItem<T>, ItemChangedEventArgs<T>>? changed = null, params T[] items)
 	{
 		NativeListItem<T> item = new(title, description, items);
-		item.Activated += (sender, args) => activated?.Invoke(item, args);
-		item.ItemChanged += (sender, args) => changed?.Invoke(item, args);
+		item.Activated += (s, e) => activated?.Invoke(item, e);
+		item.ItemChanged += (s, e) => changed?.Invoke(item, e);
 		Add(item);
 		return item;
 	}
@@ -122,14 +122,12 @@ internal abstract class MenuBase : NativeMenu, IMenuBase
 	/// Adds a new submenu and associated item to the menu.
 	/// </summary>
 	/// <param name="subMenu">The Sub Menu to add.</param>
-	/// <param name="altTitle">The alternative title of the item shown on the right.</param>
-	/// <param name="altTitleFont">The font of alternative title item shown on the right.</param>
 	/// <returns>The item associated with the sub menu.</returns>
-	protected NativeSubmenuItem AddMenu(MenuBase subMenu, string altTitle, GTAFont altTitleFont = GTAFont.ChaletComprimeCologne)
+	protected NativeSubmenuItem AddMenu(MenuBase subMenu)
 	{
 		NativeSubmenuItem subMenuItem = AddSubMenu(subMenu);
-		subMenuItem.AltTitle = altTitle;
-		subMenuItem.AltTitleFont = altTitleFont;
+		subMenuItem.AltTitle = "Menu";
+		subMenuItem.AltTitleFont = GTAFont.ChaletComprimeCologne;
 		return subMenuItem;
 	}
 
