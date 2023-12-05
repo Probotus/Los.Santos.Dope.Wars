@@ -1,32 +1,58 @@
-﻿namespace LSDW.DomainTests.Models;
+﻿using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Models;
+
+namespace LSDW.DomainTests.Models;
 
 public sealed partial class PlayerTests
 {
 	[TestMethod]
 	public void AddExperience()
 	{
-		_player.AddExperience(1000);
+		Player player = new(_settings);
+		_settings.Player.ExperienceMultiplier.Value = 1.0f;
 
-		Assert.AreEqual(1, _player.Level);
-		Assert.AreEqual(50, _player.BagSize);
-		Assert.AreEqual(2000, _player.Exp);
-		Assert.AreEqual(8000, _player.ExpForNextLevel);
+		player.AddExperience(1000);
+
+		Assert.AreEqual(1, player.Level);
+		Assert.AreEqual(50, player.BagSize);
+		Assert.AreEqual(2000, player.Exp);
+		Assert.AreEqual(8000, player.ExpForNextLevel);
 	}
 
 	[TestMethod]
 	[ExpectedException(typeof(ArgumentOutOfRangeException))]
 	public void AddExperienceException()
-		=> _player.AddExperience(0);
+	{
+		Player player = new(_settings);
+		
+		player.AddExperience(0);
+	}
 
 	[TestMethod]
 	public void AddExperienceMaximumLevel()
 	{
-		_player.AddExperience(1999999999);
+		Player player = new(_settings);
+		_settings.Player.ExperienceMultiplier.Value = 1.0f;
+		
+		player.AddExperience(999999900);
 
-		_player.AddExperience(1);
+		player.AddExperience(1);
 
-		Assert.AreEqual(100, _player.Level);
-		Assert.AreEqual(5000, _player.BagSize);
-		Assert.AreEqual(1000000000, _player.Exp);
+		Assert.AreEqual(100, player.Level);
+		Assert.AreEqual(5000, player.BagSize);
+		Assert.AreEqual(1000000000, player.Exp);
+	}
+
+	[TestMethod]
+	public void AddExperienceMultiplier()
+	{		
+		Player player = new(_settings);
+		_settings.Player.ExperienceMultiplier.Value = 1.5f;
+		
+		player.AddExperience(1000);
+
+		Assert.AreEqual(1, player.Level);
+		Assert.AreEqual(50, player.BagSize);
+		Assert.AreEqual(2500, player.Exp);
 	}
 }

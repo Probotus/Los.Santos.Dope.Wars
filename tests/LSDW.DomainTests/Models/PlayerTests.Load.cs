@@ -9,6 +9,8 @@ public sealed partial class PlayerTests
 	[TestMethod]
 	public void Load()
 	{
+		Player player = new(_settings);
+
 		int experience = 10000;
 		IEnumerable<IDrug> drugs = new List<IDrug>()
 		{
@@ -21,10 +23,10 @@ public sealed partial class PlayerTests
 			new Transaction(TransactionType.FIND, DrugType.COKE, 10, 80)
 		};
 
-		_player.Load(experience, drugs, transactions);
+		player.Load(experience, drugs, transactions);
 
-		Assert.AreEqual(experience, _player.Exp);
-		Assert.AreEqual(20, _player.Drugs.Count);
-		Assert.AreEqual(2, _player.Transactions.Count);
+		Assert.AreEqual(experience, player.Exp);
+		Assert.AreEqual(20, player.Drugs.Count);
+		Assert.AreEqual(2, player.Transactions.Count);
 	}
 }

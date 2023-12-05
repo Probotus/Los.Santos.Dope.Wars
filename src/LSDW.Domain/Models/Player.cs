@@ -8,6 +8,7 @@ namespace LSDW.Domain.Models;
 /// </summary>
 internal sealed class Player : NotifyPropertyBase, IPlayer
 {
+	private readonly ISettings _settings;
 	private const int LevelFactor = 3;
 	private const int LevelMultiplicator = 1000;
 	private const int MaximumLevel = 100;
@@ -19,10 +20,12 @@ internal sealed class Player : NotifyPropertyBase, IPlayer
 	/// <summary>
 	/// Initializes a new instance of the player class.
 	/// </summary>
-	public Player()
+	public Player(ISettings settings)
 	{
+		_settings = settings;
+		
 		PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-
+		
 		Exp = 1000;
 		Drugs = new DrugCollection();
 		Transactions = new TransactionCollection();
@@ -43,6 +46,11 @@ internal sealed class Player : NotifyPropertyBase, IPlayer
 		if (points < 1)
 			throw new ArgumentOutOfRangeException(nameof(points), "Must be greater zero.");
 
+		float expMultiplier = _settings.Player.ExperienceMultiplier.Value;
+
+		if (expMultiplier != 1.0f)
+			points = (int)Math.Abs(expMultiplier * points);
+
 		if (Exp + points > 1000000000)
 			points = 1000000000 - Exp;
 
@@ -60,37 +68,37 @@ internal sealed class Player : NotifyPropertyBase, IPlayer
 	{
 		if (propertyName == nameof(Exp))
 		{
-			Level = CalculateLevel(Exp);
+			CalculateNewLevel();
 		}
 
 		if (propertyName == nameof(Level))
 		{
-			BagSize = GetBagSize(Level);
-			ExpForNextLevel = GetExperienceForNextLevel(Level);
+			BagSize = GetBagSizeByLevel();
+			ExpForNextLevel = GetExpForNextLevel();
 		}
 	}
 
 	/// <summary>
 	/// Returns the current bag size based on the player level.
 	/// </summary>
-	/// <param name="level">The player level.</param>
 	/// <returns>The resulting bag size.</returns>
-	private static int GetBagSize(int level)
-		=> level * 50;
+	private int GetBagSizeByLevel()
+		=> Level * _settings.Player.BagSizePerLevel.Value;
 
 	/// <summary>
 	/// Returns the experience points needed for the next level.
 	/// </summary>
-	/// <param name="level">The player level.</param>
 	/// <returns>The resulting experience points.</returns>
-	private static int GetExperienceForNextLevel(int level)
-		=> (int)(Math.Pow(level + 1, LevelFactor) * LevelMultiplicator);
+	private int GetExpForNextLevel()
+		=> (int)Math.Abs(Math.Pow(Level + 1, LevelFactor) * LevelMultiplicator);
 
 	/// <summary>
-	/// Returns the current player level based on the experience points.
+	/// Calculates the new player level based on the experience points
+	/// and the experience points needed for the next level.
 	/// </summary>
-	/// <param name="experience">The current experience points.</param>
-	/// <returns>The current player level.</returns>
-	private static int CalculateLevel(int experience)
-		=> (int)Math.Round(Math.Pow((double)experience / LevelMultiplicator, 1.0d / LevelFactor));
+	private void CalculateNewLevel()
+	{
+		while(Exp >= GetExpForNextLevel())
+			Level++;
+	}
 }
