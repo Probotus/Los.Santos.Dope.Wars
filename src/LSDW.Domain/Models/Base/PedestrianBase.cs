@@ -46,7 +46,7 @@ internal abstract class PedestrianBase : NotifyPropertyBase, IPedestrianBase
 			Ped = _worldService.CreatePed(model, Position);
 
 		if (Name == string.Empty)
-			Name = model.IsFemalePed ? NameStatics.GetFemaleName() : NameStatics.GetMaleName();
+			Name = Ped.Gender == Gender.Male ? NameStatics.GetMaleName() : NameStatics.GetFemaleName();
 
 		model.MarkAsNoLongerNeeded();
 	}

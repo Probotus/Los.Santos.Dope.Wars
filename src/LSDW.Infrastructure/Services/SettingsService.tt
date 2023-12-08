@@ -55,6 +55,11 @@ foreach (PropertyInfo @interface in interfaces.Where(x => x.PropertyType.IsInter
 			name: "<#= propertyName.ToUpper() #>",
 			defaultvalue: _settings.<#= sectionName #>.<#= propertyName #>.Value
 			);
+		_scriptSettings.SetValue(
+			section: "<#= sectionName.ToUpper() #>",
+			name: "<#= propertyName.ToUpper() #>",
+			value: _settings.<#= sectionName #>.<#= propertyName #>.Value
+			);
 <# }} #>
 	}
 

@@ -1,4 +1,7 @@
 ﻿using LSDW.Application.Interfaces.Infrastructure.Services;
+using LSDW.Domain.Interfaces.Models;
+
+using Moq;
 
 namespace LSDW.InfrastructureTests.Services;
 
@@ -6,10 +9,14 @@ namespace LSDW.InfrastructureTests.Services;
 public partial class SettingsServiceTests : InfrastructureTestBase
 {
 	private static readonly string IniFilePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.ini");
-	private readonly ISettingsService _settingsService;
+	private readonly Mock<ILoggerService> _loggerServiceMock;
+	private readonly ISettings _settings;
 
 	public SettingsServiceTests()
-		=> _settingsService = GetService<ISettingsService>();
+	{
+		_loggerServiceMock = new Mock<ILoggerService>();
+		_settings = GetService<ISettings>();
+	}
 
 	[ClassCleanup]
 	public static void ClassCleanup()

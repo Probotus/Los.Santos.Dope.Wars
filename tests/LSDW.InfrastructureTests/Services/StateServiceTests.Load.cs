@@ -9,9 +9,9 @@ public partial class StateServiceTests
 	[TestMethod]
 	public void LoadTest()
 	{
-		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
+		StateService stateService = new(_domainServiceMock.Object, _loggerServiceMock.Object);
 
-		_stateService.Load();
+		stateService.Load();
 
 		_loggerServiceMock.Verify(x => x.Information(It.IsAny<string>(), It.IsAny<string>()));
 	}
@@ -19,9 +19,9 @@ public partial class StateServiceTests
 	[TestMethod]
 	public void LoadNoSaveTest()
 	{
-		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
+		StateService stateService = new(_domainServiceMock.Object, _loggerServiceMock.Object);
 
-		_stateService.Load();
+		stateService.Load();
 
 		_loggerServiceMock.Verify(x => x.Information(It.IsAny<string>(), It.IsAny<string>()));
 	}
@@ -31,9 +31,9 @@ public partial class StateServiceTests
 	{
 		IPlayer player = null!;
 		_domainServiceMock.Setup(x => x.Player).Returns(player);
-		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
+		StateService stateService = new(_domainServiceMock.Object, _loggerServiceMock.Object);
 
-		_stateService.Load();
+		stateService.Load();
 
 		_loggerServiceMock.Verify(v => v.Critical(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<string>()));
 	}

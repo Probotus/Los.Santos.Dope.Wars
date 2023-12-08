@@ -14,4 +14,26 @@ public partial class SettingsTests
 		Assert.IsNotNull(values);
 		Assert.AreNotEqual(0, values.Length);
 	}
+
+	[TestMethod]
+	public void GetMaxArmorValuesTest()
+	{
+		IDealerSettings settings = _settings.Dealer;
+
+		int[] values = settings.GetMaxArmorValues();
+
+		Assert.IsNotNull(values);
+		Assert.AreNotEqual(0, values.Length);
+	}
+
+	[TestMethod]
+	public void GetMaxHealthValuesTest()
+	{
+		IDealerSettings settings= _settings.Dealer;
+
+		int[] values = settings.GetMaxHealthValues();
+
+		Assert.IsNotNull(values);
+		Assert.AreNotEqual(0, values.Length);
+	}
 }

@@ -17,8 +17,6 @@ internal sealed class Dealer : PedestrianBase, IDealer
 	private readonly IWorldService _worldService;
 
 	private const int Accuracy = 5;
-	private const int Armor = 125;
-	private const int MaxHealth = 150;
 	private const float BlipScale = 0.75f;
 
 	private bool _discovered;
@@ -47,25 +45,30 @@ internal sealed class Dealer : PedestrianBase, IDealer
 	{
 		base.Create();
 
-		if (Ped is null)
-			return;
+		if (Ped is not null)
+		{
+			Ped.Accuracy = Accuracy;
+			Ped.MaxHealth = _settings.MaxHealth.Value;
+			Ped.Money = Money;
 
-		Ped.Accuracy = Accuracy;
-		Ped.Armor = Armor;
-		Ped.MaxHealth = MaxHealth;
-		Ped.Money = Money;
-		Ped.Weapons.Give(GangStatics.GetWeaponHash(), 1000, true, true);
+			if (_settings.HasArmor.Value)
+				Ped.Armor = _settings.MaxArmor.Value;
+
+			if (_settings.HasWeapons.Value)
+				Ped.Weapons.Give(GangStatics.GetWeaponHash(), 1000, true, true);
+		}
 	}
 
 	public void Discover()
 	{
 		CreateBlip(BlipSprite.Drugs, BlipColor.White);
 
-		if (Blip is null)
-			return;
+		if (Blip is not null)
+		{
+			Blip.Scale = BlipScale;
+			Blip.IsShortRange = true;
+		}
 
-		Blip.Scale = BlipScale;
-		Blip.IsShortRange = true;
 		Discovered = true;
 	}
 

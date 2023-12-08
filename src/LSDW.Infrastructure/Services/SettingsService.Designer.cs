@@ -37,85 +37,170 @@ internal sealed partial class SettingsService
 			name: "DOWNTIMEINHOURS",
 			defaultvalue: _settings.Dealer.DownTimeInHours.Value
 			);
+		_scriptSettings.SetValue(
+			section: "DEALER",
+			name: "DOWNTIMEINHOURS",
+			value: _settings.Dealer.DownTimeInHours.Value
+			);
 		_settings.Dealer.HasArmor.Value = _scriptSettings.GetValue(
 			section: "DEALER",
 			name: "HASARMOR",
 			defaultvalue: _settings.Dealer.HasArmor.Value
+			);
+		_scriptSettings.SetValue(
+			section: "DEALER",
+			name: "HASARMOR",
+			value: _settings.Dealer.HasArmor.Value
 			);
 		_settings.Dealer.HasWeapons.Value = _scriptSettings.GetValue(
 			section: "DEALER",
 			name: "HASWEAPONS",
 			defaultvalue: _settings.Dealer.HasWeapons.Value
 			);
+		_scriptSettings.SetValue(
+			section: "DEALER",
+			name: "HASWEAPONS",
+			value: _settings.Dealer.HasWeapons.Value
+			);
 		_settings.Dealer.MaxArmor.Value = _scriptSettings.GetValue(
 			section: "DEALER",
 			name: "MAXARMOR",
 			defaultvalue: _settings.Dealer.MaxArmor.Value
+			);
+		_scriptSettings.SetValue(
+			section: "DEALER",
+			name: "MAXARMOR",
+			value: _settings.Dealer.MaxArmor.Value
 			);
 		_settings.Dealer.MaxHealth.Value = _scriptSettings.GetValue(
 			section: "DEALER",
 			name: "MAXHEALTH",
 			defaultvalue: _settings.Dealer.MaxHealth.Value
 			);
+		_scriptSettings.SetValue(
+			section: "DEALER",
+			name: "MAXHEALTH",
+			value: _settings.Dealer.MaxHealth.Value
+			);
 		_settings.Market.MaximumDrugPrice.Value = _scriptSettings.GetValue(
 			section: "MARKET",
 			name: "MAXIMUMDRUGPRICE",
 			defaultvalue: _settings.Market.MaximumDrugPrice.Value
+			);
+		_scriptSettings.SetValue(
+			section: "MARKET",
+			name: "MAXIMUMDRUGPRICE",
+			value: _settings.Market.MaximumDrugPrice.Value
 			);
 		_settings.Market.MinimumDrugPrice.Value = _scriptSettings.GetValue(
 			section: "MARKET",
 			name: "MINIMUMDRUGPRICE",
 			defaultvalue: _settings.Market.MinimumDrugPrice.Value
 			);
+		_scriptSettings.SetValue(
+			section: "MARKET",
+			name: "MINIMUMDRUGPRICE",
+			value: _settings.Market.MinimumDrugPrice.Value
+			);
 		_settings.Market.RefreshInterval.Value = _scriptSettings.GetValue(
 			section: "MARKET",
 			name: "REFRESHINTERVAL",
 			defaultvalue: _settings.Market.RefreshInterval.Value
+			);
+		_scriptSettings.SetValue(
+			section: "MARKET",
+			name: "REFRESHINTERVAL",
+			value: _settings.Market.RefreshInterval.Value
 			);
 		_settings.Market.RestockInterval.Value = _scriptSettings.GetValue(
 			section: "MARKET",
 			name: "RESTOCKINTERVAL",
 			defaultvalue: _settings.Market.RestockInterval.Value
 			);
+		_scriptSettings.SetValue(
+			section: "MARKET",
+			name: "RESTOCKINTERVAL",
+			value: _settings.Market.RestockInterval.Value
+			);
 		_settings.Market.SpecialOfferChance.Value = _scriptSettings.GetValue(
 			section: "MARKET",
 			name: "SPECIALOFFERCHANCE",
 			defaultvalue: _settings.Market.SpecialOfferChance.Value
+			);
+		_scriptSettings.SetValue(
+			section: "MARKET",
+			name: "SPECIALOFFERCHANCE",
+			value: _settings.Market.SpecialOfferChance.Value
 			);
 		_settings.Player.BagSizePerLevel.Value = _scriptSettings.GetValue(
 			section: "PLAYER",
 			name: "BAGSIZEPERLEVEL",
 			defaultvalue: _settings.Player.BagSizePerLevel.Value
 			);
+		_scriptSettings.SetValue(
+			section: "PLAYER",
+			name: "BAGSIZEPERLEVEL",
+			value: _settings.Player.BagSizePerLevel.Value
+			);
 		_settings.Player.ExperienceMultiplier.Value = _scriptSettings.GetValue(
 			section: "PLAYER",
 			name: "EXPERIENCEMULTIPLIER",
 			defaultvalue: _settings.Player.ExperienceMultiplier.Value
+			);
+		_scriptSettings.SetValue(
+			section: "PLAYER",
+			name: "EXPERIENCEMULTIPLIER",
+			value: _settings.Player.ExperienceMultiplier.Value
 			);
 		_settings.Player.LooseDrugsOnDeath.Value = _scriptSettings.GetValue(
 			section: "PLAYER",
 			name: "LOOSEDRUGSONDEATH",
 			defaultvalue: _settings.Player.LooseDrugsOnDeath.Value
 			);
+		_scriptSettings.SetValue(
+			section: "PLAYER",
+			name: "LOOSEDRUGSONDEATH",
+			value: _settings.Player.LooseDrugsOnDeath.Value
+			);
 		_settings.Player.LooseDrugsWhenBusted.Value = _scriptSettings.GetValue(
 			section: "PLAYER",
 			name: "LOOSEDRUGSWHENBUSTED",
 			defaultvalue: _settings.Player.LooseDrugsWhenBusted.Value
+			);
+		_scriptSettings.SetValue(
+			section: "PLAYER",
+			name: "LOOSEDRUGSWHENBUSTED",
+			value: _settings.Player.LooseDrugsWhenBusted.Value
 			);
 		_settings.Trafficking.BustChance.Value = _scriptSettings.GetValue(
 			section: "TRAFFICKING",
 			name: "BUSTCHANCE",
 			defaultvalue: _settings.Trafficking.BustChance.Value
 			);
+		_scriptSettings.SetValue(
+			section: "TRAFFICKING",
+			name: "BUSTCHANCE",
+			value: _settings.Trafficking.BustChance.Value
+			);
 		_settings.Trafficking.DiscoverDealer.Value = _scriptSettings.GetValue(
 			section: "TRAFFICKING",
 			name: "DISCOVERDEALER",
 			defaultvalue: _settings.Trafficking.DiscoverDealer.Value
 			);
+		_scriptSettings.SetValue(
+			section: "TRAFFICKING",
+			name: "DISCOVERDEALER",
+			value: _settings.Trafficking.DiscoverDealer.Value
+			);
 		_settings.Trafficking.WantedLevel.Value = _scriptSettings.GetValue(
 			section: "TRAFFICKING",
 			name: "WANTEDLEVEL",
 			defaultvalue: _settings.Trafficking.WantedLevel.Value
+			);
+		_scriptSettings.SetValue(
+			section: "TRAFFICKING",
+			name: "WANTEDLEVEL",
+			value: _settings.Trafficking.WantedLevel.Value
 			);
 	}
 
