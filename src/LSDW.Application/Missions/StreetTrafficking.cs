@@ -1,14 +1,12 @@
 ﻿using GTA.Math;
 
 using LSDW.Application.Interfaces.Application.Missions;
-using LSDW.Application.Interfaces.Infrastructure.Managers;
 using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Application.Interfaces.Presentation.Menus;
 using LSDW.Application.Missions.Base;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Factories;
-using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Interfaces.Services;
 
@@ -28,8 +26,9 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	private readonly IDealerCollection _dealers;
 	private readonly ILoggerService _loggerService;
 	private readonly INotificationService _notificationService;
-	private readonly ITraffickingMenu _traffickingMenu;
 	private readonly IPlayerService _playerService;
+	private readonly ISettings _settings;
+	private readonly ITraffickingMenu _traffickingMenu;
 	private readonly IWorldService _worldService;
 	private IDealer? _dealer;
 	private bool _showMenu;
@@ -37,19 +36,18 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	/// <summary>
 	/// Initializes a new instance of the street trafficking mission class.
 	/// </summary>
-	/// <param name="dealers">The dealer collection instance to use.</param>
-	/// <param name="infrastructureManager">The infrastructure manager instance to use.</param>
-	/// <param name="domainManager">The domain manager instance to use.</param>
+	/// <param name="domainService">The domain manager instance to use.</param>
+	/// <param name="infrastructureService">The infrastructure manager instance to use.</param>
 	/// <param name="traffickingMenu">The trafficking menu instance to use.</param>
-	public StreetTrafficking(IDealerCollection dealers, IInfrastructureManager infrastructureManager, IDomainManager domainManager, ITraffickingMenu traffickingMenu) : base(infrastructureManager.StateService)
+	public StreetTrafficking(IDomainService domainService, IInfrastructureService infrastructureService, ITraffickingMenu traffickingMenu) : base(infrastructureService.StateService)
 	{
-		_dealers = dealers;
-		_loggerService = infrastructureManager.LoggerService;
-		_notificationService = domainManager.NotificationService;
+		_dealers = domainService.Dealers;
+		_loggerService = infrastructureService.LoggerService;
+		_notificationService = domainService.NotificationService;
+		_playerService = domainService.PlayerService;
+		_settings = domainService.Settings;
 		_traffickingMenu = traffickingMenu;
-		_playerService = domainManager.PlayerService;
-		_worldService = domainManager.WorldService;
-
+		_worldService = domainService.WorldService;
 	}
 
 	public void Discover()
@@ -59,7 +57,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 			if (_dealer is not null)
 				return;
 
-			_dealers.ForEach(dealer => dealer.Discovered && dealer.Blip is null, dealer => dealer.Discover(_worldService));
+			_dealers.ForEach(dealer => dealer.Discovered && dealer.Blip is null, dealer => dealer.Discover());
 
 			_dealers.ForEach(dealer => !dealer.Discovered, dealer =>
 			{
@@ -67,7 +65,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 
 				if (dealer.Position.DistanceTo(playerPosition) <= DiscoverDistance)
 				{
-					dealer.Discover(_worldService);
+					dealer.Discover();
 
 					string zoneFullName = _worldService.GetZoneLocalizedName(dealer.Position);
 
@@ -97,7 +95,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 					if (dealer.Position.DistanceTo(_playerService.Position) <= CreateDistance)
 					{
 						_dealer = dealer;
-						_dealer.Create(_worldService);
+						_dealer.Create();
 						_traffickingMenu.Initialize(dealer);
 						return;
 					}
@@ -113,7 +111,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 					if (_showMenu)
 						return;
 
-					_dealer.Ped.Task.LookAt(_playerService.Character);					
+					_dealer.Ped.Task.LookAt(_playerService.Character);
 					_traffickingMenu.Show();
 					_showMenu = true;
 				}
@@ -194,20 +192,20 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 				return;
 
 			Vector3 randomPosition = _playerService.Position.Around(TrackDistance);
-			Vector3 possiblePosition = _worldService.GetNextPositionOnSidewalk(randomPosition);
+			Vector3 position = _worldService.GetNextPositionOnSidewalk(randomPosition);
 
-			if (possiblePosition.Equals(Vector3.Zero))
+			if (position.Equals(Vector3.Zero))
 				return;
 
-			string zoneName = _worldService.GetZoneDisplayName(possiblePosition);
+			string zone = _worldService.GetZoneDisplayName(position);
 
-			if (_dealers.Any(x => x.Zone == zoneName))
+			if (_dealers.Any(x => x.Zone == zone))
 				return;
 
-			if (_dealers.Any(x => x.Position.DistanceTo(possiblePosition) <= TerritoryDistance))
+			if (_dealers.Any(x => x.Position.DistanceTo(position) <= TerritoryDistance))
 				return;
 
-			IDealer dealer = DomainFactory.CreateDealer(possiblePosition, zoneName);
+			IDealer dealer = DomainFactory.CreateDealer(_settings, _worldService, position);
 
 			_dealers.Add(dealer);
 

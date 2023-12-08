@@ -1,17 +1,15 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Managers;
-using LSDW.Application.Interfaces.Infrastructure.Services;
-using LSDW.Infrastructure.Managers;
+﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Infrastructure.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace LSDW.Infrastructure.Installers;
+namespace LSDW.Infrastructure.Helpers;
 
 /// <summary>
-/// The dependency injection installer class.
+/// The dependency injection class.
 /// </summary>
-public static class DependencyInjectionInstaller
+public static class DependencyInjection
 {
 	/// <summary>
 	/// Registers the infrastructure services to the service collection.
@@ -23,7 +21,7 @@ public static class DependencyInjectionInstaller
 		services.TryAddSingleton<ILoggerService, LoggerService>();
 		services.TryAddSingleton<ISettingsService, SettingsService>();
 		services.TryAddSingleton<IStateService, StateService>();
-		services.TryAddSingleton<IInfrastructureManager, InfrastructureManager>();
+		services.TryAddSingleton<IInfrastructureService, InfrastructureService>();
 
 		return services;
 	}

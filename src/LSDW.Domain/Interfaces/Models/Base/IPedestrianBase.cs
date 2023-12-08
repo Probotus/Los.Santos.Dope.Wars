@@ -1,14 +1,12 @@
 ﻿using GTA;
 using GTA.Math;
 
-using LSDW.Domain.Interfaces.Services;
-
 namespace LSDW.Domain.Interfaces.Models.Base;
 
 /// <summary>
 /// The pedestrian base interface.
 /// </summary>
-public interface IPedestrianBase : INotifyPropertyBase
+public interface IPedestrianBase : INotifyPropertyBase, IInitializable
 {
 	/// <summary>
 	/// The blip of the pedestrian.
@@ -49,16 +47,14 @@ public interface IPedestrianBase : INotifyPropertyBase
 	/// <remarks>
 	/// This creates the <see cref="Ped"/>.
 	/// </remarks>
-	/// <param name="worldProvider">The world provider to use.</param>
-	void Create(IWorldService worldProvider);
+	void Create();
 
 	/// <summary>
 	/// Creates a blip for the pedestrian.
 	/// </summary>
-	/// <param name="worldProvider">The world provider to use.</param>
 	/// <param name="sprite">The blip sprite to use.</param>
 	/// <param name="color">The blip color to use.</param>
-	void CreateBlip(IWorldService worldProvider, BlipSprite sprite, BlipColor color);
+	void CreateBlip(BlipSprite sprite, BlipColor color);
 
 	/// <summary>
 	/// Deletes the pedestrian.

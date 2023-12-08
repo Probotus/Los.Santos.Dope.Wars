@@ -1,7 +1,7 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Managers;
+﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Application.Missions;
-using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Interfaces.Services;
 
 namespace LSDW.ApplicationTests.Missions;
 
@@ -9,8 +9,8 @@ namespace LSDW.ApplicationTests.Missions;
 public sealed partial class StreetTraffickingTests : ApplicationTestBase
 {
 	private readonly IDealerCollection _dealers;
-	private readonly IInfrastructureManager _infrastructureManager;
-	private readonly IDomainManager _domainManager;
+	private readonly IInfrastructureService _infrastructureManager;
+	private readonly IDomainService _domainManager;
 	private readonly StreetTrafficking _streetTrafficking;
 
 	public StreetTraffickingTests()

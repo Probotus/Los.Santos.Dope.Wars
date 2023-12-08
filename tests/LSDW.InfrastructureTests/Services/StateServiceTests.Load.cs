@@ -1,5 +1,4 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Services;
-using LSDW.Infrastructure.Services;
+﻿using LSDW.Infrastructure.Services;
 
 using Moq;
 
@@ -8,19 +7,31 @@ public partial class StateServiceTests
 {
 	[TestMethod]
 	public void LoadTest()
-		=> _stateService.Load();
+	{
+		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
+
+		_stateService.Load();
+
+		_loggerServiceMock.Verify(x => x.Information(It.IsAny<string>(), It.IsAny<string>()));
+	}
 
 	[TestMethod]
 	public void LoadNoSaveTest()
-		=> _stateService.Load();
+	{
+		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
+
+		_stateService.Load();
+
+		_loggerServiceMock.Verify(x => x.Information(It.IsAny<string>(), It.IsAny<string>()));
+	}
 
 	[TestMethod]
 	public void LoadExceptionTest()
 	{
-		Mock<ILoggerService> mock = new();
+		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
 
-		new StateService(mock.Object, null!, null!).Load();
+		_stateService.Load();
 
-		mock.Verify(v => v.Critical(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<string>()));
+		_loggerServiceMock.Verify(v => v.Critical(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<string>()));
 	}
 }

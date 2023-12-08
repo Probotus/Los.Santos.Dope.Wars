@@ -1,6 +1,7 @@
 ﻿using LSDW.Domain.Extensions;
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Models;
 
 namespace LSDW.DomainTests.Models;
 public partial class DealerTests
@@ -10,10 +11,11 @@ public partial class DealerTests
 	{
 		IEnumerable<IDrug> drugs = DomainFactory.GetAllDrugs();
 		drugs.ForEach(drug => drug.SetValues(1, 10));
+		Dealer dealer = new(_settings, _worldServiceMock.Object);
 
-		_dealer.Load(drugs);
+		dealer.Load(drugs);
 
-		Assert.AreEqual(15, _dealer.Drugs.Count);
-		Assert.AreEqual(150, _dealer.Drugs.Value);
+		Assert.AreEqual(15, dealer.Drugs.Count);
+		Assert.AreEqual(150, dealer.Drugs.Value);
 	}
 }

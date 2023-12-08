@@ -1,7 +1,7 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Managers;
+﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Application.Services;
-using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Interfaces.Services;
 
 namespace LSDW.ApplicationTests.Services;
 
@@ -10,8 +10,8 @@ public sealed partial class MarketServiceTests : ApplicationTestBase
 {
 	private readonly IDealerCollection _dealers;
 	private readonly IPlayer _player;
-	private readonly IInfrastructureManager _infrastructureManager;
-	private readonly IDomainManager _domainManager;
+	private readonly IInfrastructureService _infrastructureManager;
+	private readonly IDomainService _domainManager;
 	private readonly MarketService _marketService;
 
 	public MarketServiceTests()

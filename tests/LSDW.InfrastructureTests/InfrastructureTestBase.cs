@@ -1,5 +1,5 @@
-﻿using LSDW.Domain.Installers;
-using LSDW.Infrastructure.Installers;
+﻿using LSDW.Domain.Helpers;
+using LSDW.Infrastructure.Helpers;
 
 using Microsoft.Extensions.DependencyInjection;
 

@@ -9,7 +9,7 @@ public sealed partial class DrugCollectionTests
 	[TestMethod]
 	public void Add()
 	{
-		IDrugCollection drugs = GetService<IDrugCollection>();
+		DrugCollection drugs = [];
 		IDrug drug = new Drug(DrugType.COKE, 13, 87);
 
 		drugs.Add(drug.Type, drug.Quantity, drug.Value);

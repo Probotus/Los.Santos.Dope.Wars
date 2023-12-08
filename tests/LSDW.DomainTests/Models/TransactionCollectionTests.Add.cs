@@ -9,14 +9,11 @@ public sealed partial class TransactionCollectionTests
 	[TestMethod]
 	public void Add()
 	{
-		ITransactionCollection transactions =
-			GetService<ITransactionCollection>();
-
 		ITransaction transaction =
 			DomainFactory.CreateTransaction(TransactionType.FIND, DrugType.SMACK, 15, 90);
 
-		transactions.Add(transaction);
+		_transactions.Add(transaction);
 
-		Assert.AreEqual(1, transactions.Count);
+		Assert.AreEqual(1, _transactions.Count);
 	}
 }

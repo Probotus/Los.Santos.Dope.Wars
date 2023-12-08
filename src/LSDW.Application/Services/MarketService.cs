@@ -1,9 +1,7 @@
 ﻿using LSDW.Application.Interfaces.Application.Services;
-using LSDW.Application.Interfaces.Infrastructure.Managers;
 using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
-using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Interfaces.Services;
 using LSDW.Domain.Models.Base;
@@ -36,7 +34,7 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 	/// <param name="player">The player instance to use.</param>
 	/// <param name="infrastructureManager">The infrastructure manager instance to use.</param>
 	/// <param name="domainManager">The domain manager instance to use.</param>
-	public MarketService(IDealerCollection dealers, IPlayer player, IInfrastructureManager infrastructureManager, IDomainManager domainManager)
+	public MarketService(IDealerCollection dealers, IPlayer player, IInfrastructureService infrastructureManager, IDomainService domainManager)
 	{
 		_dealers = dealers;
 		_player = player;

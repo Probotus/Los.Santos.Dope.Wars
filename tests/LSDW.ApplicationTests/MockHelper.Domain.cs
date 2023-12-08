@@ -1,5 +1,4 @@
 ﻿using LSDW.Domain.Factories;
-using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Interfaces.Services;
 
@@ -71,9 +70,9 @@ internal static partial class MockHelper
 		return mock.Object;
 	}
 
-	internal static IDomainManager GetDomainManager()
+	internal static IDomainService GetDomainManager()
 	{
-		Mock<IDomainManager> mock = new();
+		Mock<IDomainService> mock = new();
 		mock.Setup(x => x.AudioService).Returns(GetAudioProvider());
 		mock.Setup(x => x.GameService).Returns(GetGameProvider());
 		mock.Setup(x => x.NotificationService).Returns(GetNotificationService());

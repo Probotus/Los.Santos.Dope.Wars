@@ -2,6 +2,7 @@
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Extensions.Serialization;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Interfaces.Services;
 using LSDW.Infrastructure.Constants;
 using LSDW.Infrastructure.Factories;
 using LSDW.Infrastructure.Models;
@@ -14,12 +15,15 @@ namespace LSDW.Infrastructure.Services;
 /// <remarks>
 /// Initializes a new instance of the state service class.
 /// </remarks>
+/// <param name="domainService">The domain service instance to use.</param>
 /// <param name="loggerService">The logger service instance to use.</param>
-/// <param name="dealers">The dealer collection instance to use.</param>
-/// <param name="player">The player instance to use.</param>
-internal sealed class StateService(ILoggerService loggerService, IDealerCollection dealers, IPlayer player) : IStateService
+internal sealed class StateService(IDomainService domainService, ILoggerService loggerService) : IStateService
 {
 	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.sav");
+	private readonly IDealerCollection _dealers = domainService.Dealers;
+	private readonly IPlayer _player = domainService.Player;
+	private readonly ISettings _settings = domainService.Settings;
+	private readonly IWorldService _worldService = domainService.WorldService;
 
 	public void Load()
 	{
@@ -36,13 +40,13 @@ internal sealed class StateService(ILoggerService loggerService, IDealerCollecti
 				.GetString()
 				.FromXml<GameState>();
 
-			player.Load(
+			_player.Load(
 				state.Player.Exp,
 				InfrastructureFactory.CreateDrugs(state.Player),
 				InfrastructureFactory.CreateTransactions(state.Player)
 				);
 
-			dealers.Load(InfrastructureFactory.CreateDealers(state.Dealers));
+			_dealers.Load(InfrastructureFactory.CreateDealers(_settings, _worldService, state.Dealers));
 
 			loggerService.Information($"{nameof(LSDW)} state loaded.");
 		}
@@ -56,7 +60,7 @@ internal sealed class StateService(ILoggerService loggerService, IDealerCollecti
 	{
 		try
 		{
-			byte[] content = new GameState(player, dealers)
+			byte[] content = new GameState(_player, _dealers)
 				.ToXml(XmlConstants.SerializerNamespaces)
 				.GetBytes()
 				.Compress();

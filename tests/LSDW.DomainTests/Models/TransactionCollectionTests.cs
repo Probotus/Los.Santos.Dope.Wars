@@ -10,7 +10,10 @@ public sealed partial class TransactionCollectionTests : DomainTestBase
 	private readonly ITransactionCollection _transactions;
 
 	public TransactionCollectionTests()
-		=> _transactions = GetService<ITransactionCollection>();
+	{
+		IPlayer player = GetService<IPlayer>();
+		_transactions = player.Transactions;
+	}
 
 	private readonly IEnumerable<ITransaction> _existingTransactions = new List<ITransaction>()
 	{

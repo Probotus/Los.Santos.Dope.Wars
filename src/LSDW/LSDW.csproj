@@ -1,10 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="ScriptHookVDotNet3" Version="3.6.0" ExcludeAssets="runtime" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\LSDW.Infrastructure\LSDW.Infrastructure.csproj" />
 		<ProjectReference Include="..\LSDW.Presentation\LSDW.Presentation.csproj" />
 	</ItemGroup>

@@ -1,13 +1,18 @@
-﻿namespace LSDW.DomainTests.Models;
+﻿using LSDW.Domain.Models;
+
+namespace LSDW.DomainTests.Models;
 
 public partial class DealerTests
 {
 	[TestMethod]
 	public void CleaUpTest()
 	{
-		_dealer.CleanUp();
+		Dealer dealer = new(_settings, _worldServiceMock.Object);
+		dealer.Initialize(GTA.PedHash.Dealer01SMY, GTA.Math.Vector3.Zero);
 
-		Assert.IsNull(_dealer.Blip);
-		Assert.IsNull(_dealer.Ped);
+		dealer.CleanUp();
+
+		Assert.IsNull(dealer.Blip);
+		Assert.IsNull(dealer.Ped);
 	}
 }

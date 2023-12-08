@@ -2,6 +2,7 @@
 using LSDW.Domain.Extensions;
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Models;
 
 namespace LSDW.DomainTests.Models;
 
@@ -12,7 +13,7 @@ public sealed partial class DrugCollectionTests
 	{
 		IEnumerable<IDrug> existingDrugs = DomainFactory.GetAllDrugs();
 		existingDrugs.ForEach(drug => drug.Add(10, 10));
-		IDrugCollection drugs = GetService<IDrugCollection>();
+		DrugCollection drugs = [];
 		drugs.Load(existingDrugs);
 
 		drugs.Remove(DrugType.COKE, 10);

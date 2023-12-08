@@ -13,6 +13,9 @@ namespace LSDW.Domain.Models;
 /// </summary>
 internal sealed class Dealer : PedestrianBase, IDealer
 {
+	private readonly IDealerSettings _settings;
+	private readonly IWorldService _worldService;
+
 	private const int Accuracy = 5;
 	private const int Armor = 125;
 	private const int MaxHealth = 150;
@@ -24,45 +27,25 @@ internal sealed class Dealer : PedestrianBase, IDealer
 	/// <summary>
 	/// Initializes a instance of the dealer class.
 	/// </summary>
-	/// <param name="position">The position of the dealer.</param>
-	/// <param name="zone">The zone of the dealer.</param>
-	internal Dealer(Vector3 position, string zone) : base(GangStatics.GetPedHash(), string.Empty, position)
+	/// <param name="settings">The settings instance to use.</param>
+	/// <param name="worldService">The world service instance to use.</param>
+	public Dealer(ISettings settings, IWorldService worldService) : base(worldService)
 	{
-		Zone = zone;
+		_settings = settings.Dealer;
+		_worldService = worldService;
+
 		Drugs = new DrugCollection();
-
-		PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-	}
-
-	/// <summary>
-	/// Initializes a instance of the dealer class.
-	/// </summary>
-	/// <param name="discovered">Has the dealer been discovered?</param>
-	/// <param name="hash">The ped hash of the dealer.</param>
-	/// <param name="name">The name of the dealer.</param>
-	/// <param name="money">The money of the dealer.</param>
-	/// <param name="position">The position of the dealer.</param>
-	/// <param name="zone">The zone of the dealer.</param>
-	/// <param name="drugs">The dealer drug collection.</param>
-	internal Dealer(bool discovered, PedHash hash, string name, int money, Vector3 position, string zone, IEnumerable<IDrug> drugs) : base(hash, name, position)
-	{
-		Discovered = discovered;
-		Money = money;
-		Zone = zone;
-		Drugs = new DrugCollection();
-		Load(drugs);
-
 		PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 	}
 
 	public bool Discovered { get => _discovered; private set => SetProperty(ref _discovered, value); }
-	public string Zone { get; }
-	public IDrugCollection Drugs { get; }
+	public IDrugCollection Drugs { get; private set; }
 	public int Money { get => _money; set => SetProperty(ref _money, value); }
+	public string Zone { get; private set; } = string.Empty;
 
-	public override void Create(IWorldService worldProvider)
+	public override void Create()
 	{
-		base.Create(worldProvider);
+		base.Create();
 
 		if (Ped is null)
 			return;
@@ -74,9 +57,9 @@ internal sealed class Dealer : PedestrianBase, IDealer
 		Ped.Weapons.Give(GangStatics.GetWeaponHash(), 1000, true, true);
 	}
 
-	public void Discover(IWorldService worldProvider)
+	public void Discover()
 	{
-		CreateBlip(worldProvider, BlipSprite.Drugs, BlipColor.White);
+		CreateBlip(BlipSprite.Drugs, BlipColor.White);
 
 		if (Blip is null)
 			return;
@@ -88,6 +71,26 @@ internal sealed class Dealer : PedestrianBase, IDealer
 
 	public void Load(IEnumerable<IDrug> values)
 		=> Drugs.Load(values);
+
+	/// <summary>
+	/// Initializes the dealer object completely.
+	/// </summary>
+	/// <param name="hash">The ped hash of the dealer.</param>
+	/// <param name="position">The position of the dealer.</param>
+	/// <param name="name">The name of the dealer.</param>
+	/// <param name="discovered">Has the dealer been discovered?</param>
+	/// <param name="money">The money of the dealer.</param>
+	/// <param name="drugs">The dealer drug collection.</param>
+	public void Initialize(PedHash hash, Vector3 position, string name, bool discovered, int money, IEnumerable<IDrug> drugs)
+	{
+		Initialize(hash, position, name);
+
+		Discovered = discovered;
+		Money = money;
+		Zone = _worldService.GetZoneDisplayName(position);
+
+		Load(drugs);
+	}
 
 	private void OnPropertyChanged(string propertyName)
 	{

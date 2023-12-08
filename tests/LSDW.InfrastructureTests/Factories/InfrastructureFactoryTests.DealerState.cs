@@ -11,7 +11,8 @@ public partial class InfrastructureFactoryTests
 	{
 		IDealer dealer = GetDealer();
 
-		DealerState state = InfrastructureFactory.CreateDealerState(dealer);
+		DealerState state =
+			InfrastructureFactory.CreateDealerState(dealer);
 
 		Assert.IsNotNull(state);
 		Assert.AreEqual(dealer.Discovered, state.Discovered);
@@ -27,7 +28,8 @@ public partial class InfrastructureFactoryTests
 	{
 		List<IDealer> dealers = [GetDealer(), GetDealer()];
 
-		DealerState[] states = InfrastructureFactory.CreateDealerStates(dealers);
+		DealerState[] states =
+			InfrastructureFactory.CreateDealerStates(dealers);
 
 		Assert.IsNotNull(states);
 		Assert.AreEqual(dealers.Count, states.Length);
@@ -38,7 +40,8 @@ public partial class InfrastructureFactoryTests
 	{
 		DealerState state = GetDealerState();
 
-		IDealer dealer = InfrastructureFactory.CreateDealer(state);
+		IDealer dealer =
+			InfrastructureFactory.CreateDealer(_settings, _worldServiceMock.Object, state);
 
 		Assert.IsNotNull(state);
 		Assert.AreEqual(state.Discovered, dealer.Discovered);
@@ -46,7 +49,6 @@ public partial class InfrastructureFactoryTests
 		Assert.AreEqual(state.Name, dealer.Name);
 		Assert.AreEqual(state.Money, dealer.Money);
 		Assert.AreEqual(state.Position, dealer.Position);
-		Assert.AreEqual(state.Zone, dealer.Zone);
 	}
 
 	[TestMethod]
@@ -54,7 +56,8 @@ public partial class InfrastructureFactoryTests
 	{
 		DealerState[] states = [GetDealerState(), GetDealerState()];
 
-		IEnumerable<IDealer> dealers = InfrastructureFactory.CreateDealers(states);
+		IEnumerable<IDealer> dealers =
+			InfrastructureFactory.CreateDealers(_settings, _worldServiceMock.Object, states);
 
 		Assert.IsNotNull(dealers);
 		Assert.AreEqual(states.Length, dealers.Count());

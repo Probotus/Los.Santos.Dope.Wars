@@ -1,5 +1,4 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Managers;
-using LSDW.Application.Interfaces.Infrastructure.Services;
+﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 
 using Moq;
 
@@ -7,9 +6,9 @@ namespace LSDW.ApplicationTests;
 
 internal static partial class MockHelper
 {
-	internal static IInfrastructureManager GetInfrastructureManager()
+	internal static IInfrastructureService GetInfrastructureManager()
 	{
-		Mock<IInfrastructureManager> mock = new();
+		Mock<IInfrastructureService> mock = new();
 		mock.Setup(x => x.LoggerService).Returns(GetLoggerService());
 		mock.Setup(x => x.StateService).Returns(GetStateService());
 		mock.Setup(x => x.SettingsService).Returns(GetSettingsService());

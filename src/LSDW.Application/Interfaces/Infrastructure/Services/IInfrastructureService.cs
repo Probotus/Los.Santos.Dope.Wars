@@ -1,11 +1,9 @@
-﻿using LSDW.Application.Interfaces.Infrastructure.Services;
-
-namespace LSDW.Application.Interfaces.Infrastructure.Managers;
+﻿namespace LSDW.Application.Interfaces.Infrastructure.Services;
 
 /// <summary>
-/// The infrastructure manager interface.
+/// The infrastructure service interface.
 /// </summary>
-public interface IInfrastructureManager
+public interface IInfrastructureService
 {
 	/// <summary>
 	/// The logger service.

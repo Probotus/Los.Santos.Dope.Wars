@@ -1,7 +1,7 @@
 ﻿using LSDW.Application.Interfaces.Presentation.Menus;
 using LSDW.Domain.Interfaces.Models;
 
-namespace LSDW.Presentation;
+namespace LSDW.Presentation.Menus;
 
 /// <summary>
 /// The trafficking menu class.

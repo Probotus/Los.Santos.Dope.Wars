@@ -1,7 +1,6 @@
-﻿using GTA.Math;
+﻿using LSDW.Domain.Interfaces.Models;
 
-using LSDW.Domain.Factories;
-using LSDW.Domain.Interfaces.Models;
+using Moq;
 
 namespace LSDW.DomainTests.Models;
 
@@ -10,7 +9,10 @@ public sealed partial class DealerCollectionTests
 	[TestMethod]
 	public void RemoveTest()
 	{
-		_dealers.Add(DomainFactory.CreateDealer(Vector3.Zero, "TestZone"));
+		Mock<IDealer> dealerMock = new();
+		dealerMock.Setup(x => x.Zone).Returns("TestZone");
+
+		_dealers.Add(dealerMock.Object);
 
 		IDealer dealer = _dealers.Where(x => x.Zone == "TestZone").Single();
 

@@ -1,15 +1,20 @@
-﻿using GTA.Math;
+﻿using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Interfaces.Services;
 
-using LSDW.Domain.Factories;
-using LSDW.Domain.Interfaces.Models;
+using Moq;
 
 namespace LSDW.DomainTests.Models;
 
 [TestClass]
 public partial class DealerTests : DomainTestBase
 {
-	private readonly IDealer _dealer;
+	private readonly ISettings _settings;
+	private readonly Mock<IWorldService> _worldServiceMock;
 
 	public DealerTests()
-		=> _dealer = DomainFactory.CreateDealer(Vector3.Zero, "UnitTest");
+	{
+		_settings = GetService<ISettings>();
+		_worldServiceMock = new Mock<IWorldService>();
+		_worldServiceMock.SetupAllProperties();
+	}
 }

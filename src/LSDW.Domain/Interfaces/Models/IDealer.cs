@@ -1,5 +1,4 @@
 ﻿using LSDW.Domain.Interfaces.Models.Base;
-using LSDW.Domain.Interfaces.Services;
 
 namespace LSDW.Domain.Interfaces.Models;
 
@@ -34,6 +33,5 @@ public interface IDealer : IPedestrianBase, ILoadable<IDrug>
 	/// <remarks>
 	/// This creates the <see cref="IPedestrianBase.Blip"/>.
 	/// </remarks>
-	/// <param name="worldProvider">The world provider to use.</param>
-	void Discover(IWorldService worldProvider);
+	void Discover();
 }

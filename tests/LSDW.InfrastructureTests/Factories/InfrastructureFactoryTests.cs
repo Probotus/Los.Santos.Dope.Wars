@@ -4,22 +4,36 @@ using GTA.Math;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Factories;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Domain.Interfaces.Services;
 using LSDW.Infrastructure.Models;
+
+using Moq;
 
 namespace LSDW.InfrastructureTests.Factories;
 
 [TestClass]
-public partial class InfrastructureFactoryTests
+public partial class InfrastructureFactoryTests : InfrastructureTestBase
 {
-	private static IDealer GetDealer()
+	private readonly ISettings _settings;
+	private readonly Mock<IWorldService> _worldServiceMock;
+
+	public InfrastructureFactoryTests()
+	{
+		_settings = GetService<ISettings>();
+		_worldServiceMock = new Mock<IWorldService>();
+		_worldServiceMock.SetupAllProperties();
+	}
+
+	private IDealer GetDealer()
 	{
 		IDealer dealer = DomainFactory.CreateDealer(
+			settings: _settings,
+			worldService: _worldServiceMock.Object,
 			discovered: true,
 			hash: PedHash.Dealer01SMY,
 			name: "John Doe",
 			money: 125,
 			position: Vector3.Zero,
-			zone: "TestZone",
 			drugs: DomainFactory.GetAllDrugs()
 			);
 
@@ -35,8 +49,7 @@ public partial class InfrastructureFactoryTests
 			Hash = PedHash.DeadHooker,
 			Name = "Jane Doe",
 			Money = 175,
-			Position = Vector3.Zero,
-			Zone = "TestZone"
+			Position = Vector3.Zero
 		};
 
 		return state;

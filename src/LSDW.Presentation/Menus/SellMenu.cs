@@ -3,7 +3,6 @@
 using LSDW.Application.Interfaces.Presentation.Menus;
 using LSDW.Domain.Enumerators;
 using LSDW.Domain.Extensions;
-using LSDW.Domain.Interfaces.Manager;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Interfaces.Services;
 using LSDW.Presentation.Menus.Base;
@@ -18,7 +17,7 @@ namespace LSDW.Presentation.Menus;
 /// </remarks>
 /// <param name="player">The player instance to use.</param>
 /// <param name="domainManager">The domain manager instance to use.</param>
-internal sealed class SellMenu(IPlayer player, IDomainManager domainManager) : TradeMenuBase(TransactionType.SELL), ISellMenu
+internal sealed class SellMenu(IPlayer player, IDomainService domainManager) : TradeMenuBase(TransactionType.SELL), ISellMenu
 {
 	private readonly IPlayerService _playerService = domainManager.PlayerService;
 	
