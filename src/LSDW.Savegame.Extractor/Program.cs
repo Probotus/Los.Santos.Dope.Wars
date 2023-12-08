@@ -4,31 +4,29 @@ namespace LSDW.Savegame.Extractor;
 
 internal class Program
 {
+	private static readonly string BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(LSDW));
+	private static readonly string SavFile = $"{nameof(LSDW)}.sav";
+	private static readonly string XmlFile = $"{nameof(LSDW)}.xml";
+
 	private static void Main(string[] args)
 	{
 		try
 		{
-			if (args.Length == 0)
+			FileInfo savFileInfo = new(Path.Combine(BasePath, SavFile));
+
+			if (savFileInfo.Exists.Equals(false))
 			{
-				Console.WriteLine("Please provide path to save file!");
+				Console.WriteLine($"'{savFileInfo.FullName}' does not exist!");
 				return;
 			}
 
-			FileInfo fileInfo = new(args[0]);
+			byte[] fileContent = File.ReadAllBytes(savFileInfo.FullName).Decompress();
 
-			if (!fileInfo.Exists)
-			{
-				Console.WriteLine($"{fileInfo.FullName} does not exist!");
-				return;
-			}
+			string xmlFilePath = Path.Combine(Path.Combine(BasePath, XmlFile));
 
-			byte[] fileContent = File.ReadAllBytes(fileInfo.FullName).Decompress();
+			File.WriteAllBytes(xmlFilePath, fileContent);
 
-			string filePath = Path.Combine(fileInfo.DirectoryName!, $"{nameof(LSDW)}.xml");
-
-			File.WriteAllBytes(filePath, fileContent);
-
-			Console.WriteLine($"Saved to '{filePath}'");
+			Console.WriteLine($"Saved to '{xmlFilePath}'");
 		}
 		catch (Exception ex)
 		{

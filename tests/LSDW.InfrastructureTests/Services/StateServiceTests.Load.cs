@@ -1,4 +1,5 @@
-﻿using LSDW.Infrastructure.Services;
+﻿using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Services;
 
 using Moq;
 
@@ -28,6 +29,8 @@ public partial class StateServiceTests
 	[TestMethod]
 	public void LoadExceptionTest()
 	{
+		IPlayer player = null!;
+		_domainServiceMock.Setup(x => x.Player).Returns(player);
 		_stateService = new StateService(_domainServiceMock.Object, _loggerServiceMock.Object);
 
 		_stateService.Load();

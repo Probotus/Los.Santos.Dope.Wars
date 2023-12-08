@@ -6,6 +6,7 @@ using LSDW.Domain.Interfaces.Services;
 using LSDW.Infrastructure.Constants;
 using LSDW.Infrastructure.Factories;
 using LSDW.Infrastructure.Models;
+using LSDW.Infrastructure.Statics;
 
 namespace LSDW.Infrastructure.Services;
 
@@ -19,7 +20,7 @@ namespace LSDW.Infrastructure.Services;
 /// <param name="loggerService">The logger service instance to use.</param>
 internal sealed class StateService(IDomainService domainService, ILoggerService loggerService) : IStateService
 {
-	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.sav");
+	private readonly string _filePath = Path.Combine(FileStatics.BasePath, FileStatics.SavFileName);
 	private readonly IDealerCollection _dealers = domainService.Dealers;
 	private readonly IPlayer _player = domainService.Player;
 	private readonly ISettings _settings = domainService.Settings;

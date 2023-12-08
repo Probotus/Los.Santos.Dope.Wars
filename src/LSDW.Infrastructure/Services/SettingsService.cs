@@ -2,6 +2,7 @@
 
 using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Interfaces.Models;
+using LSDW.Infrastructure.Statics;
 
 namespace LSDW.Infrastructure.Services;
 
@@ -10,7 +11,7 @@ namespace LSDW.Infrastructure.Services;
 /// </summary>
 internal sealed partial class SettingsService : ISettingsService
 {
-	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.ini");
+	private readonly string _filePath = Path.Combine(FileStatics.BasePath, FileStatics.IniFileName);
 	private readonly ScriptSettings _scriptSettings;
 	private readonly ILoggerService _loggerService;
 	private readonly ISettings _settings;

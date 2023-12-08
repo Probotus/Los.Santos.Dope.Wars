@@ -2,6 +2,7 @@
 using System.Text;
 
 using LSDW.Application.Interfaces.Infrastructure.Services;
+using LSDW.Infrastructure.Statics;
 
 namespace LSDW.Infrastructure.Services;
 /// <summary>
@@ -10,7 +11,7 @@ namespace LSDW.Infrastructure.Services;
 [ExcludeFromCodeCoverage]
 internal sealed class LoggerService : ILoggerService
 {
-	private readonly string _filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.log");
+	private readonly string _filePath = Path.Combine(FileStatics.BasePath, FileStatics.LogFileName);
 
 	public void Critical(string message, [CallerMemberName] string callerName = "")
 		=> LogToFile("FTL", callerName, message);
