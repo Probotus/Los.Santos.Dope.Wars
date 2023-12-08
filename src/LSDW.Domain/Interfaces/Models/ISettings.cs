@@ -49,10 +49,32 @@ public interface IDealerSettings
 	IBindableProperty<bool> HasWeapons { get; }
 
 	/// <summary>
+	/// The maximum armor property.
+	/// </summary>
+	IBindableProperty<int> MaxArmor { get; }
+
+	/// <summary>
+	/// The maximum health property.
+	/// </summary>
+	IBindableProperty<int> MaxHealth { get; }
+
+	/// <summary>
+	/// Returns the possible maximum armor values.
+	/// </summary>
+	/// <returns>The list of possible values.</returns>
+	int[] GetMaxArmorValues();
+
+	/// <summary>
 	/// Returns the possible dealer down time values.
 	/// </summary>
 	/// <returns>The list of possible values.</returns>
 	int[] GetDownTimeInHoursValues();
+
+	/// <summary>
+	/// Returns the possible maximum health values.
+	/// </summary>
+	/// <returns>The list of possible values.</returns>
+	int[] GetMaxHealthValues();
 }
 
 /// <summary>

@@ -48,14 +48,24 @@ internal sealed class DealerSettings : IDealerSettings
 		DownTimeInHours = new BindableProperty<int>(48);
 		HasArmor = new BindableProperty<bool>(true);
 		HasWeapons = new BindableProperty<bool>(true);
+		MaxArmor = new BindableProperty<int>(150);
+		MaxHealth = new BindableProperty<int>(150);
 	}
-
+	
 	public IBindableProperty<int> DownTimeInHours { get; }
 	public IBindableProperty<bool> HasArmor { get; }
 	public IBindableProperty<bool> HasWeapons { get; }
+	public IBindableProperty<int> MaxArmor { get; }
+	public IBindableProperty<int> MaxHealth { get; }
 
 	public int[] GetDownTimeInHoursValues()
 		=> new int[] { 24, 48, 72, 96, 120, 144, 168 };
+
+	public int[] GetMaxArmorValues()
+		=> new int[] { 100, 125, 150, 175, 200 };
+
+	public int[] GetMaxHealthValues()
+		=> new int[] { 100, 125, 150, 175, 200 };
 }
 
 /// <summary>

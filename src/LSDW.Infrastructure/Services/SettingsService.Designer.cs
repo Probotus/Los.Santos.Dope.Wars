@@ -14,6 +14,8 @@ internal sealed partial class SettingsService
 		_settings.Dealer.DownTimeInHours.Changed += (s, e) => _scriptSettings.SetValue("DEALER", "DOWNTIMEINHOURS", e.Value);
 		_settings.Dealer.HasArmor.Changed += (s, e) => _scriptSettings.SetValue("DEALER", "HASARMOR", e.Value);
 		_settings.Dealer.HasWeapons.Changed += (s, e) => _scriptSettings.SetValue("DEALER", "HASWEAPONS", e.Value);
+		_settings.Dealer.MaxArmor.Changed += (s, e) => _scriptSettings.SetValue("DEALER", "MAXARMOR", e.Value);
+		_settings.Dealer.MaxHealth.Changed += (s, e) => _scriptSettings.SetValue("DEALER", "MAXHEALTH", e.Value);
 		_settings.Market.MaximumDrugPrice.Changed += (s, e) => _scriptSettings.SetValue("MARKET", "MAXIMUMDRUGPRICE", e.Value);
 		_settings.Market.MinimumDrugPrice.Changed += (s, e) => _scriptSettings.SetValue("MARKET", "MINIMUMDRUGPRICE", e.Value);
 		_settings.Market.RefreshInterval.Changed += (s, e) => _scriptSettings.SetValue("MARKET", "REFRESHINTERVAL", e.Value);
@@ -44,6 +46,16 @@ internal sealed partial class SettingsService
 			section: "DEALER",
 			name: "HASWEAPONS",
 			defaultvalue: _settings.Dealer.HasWeapons.Value
+			);
+		_settings.Dealer.MaxArmor.Value = _scriptSettings.GetValue(
+			section: "DEALER",
+			name: "MAXARMOR",
+			defaultvalue: _settings.Dealer.MaxArmor.Value
+			);
+		_settings.Dealer.MaxHealth.Value = _scriptSettings.GetValue(
+			section: "DEALER",
+			name: "MAXHEALTH",
+			defaultvalue: _settings.Dealer.MaxHealth.Value
 			);
 		_settings.Market.MaximumDrugPrice.Value = _scriptSettings.GetValue(
 			section: "MARKET",

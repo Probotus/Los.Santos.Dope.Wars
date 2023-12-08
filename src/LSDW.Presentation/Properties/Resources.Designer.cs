@@ -124,6 +124,42 @@ namespace LSDW.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The highest armor level of the dealer..
+        /// </summary>
+        internal static string SettingsMenu_Dealer_MaxArmor_Description {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Dealer.MaxArmor.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum armor.
+        /// </summary>
+        internal static string SettingsMenu_Dealer_MaxArmor_Title {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Dealer.MaxArmor.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The dealer&apos;s highest life point level..
+        /// </summary>
+        internal static string SettingsMenu_Dealer_MaxHealth_Description {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Dealer.MaxHealth.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum health.
+        /// </summary>
+        internal static string SettingsMenu_Dealer_MaxHealth_Title {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Dealer.MaxHealth.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dealer settings.
         /// </summary>
         internal static string SettingsMenu_Dealer_SubTitle {

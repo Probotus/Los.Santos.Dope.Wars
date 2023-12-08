@@ -138,6 +138,18 @@
   <data name="SettingsMenu.Dealer.HasWeapons.Title" xml:space="preserve">
     <value>Is armed?</value>
   </data>
+  <data name="SettingsMenu.Dealer.MaxArmor.Description" xml:space="preserve">
+    <value>The highest armor level of the dealer.</value>
+  </data>
+  <data name="SettingsMenu.Dealer.MaxArmor.Title" xml:space="preserve">
+    <value>Maximum armor</value>
+  </data>
+  <data name="SettingsMenu.Dealer.MaxHealth.Description" xml:space="preserve">
+    <value>The dealer's highest life point level.</value>
+  </data>
+  <data name="SettingsMenu.Dealer.MaxHealth.Title" xml:space="preserve">
+    <value>Maximum health</value>
+  </data>
   <data name="SettingsMenu.Dealer.SubTitle" xml:space="preserve">
     <value>Dealer settings</value>
   </data>

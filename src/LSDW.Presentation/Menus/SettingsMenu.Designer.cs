@@ -80,6 +80,32 @@ internal sealed partial class SettingsMenu : MenuBase
 			
 			_settings.Dealer.HasWeapons.Changed += (s, e)
 				=> checkBoxItemHasWeapons.Checked = e.Value;
+
+			var listItemMaxArmor = AddListItem(
+				title: RESX.SettingsMenu_Dealer_MaxArmor_Title,
+				description: RESX.SettingsMenu_Dealer_MaxArmor_Description,
+				changed: (item, index) => _settings.Dealer.MaxArmor.Value = item,
+				items: _settings.Dealer.GetMaxArmorValues()
+				);
+
+			listItemMaxArmor.SelectedItem =
+				_settings.Dealer.MaxArmor.Value;
+
+			_settings.Dealer.MaxArmor.Changed += (s, e)
+				=> listItemMaxArmor.SelectedItem = e.Value;
+
+			var listItemMaxHealth = AddListItem(
+				title: RESX.SettingsMenu_Dealer_MaxHealth_Title,
+				description: RESX.SettingsMenu_Dealer_MaxHealth_Description,
+				changed: (item, index) => _settings.Dealer.MaxHealth.Value = item,
+				items: _settings.Dealer.GetMaxHealthValues()
+				);
+
+			listItemMaxHealth.SelectedItem =
+				_settings.Dealer.MaxHealth.Value;
+
+			_settings.Dealer.MaxHealth.Changed += (s, e)
+				=> listItemMaxHealth.SelectedItem = e.Value;
 		}
 	}
 	private class MarketSubMenu : MenuBase
