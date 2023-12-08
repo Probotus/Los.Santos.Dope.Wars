@@ -30,96 +30,81 @@ internal sealed partial class SettingsService
 
 	private void LoadInternal()
 	{
-		int valueDownTimeInHours = _scriptSettings.GetValue("DEALER", "DOWNTIMEINHOURS", _settings.Dealer.DownTimeInHours.Value);
-		_scriptSettings.SetValue("DEALER", "DOWNTIMEINHOURS", valueDownTimeInHours);		
-		
-		if (valueDownTimeInHours != _settings.Dealer.DownTimeInHours.Value)
-			_settings.Dealer.DownTimeInHours.Value = valueDownTimeInHours;
-
-		bool valueHasArmor = _scriptSettings.GetValue("DEALER", "HASARMOR", _settings.Dealer.HasArmor.Value);
-		_scriptSettings.SetValue("DEALER", "HASARMOR", valueHasArmor);		
-		
-		if (valueHasArmor != _settings.Dealer.HasArmor.Value)
-			_settings.Dealer.HasArmor.Value = valueHasArmor;
-
-		bool valueHasWeapons = _scriptSettings.GetValue("DEALER", "HASWEAPONS", _settings.Dealer.HasWeapons.Value);
-		_scriptSettings.SetValue("DEALER", "HASWEAPONS", valueHasWeapons);		
-		
-		if (valueHasWeapons != _settings.Dealer.HasWeapons.Value)
-			_settings.Dealer.HasWeapons.Value = valueHasWeapons;
-
-		float valueMaximumDrugPrice = _scriptSettings.GetValue("MARKET", "MAXIMUMDRUGPRICE", _settings.Market.MaximumDrugPrice.Value);
-		_scriptSettings.SetValue("MARKET", "MAXIMUMDRUGPRICE", valueMaximumDrugPrice);		
-		
-		if (valueMaximumDrugPrice != _settings.Market.MaximumDrugPrice.Value)
-			_settings.Market.MaximumDrugPrice.Value = valueMaximumDrugPrice;
-
-		float valueMinimumDrugPrice = _scriptSettings.GetValue("MARKET", "MINIMUMDRUGPRICE", _settings.Market.MinimumDrugPrice.Value);
-		_scriptSettings.SetValue("MARKET", "MINIMUMDRUGPRICE", valueMinimumDrugPrice);		
-		
-		if (valueMinimumDrugPrice != _settings.Market.MinimumDrugPrice.Value)
-			_settings.Market.MinimumDrugPrice.Value = valueMinimumDrugPrice;
-
-		int valueRefreshInterval = _scriptSettings.GetValue("MARKET", "REFRESHINTERVAL", _settings.Market.RefreshInterval.Value);
-		_scriptSettings.SetValue("MARKET", "REFRESHINTERVAL", valueRefreshInterval);		
-		
-		if (valueRefreshInterval != _settings.Market.RefreshInterval.Value)
-			_settings.Market.RefreshInterval.Value = valueRefreshInterval;
-
-		int valueRestockInterval = _scriptSettings.GetValue("MARKET", "RESTOCKINTERVAL", _settings.Market.RestockInterval.Value);
-		_scriptSettings.SetValue("MARKET", "RESTOCKINTERVAL", valueRestockInterval);		
-		
-		if (valueRestockInterval != _settings.Market.RestockInterval.Value)
-			_settings.Market.RestockInterval.Value = valueRestockInterval;
-
-		float valueSpecialOfferChance = _scriptSettings.GetValue("MARKET", "SPECIALOFFERCHANCE", _settings.Market.SpecialOfferChance.Value);
-		_scriptSettings.SetValue("MARKET", "SPECIALOFFERCHANCE", valueSpecialOfferChance);		
-		
-		if (valueSpecialOfferChance != _settings.Market.SpecialOfferChance.Value)
-			_settings.Market.SpecialOfferChance.Value = valueSpecialOfferChance;
-
-		int valueBagSizePerLevel = _scriptSettings.GetValue("PLAYER", "BAGSIZEPERLEVEL", _settings.Player.BagSizePerLevel.Value);
-		_scriptSettings.SetValue("PLAYER", "BAGSIZEPERLEVEL", valueBagSizePerLevel);		
-		
-		if (valueBagSizePerLevel != _settings.Player.BagSizePerLevel.Value)
-			_settings.Player.BagSizePerLevel.Value = valueBagSizePerLevel;
-
-		float valueExperienceMultiplier = _scriptSettings.GetValue("PLAYER", "EXPERIENCEMULTIPLIER", _settings.Player.ExperienceMultiplier.Value);
-		_scriptSettings.SetValue("PLAYER", "EXPERIENCEMULTIPLIER", valueExperienceMultiplier);		
-		
-		if (valueExperienceMultiplier != _settings.Player.ExperienceMultiplier.Value)
-			_settings.Player.ExperienceMultiplier.Value = valueExperienceMultiplier;
-
-		bool valueLooseDrugsOnDeath = _scriptSettings.GetValue("PLAYER", "LOOSEDRUGSONDEATH", _settings.Player.LooseDrugsOnDeath.Value);
-		_scriptSettings.SetValue("PLAYER", "LOOSEDRUGSONDEATH", valueLooseDrugsOnDeath);		
-		
-		if (valueLooseDrugsOnDeath != _settings.Player.LooseDrugsOnDeath.Value)
-			_settings.Player.LooseDrugsOnDeath.Value = valueLooseDrugsOnDeath;
-
-		bool valueLooseDrugsWhenBusted = _scriptSettings.GetValue("PLAYER", "LOOSEDRUGSWHENBUSTED", _settings.Player.LooseDrugsWhenBusted.Value);
-		_scriptSettings.SetValue("PLAYER", "LOOSEDRUGSWHENBUSTED", valueLooseDrugsWhenBusted);		
-		
-		if (valueLooseDrugsWhenBusted != _settings.Player.LooseDrugsWhenBusted.Value)
-			_settings.Player.LooseDrugsWhenBusted.Value = valueLooseDrugsWhenBusted;
-
-		float valueBustChance = _scriptSettings.GetValue("TRAFFICKING", "BUSTCHANCE", _settings.Trafficking.BustChance.Value);
-		_scriptSettings.SetValue("TRAFFICKING", "BUSTCHANCE", valueBustChance);		
-		
-		if (valueBustChance != _settings.Trafficking.BustChance.Value)
-			_settings.Trafficking.BustChance.Value = valueBustChance;
-
-		bool valueDiscoverDealer = _scriptSettings.GetValue("TRAFFICKING", "DISCOVERDEALER", _settings.Trafficking.DiscoverDealer.Value);
-		_scriptSettings.SetValue("TRAFFICKING", "DISCOVERDEALER", valueDiscoverDealer);		
-		
-		if (valueDiscoverDealer != _settings.Trafficking.DiscoverDealer.Value)
-			_settings.Trafficking.DiscoverDealer.Value = valueDiscoverDealer;
-
-		int valueWantedLevel = _scriptSettings.GetValue("TRAFFICKING", "WANTEDLEVEL", _settings.Trafficking.WantedLevel.Value);
-		_scriptSettings.SetValue("TRAFFICKING", "WANTEDLEVEL", valueWantedLevel);		
-		
-		if (valueWantedLevel != _settings.Trafficking.WantedLevel.Value)
-			_settings.Trafficking.WantedLevel.Value = valueWantedLevel;
-
+		_settings.Dealer.DownTimeInHours.Value = _scriptSettings.GetValue(
+			section: "DEALER",
+			name: "DOWNTIMEINHOURS",
+			defaultvalue: _settings.Dealer.DownTimeInHours.Value
+			);
+		_settings.Dealer.HasArmor.Value = _scriptSettings.GetValue(
+			section: "DEALER",
+			name: "HASARMOR",
+			defaultvalue: _settings.Dealer.HasArmor.Value
+			);
+		_settings.Dealer.HasWeapons.Value = _scriptSettings.GetValue(
+			section: "DEALER",
+			name: "HASWEAPONS",
+			defaultvalue: _settings.Dealer.HasWeapons.Value
+			);
+		_settings.Market.MaximumDrugPrice.Value = _scriptSettings.GetValue(
+			section: "MARKET",
+			name: "MAXIMUMDRUGPRICE",
+			defaultvalue: _settings.Market.MaximumDrugPrice.Value
+			);
+		_settings.Market.MinimumDrugPrice.Value = _scriptSettings.GetValue(
+			section: "MARKET",
+			name: "MINIMUMDRUGPRICE",
+			defaultvalue: _settings.Market.MinimumDrugPrice.Value
+			);
+		_settings.Market.RefreshInterval.Value = _scriptSettings.GetValue(
+			section: "MARKET",
+			name: "REFRESHINTERVAL",
+			defaultvalue: _settings.Market.RefreshInterval.Value
+			);
+		_settings.Market.RestockInterval.Value = _scriptSettings.GetValue(
+			section: "MARKET",
+			name: "RESTOCKINTERVAL",
+			defaultvalue: _settings.Market.RestockInterval.Value
+			);
+		_settings.Market.SpecialOfferChance.Value = _scriptSettings.GetValue(
+			section: "MARKET",
+			name: "SPECIALOFFERCHANCE",
+			defaultvalue: _settings.Market.SpecialOfferChance.Value
+			);
+		_settings.Player.BagSizePerLevel.Value = _scriptSettings.GetValue(
+			section: "PLAYER",
+			name: "BAGSIZEPERLEVEL",
+			defaultvalue: _settings.Player.BagSizePerLevel.Value
+			);
+		_settings.Player.ExperienceMultiplier.Value = _scriptSettings.GetValue(
+			section: "PLAYER",
+			name: "EXPERIENCEMULTIPLIER",
+			defaultvalue: _settings.Player.ExperienceMultiplier.Value
+			);
+		_settings.Player.LooseDrugsOnDeath.Value = _scriptSettings.GetValue(
+			section: "PLAYER",
+			name: "LOOSEDRUGSONDEATH",
+			defaultvalue: _settings.Player.LooseDrugsOnDeath.Value
+			);
+		_settings.Player.LooseDrugsWhenBusted.Value = _scriptSettings.GetValue(
+			section: "PLAYER",
+			name: "LOOSEDRUGSWHENBUSTED",
+			defaultvalue: _settings.Player.LooseDrugsWhenBusted.Value
+			);
+		_settings.Trafficking.BustChance.Value = _scriptSettings.GetValue(
+			section: "TRAFFICKING",
+			name: "BUSTCHANCE",
+			defaultvalue: _settings.Trafficking.BustChance.Value
+			);
+		_settings.Trafficking.DiscoverDealer.Value = _scriptSettings.GetValue(
+			section: "TRAFFICKING",
+			name: "DISCOVERDEALER",
+			defaultvalue: _settings.Trafficking.DiscoverDealer.Value
+			);
+		_settings.Trafficking.WantedLevel.Value = _scriptSettings.GetValue(
+			section: "TRAFFICKING",
+			name: "WANTEDLEVEL",
+			defaultvalue: _settings.Trafficking.WantedLevel.Value
+			);
 	}
 
 	private void SaveInternal()

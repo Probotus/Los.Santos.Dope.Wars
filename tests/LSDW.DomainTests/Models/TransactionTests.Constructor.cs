@@ -8,7 +8,7 @@ namespace LSDW.DomainTests.Models;
 public sealed partial class TransactionTests
 {
 	[TestMethod]
-	public void WithValues()
+	public void WithValuesTest()
 	{
 		ITransaction transaction;
 		TransactionType transactionType = TransactionType.FIND;
@@ -27,15 +27,11 @@ public sealed partial class TransactionTests
 
 	[TestMethod]
 	[ExpectedException(typeof(ArgumentOutOfRangeException))]
-	public void QuantityException()
-	{
-		_ = new Transaction(TransactionType.SELL, DrugType.KETA, 0, 0);
-	}
+	public void QuantityExceptionTest()
+		=> new Transaction(TransactionType.SELL, DrugType.KETA, 0, 0);
 
 	[TestMethod]
 	[ExpectedException(typeof(ArgumentOutOfRangeException))]
-	public void ValueException()
-	{
-		_ = new Transaction(TransactionType.SELL, DrugType.KETA, 1, 0);
-	}
+	public void ValueExceptionTest()
+		=> new Transaction(TransactionType.SELL, DrugType.KETA, 1, 0);
 }

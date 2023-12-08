@@ -13,7 +13,6 @@ internal static partial class MockHelper
 		Mock<IDealer> mock = new();
 		mock.SetupAllProperties();
 		mock.Setup(x => x.Drugs).Returns(GetDrugCollection());
-		mock.Setup(x => x.Discover(GetWorldService()));
 		mock.Setup(x => x.Discovered).Returns(discovered);
 		return mock.Object;
 	}

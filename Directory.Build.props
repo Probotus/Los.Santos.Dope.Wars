@@ -37,10 +37,13 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
-		<Authors>BoBoBaSs84</Authors>
-		<Company>https://github.com/BoBoBaSs84</Company>
-		<Copyright>Copyright © $(VersionMajor) BoBoBaSs84</Copyright>
-		<Product>LSDW</Product>
+		<Author>BoBoBaSs84</Author>
+		<Authors>$(Author);Probotus</Authors>
+		<Company>https://github.com/$(Author)</Company>
+		<Copyright>Copyright © $(VersionMajor) $(Author)</Copyright>
+		<Product>Los.Santos.Dope.Wars</Product>
+		<RepositoryUrl>https://github.com/$(Author)/$(Product)</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 		<Title>$(AssemblyName)</Title>
 	</PropertyGroup>
 

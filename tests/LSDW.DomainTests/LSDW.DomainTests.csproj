@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\LSDW.Domain\LSDW.Domain.csproj" />
-  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\LSDW.Domain\LSDW.Domain.csproj" />
+	</ItemGroup>
+
 </Project>

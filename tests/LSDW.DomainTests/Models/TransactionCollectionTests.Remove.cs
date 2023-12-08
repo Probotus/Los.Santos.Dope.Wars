@@ -1,6 +1,8 @@
-﻿using LSDW.Domain.Enumerators;
+﻿using System.ComponentModel;
+
 using LSDW.Domain.Interfaces.Models;
-using LSDW.Domain.Models;
+
+using Moq;
 
 namespace LSDW.DomainTests.Models;
 
@@ -9,14 +11,16 @@ public sealed partial class TransactionCollectionTests
 	[TestMethod]
 	public void Remove()
 	{
-		IEnumerable<ITransaction> existingTransactions =
-			new List<ITransaction>() { new Transaction(TransactionType.BUY, DrugType.COKE, 15, 90) };
-		_transactions.Load(existingTransactions);
-		ITransaction transaction = _transactions.First();
+		Mock<ITransaction> mock = new();
+		mock.Setup(x => x.Quantity).Returns(1000);
+		_transactions.Add(mock.Object);
+
+		ITransaction transaction = _transactions.First(x => x.Quantity == 1000);
 
 		_transactions.Remove(transaction);
 
-		Assert.AreEqual(0, _transactions.Count);
-		Assert.AreEqual(0, _transactions.Value);
+		Assert.IsFalse(_transactions.Contains(transaction));
+		Assert.AreEqual(CollectionChangeAction.Remove, _changing);
+		Assert.AreEqual(CollectionChangeAction.Remove, _changed);
 	}
 }

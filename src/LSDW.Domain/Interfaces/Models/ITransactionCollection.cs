@@ -5,7 +5,7 @@ namespace LSDW.Domain.Interfaces.Models;
 /// <summary>
 /// The transaction collection interface.
 /// </summary>
-public interface ITransactionCollection : IEnumerable<ITransaction>, ILoadable<ITransaction>, IFindable<ITransaction>, IRecalculable
+public interface ITransactionCollection : IEnumerable<ITransaction>, ILoadable<ITransaction>, IFindable<ITransaction>, IRecalculable, INotifyCollectionBase
 {
 	/// <summary>
 	/// The number of transactions in the collection.

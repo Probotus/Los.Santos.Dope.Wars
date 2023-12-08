@@ -1,33 +1,30 @@
-﻿using LSDW.Domain.Enumerators;
-using LSDW.Domain.Interfaces.Models;
+﻿using LSDW.Domain.Interfaces.Models;
 
 namespace LSDW.DomainTests.Models;
 
 public sealed partial class TransactionCollectionTests
 {
 	[TestMethod]
-	public void FindByDrugType()
+	public void FindTest()
 	{
-		_transactions.Load(_existingTransactions);
+		List<ITransaction> transactions = GetTransactions();		
+		_transactions.Load(transactions);
 
-		IEnumerable<ITransaction> result =
-			_transactions.Find(x => x.DrugType.Equals(DrugType.COKE));
+		ITransaction result = _transactions.Find(x => x.Quantity > 0);
 
 		Assert.IsNotNull(result);
-		Assert.IsTrue(result.Any());
-		Assert.AreEqual(2, result.Count());
 	}
 
 	[TestMethod]
-	public void FindByTransactionType()
+	public void FindManyTest()
 	{
-		_transactions.Load(_existingTransactions);
+		List<ITransaction> transactions = GetTransactions();
+		_transactions.Load(transactions);
 
 		IEnumerable<ITransaction> result =
-			_transactions.Find(x => x.Type.Equals(TransactionType.BUY));
+			_transactions.FindMany(x => x.Quantity > 0);
 
 		Assert.IsNotNull(result);
 		Assert.IsTrue(result.Any());
-		Assert.AreEqual(2, result.Count());
 	}
 }

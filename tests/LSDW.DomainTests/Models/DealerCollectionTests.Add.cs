@@ -1,4 +1,6 @@
-﻿using LSDW.Domain.Interfaces.Models;
+﻿using System.ComponentModel;
+
+using LSDW.Domain.Interfaces.Models;
 
 using Moq;
 
@@ -10,9 +12,12 @@ public sealed partial class DealerCollectionTests
 	public void AddTest()
 	{
 		Mock<IDealer> dealerMock = new();
+		IDealer dealer = dealerMock.Object;
 
-		_dealers.Add(dealerMock.Object);
+		_dealers.Add(dealer);
 
-		Assert.AreEqual(1, _dealers.Count);
+		Assert.IsTrue(_dealers.Contains(dealer));
+		Assert.AreEqual(CollectionChangeAction.Add, _changing);
+		Assert.AreEqual(CollectionChangeAction.Add, _changed);
 	}
 }

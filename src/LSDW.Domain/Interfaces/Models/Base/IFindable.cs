@@ -10,5 +10,12 @@ public interface IFindable<T>
 	/// </summary>
 	/// <param name="expression">The expression to search for.</param>
 	/// <returns>Many or no result.</returns>
-	IEnumerable<T> Find(Func<T, bool> expression);
+	IEnumerable<T> FindMany(Func<T, bool> expression);
+
+	/// <summary>
+	/// Returns the found element depending on the search expression.
+	/// </summary>
+	/// <param name="expression">The expression to search for.</param>
+	/// <returns>One or no result.</returns>
+	T Find(Func<T, bool> expression);
 }

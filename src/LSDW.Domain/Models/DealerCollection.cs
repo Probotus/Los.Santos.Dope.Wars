@@ -23,7 +23,7 @@ internal sealed class DealerCollection : NotifyCollectionBase, IDealerCollection
 
 	public void Add(IDealer dealer)
 	{
-		RaiseCollectionChanging(CollectionChangeAction.Add, dealer);
+		RaiseCollectionChanging(CollectionChangeAction.Add);
 		_dealers.Add(dealer);
 		RaiseCollectionChanged(CollectionChangeAction.Add, dealer);
 	}

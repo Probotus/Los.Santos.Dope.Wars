@@ -35,11 +35,14 @@ internal sealed class DrugCollection : NotifyPropertyBase, IDrugCollection
 		drug.Add(quantity, value);
 	}
 
-	public IEnumerable<IDrug> Find(Func<IDrug, bool> expression)
-		=> _drugs.Where(expression);
-
 	public IDrug Find(DrugType drugType)
-	 => Find(drug => drug.Type.Equals(drugType)).Single();
+	 => Find(drug => drug.Type.Equals(drugType));
+
+	public IDrug Find(Func<IDrug, bool> expression)
+		=> _drugs.FirstOrDefault(expression);
+
+	public IEnumerable<IDrug> FindMany(Func<IDrug, bool> expression)
+		=> _drugs.Where(expression);
 
 	public IEnumerator<IDrug> GetEnumerator()
 		=> _drugs.GetEnumerator();

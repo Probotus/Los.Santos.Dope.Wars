@@ -1,6 +1,8 @@
-﻿using LSDW.Domain.Enumerators;
-using LSDW.Domain.Factories;
+﻿using System.ComponentModel;
+
 using LSDW.Domain.Interfaces.Models;
+
+using Moq;
 
 namespace LSDW.DomainTests.Models;
 
@@ -9,11 +11,12 @@ public sealed partial class TransactionCollectionTests
 	[TestMethod]
 	public void Add()
 	{
-		ITransaction transaction =
-			DomainFactory.CreateTransaction(TransactionType.FIND, DrugType.SMACK, 15, 90);
+		Mock<ITransaction> mock = new();
 
-		_transactions.Add(transaction);
+		_transactions.Add(mock.Object);
 
-		Assert.AreEqual(1, _transactions.Count);
+		Assert.IsTrue(_transactions.Contains(mock.Object));
+		Assert.AreEqual(CollectionChangeAction.Add, _changing);
+		Assert.AreEqual(CollectionChangeAction.Add, _changed);
 	}
 }

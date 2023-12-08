@@ -19,21 +19,25 @@ internal sealed class TransactionCollection : NotifyCollectionBase, ITransaction
 	/// Initializes a instance of the transaction collection class.
 	/// </summary>
 	public TransactionCollection()
-		=> _transactions = new HashSet<ITransaction>();
+	{
+		_transactions = new HashSet<ITransaction>();
+		CollectionChanged += (s, e) => Recalculate();
+	}
 
 	public int Count { get => _count; private set => SetProperty(ref _count, value); }
 	public int Value { get => _value; private set => SetProperty(ref _value, value); }
 
 	public void Add(ITransaction transaction)
 	{
-		RaiseCollectionChanging(CollectionChangeAction.Add, transaction);
+		RaiseCollectionChanging(CollectionChangeAction.Add);
 		_transactions.Add(transaction);
 		RaiseCollectionChanged(CollectionChangeAction.Add, transaction);
-
-		Recalculate();
 	}
 
-	public IEnumerable<ITransaction> Find(Func<ITransaction, bool> expression)
+	public ITransaction Find(Func<ITransaction, bool> expression)
+		=> _transactions.FirstOrDefault(expression);
+
+	public IEnumerable<ITransaction> FindMany(Func<ITransaction, bool> expression)
 		=> _transactions.Where(expression);
 
 	public IEnumerator<ITransaction> GetEnumerator()
@@ -44,8 +48,6 @@ internal sealed class TransactionCollection : NotifyCollectionBase, ITransaction
 		RaiseCollectionChanging(CollectionChangeAction.Refresh);
 		_transactions = new List<ITransaction>(values);
 		RaiseCollectionChanged(CollectionChangeAction.Refresh);
-
-		Recalculate();
 	}
 
 	public void Recalculate()
@@ -59,8 +61,6 @@ internal sealed class TransactionCollection : NotifyCollectionBase, ITransaction
 		RaiseCollectionChanging(CollectionChangeAction.Remove, transaction);
 		_transactions.Remove(transaction);
 		RaiseCollectionChanged(CollectionChangeAction.Remove);
-
-		Recalculate();
 	}
 
 	IEnumerator IEnumerable.GetEnumerator()

@@ -1,4 +1,6 @@
-﻿using LSDW.Domain.Interfaces.Models;
+﻿using System.ComponentModel;
+
+using LSDW.Domain.Interfaces.Models;
 
 using Moq;
 
@@ -17,5 +19,9 @@ public sealed partial class DealerCollectionTests
 		IDealer dealer = _dealers.Where(x => x.Zone == "TestZone").Single();
 
 		_dealers.Remove(dealer);
+
+		Assert.IsFalse(_dealers.Contains(dealer));
+		Assert.AreEqual(CollectionChangeAction.Remove, _changing);
+		Assert.AreEqual(CollectionChangeAction.Remove, _changed);
 	}
 }
