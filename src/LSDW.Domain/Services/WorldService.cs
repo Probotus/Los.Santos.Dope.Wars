@@ -50,6 +50,9 @@ internal sealed class WorldService : IWorldService
 	public Vector3 GetNextPositionOnStreet(Vector3 position, bool unoccupied = false)
 		=> World.GetNextPositionOnStreet(position, unoccupied);
 
+	public Vector3 GetNextPositionOnPavement(Vector3 position)
+		=> World.GetSafeCoordForPed(position, false, 1);
+
 	public string GetZoneDisplayName(Vector3 position)
 		=> World.GetZoneDisplayName(position);
 

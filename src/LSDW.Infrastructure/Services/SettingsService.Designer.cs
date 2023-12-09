@@ -27,6 +27,7 @@ internal sealed partial class SettingsService
 		_settings.Player.LooseDrugsWhenBusted.Changed += (s, e) => _scriptSettings.SetValue("PLAYER", "LOOSEDRUGSWHENBUSTED", e.Value);
 		_settings.Trafficking.BustChance.Changed += (s, e) => _scriptSettings.SetValue("TRAFFICKING", "BUSTCHANCE", e.Value);
 		_settings.Trafficking.DiscoverDealer.Changed += (s, e) => _scriptSettings.SetValue("TRAFFICKING", "DISCOVERDEALER", e.Value);
+		_settings.Trafficking.MultipleDealer.Changed += (s, e) => _scriptSettings.SetValue("TRAFFICKING", "MULTIPLEDEALER", e.Value);
 		_settings.Trafficking.WantedLevel.Changed += (s, e) => _scriptSettings.SetValue("TRAFFICKING", "WANTEDLEVEL", e.Value);
 	}
 
@@ -191,6 +192,16 @@ internal sealed partial class SettingsService
 			section: "TRAFFICKING",
 			name: "DISCOVERDEALER",
 			value: _settings.Trafficking.DiscoverDealer.Value
+			);
+		_settings.Trafficking.MultipleDealer.Value = _scriptSettings.GetValue(
+			section: "TRAFFICKING",
+			name: "MULTIPLEDEALER",
+			defaultvalue: _settings.Trafficking.MultipleDealer.Value
+			);
+		_scriptSettings.SetValue(
+			section: "TRAFFICKING",
+			name: "MULTIPLEDEALER",
+			value: _settings.Trafficking.MultipleDealer.Value
 			);
 		_settings.Trafficking.WantedLevel.Value = _scriptSettings.GetValue(
 			section: "TRAFFICKING",

@@ -192,6 +192,11 @@ public interface ITraffickingSettings
 	IBindableProperty<bool> DiscoverDealer { get; }
 
 	/// <summary>
+	/// The multiple dealer property.
+	/// </summary>
+	IBindableProperty<bool> MultipleDealer { get; }
+
+	/// <summary>
 	/// The wanted level property.
 	/// </summary>
 	IBindableProperty<int> WantedLevel { get; }

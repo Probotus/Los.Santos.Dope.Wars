@@ -448,6 +448,24 @@ namespace LSDW.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is it possible for multiple dealers to appear in one zone?.
+        /// </summary>
+        internal static string SettingsMenu_Trafficking_MultipleDealer_Description {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Trafficking.MultipleDealer.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple dealer per zone?.
+        /// </summary>
+        internal static string SettingsMenu_Trafficking_MultipleDealer_Title {
+            get {
+                return ResourceManager.GetString("SettingsMenu.Trafficking.MultipleDealer.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trafficking settings.
         /// </summary>
         internal static string SettingsMenu_Trafficking_SubTitle {

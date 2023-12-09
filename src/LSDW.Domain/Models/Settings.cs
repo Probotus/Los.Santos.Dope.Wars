@@ -51,7 +51,7 @@ internal sealed class DealerSettings : IDealerSettings
 		MaxArmor = new BindableProperty<int>(150);
 		MaxHealth = new BindableProperty<int>(150);
 	}
-	
+
 	public IBindableProperty<int> DownTimeInHours { get; }
 	public IBindableProperty<bool> HasArmor { get; }
 	public IBindableProperty<bool> HasWeapons { get; }
@@ -147,11 +147,13 @@ internal sealed class TraffickingSettings : ITraffickingSettings
 	{
 		BustChance = new BindableProperty<float>(0.1f);
 		DiscoverDealer = new BindableProperty<bool>(true);
+		MultipleDealer = new BindableProperty<bool>(false);
 		WantedLevel = new BindableProperty<int>(2);
 	}
 
 	public IBindableProperty<float> BustChance { get; }
 	public IBindableProperty<bool> DiscoverDealer { get; }
+	public IBindableProperty<bool> MultipleDealer { get; }
 	public IBindableProperty<int> WantedLevel { get; }
 
 	public float[] GetBustChanceValues()

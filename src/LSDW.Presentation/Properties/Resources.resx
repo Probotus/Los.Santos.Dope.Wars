@@ -246,6 +246,12 @@
   <data name="SettingsMenu.Trafficking.DiscoverDealer.Title" xml:space="preserve">
     <value>Need to discover dealer?</value>
   </data>
+  <data name="SettingsMenu.Trafficking.MultipleDealer.Description" xml:space="preserve">
+    <value>Is it possible for multiple dealers to appear in one zone?</value>
+  </data>
+  <data name="SettingsMenu.Trafficking.MultipleDealer.Title" xml:space="preserve">
+    <value>Multiple dealer per zone?</value>
+  </data>
   <data name="SettingsMenu.Trafficking.SubTitle" xml:space="preserve">
     <value>Trafficking settings</value>
   </data>

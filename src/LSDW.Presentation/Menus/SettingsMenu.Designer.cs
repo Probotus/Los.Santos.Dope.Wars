@@ -277,6 +277,18 @@ internal sealed partial class SettingsMenu : MenuBase
 			_settings.Trafficking.DiscoverDealer.Changed += (s, e)
 				=> checkBoxItemDiscoverDealer.Checked = e.Value;
 
+			var checkBoxItemMultipleDealer = AddCheckbox(
+				title: RESX.SettingsMenu_Trafficking_MultipleDealer_Title,
+				description: RESX.SettingsMenu_Trafficking_MultipleDealer_Description,
+				changed: changed => _settings.Trafficking.MultipleDealer.Value = changed
+				);
+
+			checkBoxItemMultipleDealer.Checked =
+				_settings.Trafficking.MultipleDealer.Value;
+			
+			_settings.Trafficking.MultipleDealer.Changed += (s, e)
+				=> checkBoxItemMultipleDealer.Checked = e.Value;
+
 			var listItemWantedLevel = AddListItem(
 				title: RESX.SettingsMenu_Trafficking_WantedLevel_Title,
 				description: RESX.SettingsMenu_Trafficking_WantedLevel_Description,

@@ -77,6 +77,12 @@ public interface IWorldService
 	Vector3 GetNextPositionOnSidewalk(Vector3 position);
 
 	/// <summary>
+	/// Gets the next position on pavement where a <see cref="Ped"/> can be placed.
+	/// </summary>
+	/// <param name="position">The position to check around.</param>
+	Vector3 GetNextPositionOnPavement(Vector3 position);
+
+	/// <summary>
 	/// Gets the display name of the a zone in the map.
 	/// </summary>
 	/// <param name="position">The position on the map.</param>
