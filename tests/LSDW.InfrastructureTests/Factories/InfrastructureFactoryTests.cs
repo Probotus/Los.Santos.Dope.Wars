@@ -22,6 +22,7 @@ public partial class InfrastructureFactoryTests : InfrastructureTestBase
 		_settings = GetService<ISettings>();
 		_worldServiceMock = new Mock<IWorldService>();
 		_worldServiceMock.SetupAllProperties();
+		_worldServiceMock.Setup(x => x.GetZoneDisplayName(Vector3.Zero)).Returns("TestZone");
 	}
 
 	private IDealer GetDealer()

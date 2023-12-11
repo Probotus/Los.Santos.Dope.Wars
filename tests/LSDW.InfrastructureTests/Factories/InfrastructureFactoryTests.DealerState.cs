@@ -16,11 +16,13 @@ public partial class InfrastructureFactoryTests
 
 		Assert.IsNotNull(state);
 		Assert.AreEqual(dealer.Discovered, state.Discovered);
+		Assert.IsTrue(state.ShouldSerializeDiscovered());
 		Assert.AreEqual(dealer.Hash, state.Hash);
 		Assert.AreEqual(dealer.Name, state.Name);
+		Assert.IsTrue(state.ShouldSerializeName());
 		Assert.AreEqual(dealer.Money, state.Money);
+		Assert.IsTrue(state.ShouldSerializeMoney());
 		Assert.AreEqual(dealer.Position, state.Position);
-		Assert.AreEqual(dealer.Zone, state.Zone);
 	}
 
 	[TestMethod]

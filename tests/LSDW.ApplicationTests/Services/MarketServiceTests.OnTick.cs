@@ -1,4 +1,6 @@
-﻿namespace LSDW.ApplicationTests.Services;
+﻿using LSDW.Application.Services;
+
+namespace LSDW.ApplicationTests.Services;
 
 public sealed partial class MarketServiceTests
 {
@@ -6,11 +8,12 @@ public sealed partial class MarketServiceTests
 	public void OnTickTest()
 	{
 		DateTime now = new(2000, 1, 1);
-		_domainManager.WorldService.Now = now;
+		_worldServiceMock.Object.Now = now;
 
-		_marketService.OnTick(this, new());
+		MarketService marketService = new(_domainServiceMock.Object, _infraServiceMock.Object);
+		marketService.OnTick(this, new());
 
-		Assert.AreNotEqual(now, _marketService.NextRefresh);
-		Assert.AreNotEqual(now, _marketService.NextRestock);
+		Assert.AreNotEqual(now, marketService.NextRefresh);
+		Assert.AreNotEqual(now, marketService.NextRestock);
 	}
 }

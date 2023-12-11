@@ -5,7 +5,7 @@ using LSDW.Domain.Statics;
 namespace LSDW.DomainTests.Statics;
 
 [TestClass]
-public sealed class GangStaticsTests : DomainTestBase
+public sealed partial class GangStaticsTests : DomainTestBase
 {
 	[TestMethod]
 	public void GetPedHashTest()

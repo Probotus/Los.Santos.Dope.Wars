@@ -30,7 +30,9 @@ public static class DependencyInjection
 		services.TryAddSingleton<IScreenService, ScreenService>();
 		services.TryAddSingleton<ISettings, Settings>();
 		services.TryAddSingleton<IWorldService, WorldService>();
+
 		services.TryAddTransient<IDealer, Dealer>();
+		services.TryAddTransient<IDrugCollection, DrugCollection>();
 
 		return services;
 	}

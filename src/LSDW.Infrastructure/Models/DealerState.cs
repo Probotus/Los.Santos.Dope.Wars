@@ -21,7 +21,6 @@ public sealed class DealerState
 	public DealerState()
 	{
 		Name = string.Empty;
-		Zone = string.Empty;
 		Drugs = [];
 	}
 
@@ -36,7 +35,6 @@ public sealed class DealerState
 		Name = dealer.Name;
 		Money = dealer.Money;
 		Position = dealer.Position;
-		Zone = dealer.Zone;
 		Drugs = InfrastructureFactory.CreateDrugStates(dealer.Drugs);
 	}
 
@@ -84,12 +82,6 @@ public sealed class DealerState
 	/// </summary>
 	[XmlElement("Position")]
 	public Vector3 Position { get; set; }
-
-	/// <summary>
-	/// The zone of the dealer.
-	/// </summary>
-	[XmlAttribute("Zone")]
-	public string Zone { get; set; }
 
 	/// <summary>
 	/// The dealer drugs.

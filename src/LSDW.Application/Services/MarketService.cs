@@ -14,14 +14,9 @@ namespace LSDW.Application.Services;
 internal sealed class MarketService : NotifyPropertyBase, IMarketService
 {
 	private static readonly Random Random = new(Guid.NewGuid().GetHashCode());
-
-	private const int RefreshInterval = 6;
-	private const int RestockInterval = 24;
-	private const float MaxValue = 1.15f;
-	private const float MinValue = 0.85f;
-
 	private readonly IDealerCollection _dealers;
 	private readonly IPlayer _player;
+	private readonly IMarketSettings _settings;
 	private readonly ILoggerService _loggerService;
 	private readonly IWorldService _worldProvider;
 	private DateTime _lastRefresh;
@@ -30,16 +25,15 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 	/// <summary>
 	/// Initializes a new instance of the market service class.
 	/// </summary>
-	/// <param name="dealers">The dealer collection instance to use.</param>
-	/// <param name="player">The player instance to use.</param>
-	/// <param name="infrastructureManager">The infrastructure manager instance to use.</param>
-	/// <param name="domainManager">The domain manager instance to use.</param>
-	public MarketService(IDealerCollection dealers, IPlayer player, IInfrastructureService infrastructureManager, IDomainService domainManager)
+	/// <param name="domainService">The domain service instance to use.</param>
+	/// <param name="infrastructureService">The infrastructure service instance to use.</param>
+	public MarketService(IDomainService domainService, IInfrastructureService infrastructureService)
 	{
-		_dealers = dealers;
-		_player = player;
-		_loggerService = infrastructureManager.LoggerService;
-		_worldProvider = domainManager.WorldService;
+		_dealers = domainService.Dealers;
+		_player = domainService.Player;
+		_settings = domainService.Settings.Market;
+		_loggerService = infrastructureService.LoggerService;
+		_worldProvider = domainService.WorldService;
 
 		_dealers.CollectionChanged += (s, e) => OnDealerCollectionChanged();
 		_dealers.CollectionChanging += (s, e) => OnDealerCollectionChanging();
@@ -57,13 +51,13 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 			if (NextRefresh < now)
 			{
 				Refresh();
-				NextRefresh = now.AddHours(RefreshInterval);
+				NextRefresh = now.AddHours(_settings.RefreshInterval.Value);
 			}
 
 			if (NextRestock < now)
 			{
 				Restock();
-				NextRestock = now.AddHours(RestockInterval);
+				NextRestock = now.AddHours(_settings.RestockInterval.Value);
 			}
 		}
 		catch (Exception ex)
@@ -113,10 +107,12 @@ internal sealed class MarketService : NotifyPropertyBase, IMarketService
 	/// <returns>The value of the drug.</returns>
 	private int GetCurrentDrugValue(DrugType type)
 	{
+		float maxValue = _settings.MaximumDrugPrice.Value;
+		float minValue = _settings.MinimumDrugPrice.Value;
 		float playerfactor = _player.Level / (float)1000;
 		float averageValue = type.GetAverageValue();
-		int highestValue = (int)Math.Ceiling((MaxValue + playerfactor) * averageValue);
-		int lowestValue = (int)Math.Ceiling((MinValue - playerfactor) * averageValue);
+		int highestValue = (int)Math.Ceiling((maxValue + playerfactor) * averageValue);
+		int lowestValue = (int)Math.Ceiling((minValue - playerfactor) * averageValue);
 
 		return Random.Next(lowestValue, highestValue);
 	}

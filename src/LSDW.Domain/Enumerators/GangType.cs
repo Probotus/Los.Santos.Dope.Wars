@@ -6,6 +6,11 @@
 public enum GangType
 {
 	/// <summary>
+	/// No gang affiliation.
+	/// </summary>
+	None,
+
+	/// <summary>
 	/// Armenian Mob
 	/// </summary>
 	Armenian,

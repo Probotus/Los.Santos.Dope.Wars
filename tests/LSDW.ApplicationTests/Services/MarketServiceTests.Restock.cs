@@ -1,4 +1,6 @@
-﻿namespace LSDW.ApplicationTests.Services;
+﻿using LSDW.Application.Services;
+
+namespace LSDW.ApplicationTests.Services;
 
 public sealed partial class MarketServiceTests
 {
@@ -8,7 +10,8 @@ public sealed partial class MarketServiceTests
 		_dealers.Add(MockHelper.GetDealer(true));
 		_dealers.Add(MockHelper.GetDealer(false));
 
-		_marketService.Restock();
+		MarketService marketService = new(_domainServiceMock.Object, _infraServiceMock.Object);
+		marketService.Restock();
 
 		Assert.AreNotEqual(0, _dealers.Sum(x => x.Money));
 		Assert.AreNotEqual(0, _dealers.Sum(x => x.Drugs.Count));
