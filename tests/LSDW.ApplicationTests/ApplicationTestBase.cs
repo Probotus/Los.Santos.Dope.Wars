@@ -1,5 +1,4 @@
-﻿using LSDW.Application.Installers;
-using LSDW.Domain.Helpers;
+﻿using LSDW.Domain.Helpers;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +21,6 @@ public abstract class ApplicationTestBase
 	{
 		IServiceCollection services = new ServiceCollection();
 
-		services.RegisterApplicationServices();
 		services.RegisterDomainServices();
 
 		return services.BuildServiceProvider();

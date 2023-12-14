@@ -25,13 +25,14 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 
 	private readonly IDealerCollection _dealers;
 	private readonly ILoggerService _loggerService;
+	private readonly IStateService _stateService;
 	private readonly INotificationService _notificationService;
 	private readonly IPlayerService _playerService;
 	private readonly ISettings _settings;
 	private readonly ITraffickingMenu _traffickingMenu;
 	private readonly IWorldService _worldService;
-	private IDealer? _dealer;
 	private bool _dealerIslooking;
+	private IDealer? _dealer;
 
 	/// <summary>
 	/// Initializes a new instance of the street trafficking mission class.
@@ -39,22 +40,27 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	/// <param name="domainService">The domain manager instance to use.</param>
 	/// <param name="infrastructureService">The infrastructure manager instance to use.</param>
 	/// <param name="traffickingMenu">The trafficking menu instance to use.</param>
-	public StreetTrafficking(IDomainService domainService, IInfrastructureService infrastructureService, ITraffickingMenu traffickingMenu) : base(infrastructureService.StateService)
+	public StreetTrafficking(IDomainService domainService, IInfrastructureService infrastructureService, ITraffickingMenu traffickingMenu) : base()
 	{
 		_dealers = domainService.Dealers;
 		_loggerService = infrastructureService.LoggerService;
+		_stateService = infrastructureService.StateService;
 		_notificationService = domainService.NotificationService;
 		_playerService = domainService.PlayerService;
 		_settings = domainService.Settings;
 		_traffickingMenu = traffickingMenu;
 		_worldService = domainService.WorldService;
+
+		PropertyChanging += (s, e) => OnPropertyChanging(e.PropertyName);
 	}
+
+	public IDealer? Dealer { get => _dealer; private set => SetProperty(ref _dealer, value); }
 
 	public void Discover()
 	{
 		try
 		{
-			if (_dealer is not null)
+			if (Dealer is not null)
 				return;
 
 			_dealers.ForEach(dealer => dealer.Discovered && dealer.Blip is null, dealer => dealer.Discover());
@@ -86,49 +92,49 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 	{
 		try
 		{
-			if (_dealer is null)
+			if (Dealer is null)
 			{
 				foreach (IDealer dealer in _dealers)
 				{
 					if (dealer.Position.DistanceTo(_playerService.Position) <= CreateDistance)
 					{
-						_dealer = dealer;
-						_dealer.Create();
+						Dealer = dealer;
+						Dealer.Create();
 						break;
 					}
 				}
 			}
 
-			if (_dealer is not null)
+			if (Dealer is not null)
 			{
-				if (_dealer.Position.DistanceTo(_playerService.Position) <= InteractionDistance)
+				if (Dealer.Position.DistanceTo(_playerService.Position) <= InteractionDistance)
 				{
-					if (_dealer.Ped is null)
+					if (Dealer.Ped is null)
 						return;
 
 					if (!_dealerIslooking)
 					{
-						_dealer.Ped.Task.LookAt(_playerService.Character);
+						Dealer.Ped.Task.LookAt(_playerService.Character);
 						_dealerIslooking = true;
 					}
 				}
 
-				if (_dealer.Position.DistanceTo(_playerService.Position) > InteractionDistance)
+				if (Dealer.Position.DistanceTo(_playerService.Position) > InteractionDistance)
 				{
-					if (_dealer.Ped is null)
+					if (Dealer.Ped is null)
 						return;
 
 					if (_dealerIslooking)
 					{
-						_dealer.Ped.Task.ClearLookAt();
+						Dealer.Ped.Task.ClearLookAt();
 						_dealerIslooking = false;
 					}
 				}
 
-				if (_dealer.Position.DistanceTo(_playerService.Position) > CreateDistance)
+				if (Dealer.Position.DistanceTo(_playerService.Position) > CreateDistance)
 				{
-					_dealer.Delete();
-					_dealer = null;
+					Dealer.Delete();
+					Dealer = null;
 				}
 			}
 		}
@@ -136,6 +142,12 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 		{
 			_loggerService.Critical("Critical error occured!", ex);
 		}
+	}
+
+	public override void OnAborted(object sender, EventArgs e)
+	{
+		_dealers.ForEach(dealer => dealer.CleanUp());
+		Stop();
 	}
 
 	public void OnKeyDown(object sender, KeyEventArgs e) { }
@@ -150,8 +162,7 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 				_loggerService.Information($"{nameof(StreetTrafficking)} started.");
 				return;
 			}
-
-			if (Status == MissionStatus.RUNNING)
+			else
 			{
 				Stop();
 				_loggerService.Information($"{nameof(StreetTrafficking)} stoped.");
@@ -173,17 +184,11 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 		Discover();
 	}
 
-	public override void Stop()
-	{
-		_dealers.ForEach(dealer => dealer.CleanUp());
-		base.Stop();
-	}
-
 	public void Track()
 	{
 		try
 		{
-			if (_dealer is not null)
+			if (Dealer is not null)
 				return;
 
 			Vector3 randomPosition = _playerService.Position.Around(TrackDistance);
@@ -217,6 +222,23 @@ internal sealed class StreetTrafficking : MissionBase, IStreetTrafficking
 		catch (Exception ex)
 		{
 			_loggerService.Critical("Critical error occured!", ex);
+		}
+	}
+
+	private void OnPropertyChanging(string propertyName)
+	{
+		if (propertyName == nameof(Status))
+		{
+			if (Status == MissionStatus.STOPPED)
+			{
+				_stateService.Load();
+				return;
+			}
+			else
+			{
+				_stateService.Save();
+				return;
+			}
 		}
 	}
 }
