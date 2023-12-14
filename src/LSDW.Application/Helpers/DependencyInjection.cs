@@ -9,9 +9,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace LSDW.Application.Installers;
 
 /// <summary>
-/// The dependency injection installer class.
+/// The dependency injection class.
 /// </summary>
-public static class DependencyInjectionInstaller
+public static class DependencyInjection
 {
 	/// <summary>
 	/// Registers the application services to the service collection.

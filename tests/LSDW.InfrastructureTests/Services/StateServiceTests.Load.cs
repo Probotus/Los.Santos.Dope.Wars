@@ -21,6 +21,9 @@ public partial class StateServiceTests
 	{
 		StateService stateService = new(_domainServiceMock.Object, _loggerServiceMock.Object);
 
+		if(File.Exists(SaveFilePath))
+			File.Delete(SaveFilePath);
+
 		stateService.Load();
 
 		_loggerServiceMock.Verify(x => x.Information(It.IsAny<string>(), It.IsAny<string>()));

@@ -1,5 +1,7 @@
 ﻿using LSDW.Application.Services;
 
+using Moq;
+
 namespace LSDW.ApplicationTests.Services;
 
 public sealed partial class MarketServiceTests
@@ -15,5 +17,16 @@ public sealed partial class MarketServiceTests
 
 		Assert.AreNotEqual(now, marketService.NextRefresh);
 		Assert.AreNotEqual(now, marketService.NextRestock);
+	}
+
+	[TestMethod]
+	public void OnTickExceptionTest()
+	{
+		_worldServiceMock.Setup(x => x.Now).Throws<NullReferenceException>();
+
+		MarketService marketService = new(_domainServiceMock.Object, _infraServiceMock.Object);
+		marketService.OnTick(this, new());
+
+		_loggerServiceMock.Verify(v => v.Critical(It.IsAny<string>(), It.IsAny<NullReferenceException>(), It.IsAny<string>()));
 	}
 }

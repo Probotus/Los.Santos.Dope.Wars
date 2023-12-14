@@ -1,6 +1,7 @@
 ﻿using LSDW.Application.Interfaces.Infrastructure.Services;
 using LSDW.Domain.Interfaces.Models;
 using LSDW.Domain.Interfaces.Services;
+using LSDW.Infrastructure.Statics;
 
 using Moq;
 
@@ -9,7 +10,7 @@ namespace LSDW.InfrastructureTests.Services;
 [TestClass]
 public partial class StateServiceTests : InfrastructureTestBase
 {
-	private static readonly string SaveFilePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(LSDW)}.save");
+	private static readonly string SaveFilePath = Path.Combine(FileStatics.BasePath, FileStatics.SavFileName);
 	private readonly Mock<IDomainService> _domainServiceMock;
 	private readonly Mock<ILoggerService> _loggerServiceMock;
 
