@@ -1,10 +1,8 @@
-[![.NET](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/dotnet.yml)
-[![CodeQL](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/codeql-analysis.yml)
+[![CI](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/actions/workflows/codeql.yml)
 [![Issues](https://img.shields.io/github/issues/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/issues)
-[![Commit](https://img.shields.io/github/last-commit/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/commit/main)
-[![Forks](https://img.shields.io/github/forks/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/network)
-[![Size](https://img.shields.io/github/repo-size/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars)
-[![stars](https://img.shields.io/github/stars/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/stargazers)
+[![Commit](https://img.shields.io/github/last-commit/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/commits/main/)
+[![RepoSize](https://img.shields.io/github/repo-size/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars)
 [![License](https://img.shields.io/github/license/BoBoBaSs84/Los.Santos.Dope.Wars)](https://github.com/BoBoBaSs84/Los.Santos.Dope.Wars/blob/main/LICENSE)
 
 # Los.Santos.Dope.Wars
