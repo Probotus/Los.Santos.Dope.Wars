@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Xml;
 using System.Xml.Serialization;
 
 using LSDW.Domain.Writers;

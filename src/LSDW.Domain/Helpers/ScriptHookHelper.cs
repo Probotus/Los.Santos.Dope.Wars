@@ -1,4 +1,6 @@
-﻿using GTA;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using GTA;
 
 namespace LSDW.Domain.Helpers;
 

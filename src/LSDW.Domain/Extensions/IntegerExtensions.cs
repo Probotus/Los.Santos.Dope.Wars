@@ -1,4 +1,6 @@
-﻿namespace LSDW.Domain.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LSDW.Domain.Extensions;
 
 /// <summary>
 /// The integer extensions class.

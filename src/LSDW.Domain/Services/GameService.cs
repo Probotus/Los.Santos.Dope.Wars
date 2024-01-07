@@ -1,4 +1,6 @@
-﻿using GTA;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using GTA;
 
 using LSDW.Domain.Interfaces.Services;
 
