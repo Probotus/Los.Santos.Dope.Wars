@@ -8,22 +8,22 @@ namespace LSDW.InfrastructureTests;
 [TestClass]
 public abstract class InfrastructureTestBase
 {
-	private readonly IServiceProvider _serviceProvider;
+	private static IServiceProvider? s_serviceProvider;
 
-	public InfrastructureTestBase()
-		=> _serviceProvider = CreateServiceProvider();
+	[AssemblyInitialize]
+	public static void AssemblyInitialize(TestContext context)
+		=> s_serviceProvider = CreateServiceProvider();
 
-	public T GetService<T>()
-		=> _serviceProvider.GetRequiredService(typeof(T)) is not T service
+	protected static T GetService<T>()
+		=> s_serviceProvider?.GetRequiredService(typeof(T)) is not T service
 		? throw new ArgumentException($"{typeof(T)} needs to be a registered service.")
 		: service;
 
 	private static ServiceProvider CreateServiceProvider()
 	{
-		IServiceCollection services = new ServiceCollection();
-
-		services.RegisterDomainServices();
-		services.RegisterInfrastructureServices();
+		IServiceCollection services = new ServiceCollection()
+			.RegisterDomainServices()
+			.RegisterInfrastructureServices();
 
 		return services.BuildServiceProvider();
 	}

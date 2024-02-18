@@ -8,22 +8,22 @@ namespace LSDW.ApplicationTests;
 [TestClass]
 public abstract class ApplicationTestBase
 {
-	private readonly IServiceProvider _serviceProvider;
+	private static IServiceProvider? s_serviceProvider;
 
-	public ApplicationTestBase()
-		=> _serviceProvider = CreateServiceProvider();
+	[AssemblyInitialize]
+	public static void AssemblyInitialize(TestContext context)
+	=> s_serviceProvider = CreateServiceProvider();
 
-	public T GetService<T>()
-		=> _serviceProvider.GetRequiredService(typeof(T)) is not T service
+	protected static T GetService<T>()
+		=> s_serviceProvider?.GetRequiredService(typeof(T)) is not T service
 		? throw new ArgumentException($"{typeof(T)} needs to be a registered service.")
 		: service;
 
 	private static ServiceProvider CreateServiceProvider()
 	{
-		IServiceCollection services = new ServiceCollection();
-
-		services.RegisterApplicationServices();
-		services.RegisterDomainServices();
+		IServiceCollection services = new ServiceCollection()
+			.RegisterApplicationServices()
+			.RegisterDomainServices();
 
 		return services.BuildServiceProvider();
 	}
