@@ -8,7 +8,7 @@ internal class Program
 	private static readonly string SavFile = $"{nameof(LSDW)}.sav";
 	private static readonly string XmlFile = $"{nameof(LSDW)}.xml";
 
-	private static void Main(string[] args)
+	private static void Main()
 	{
 		try
 		{
